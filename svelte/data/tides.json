@@ -1,0 +1,460 @@
+[
+  {
+    "id": "0197dd13-ab53-4aff-982a-9505e416f69b",
+    "date": "2024-10-29",
+    "weather": [
+      {
+        "date": "2024-10-29T00:00:00.000Z",
+        "temperature": 13.970000267028809,
+        "relativeHumidity": 94,
+        "precipitation": 0.5,
+        "visibility": 24140,
+        "windSpeed10m": 24.363248825073242,
+        "windDirection10m": 235.8402557373047,
+        "weather_code": 53
+      },
+      {
+        "date": "2024-10-29T01:00:00.000Z",
+        "temperature": 14.069999694824219,
+        "relativeHumidity": 93,
+        "precipitation": 0.30000001192092896,
+        "visibility": 24140,
+        "windSpeed10m": 24.575109481811523,
+        "windDirection10m": 238.17259216308594,
+        "weather_code": 51
+      },
+      {
+        "date": "2024-10-29T02:00:00.000Z",
+        "temperature": 13.720000267028809,
+        "relativeHumidity": 98,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 23.09056854248047,
+        "windDirection10m": 239.03631591796875,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T03:00:00.000Z",
+        "temperature": 13.769999504089355,
+        "relativeHumidity": 100,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 23.04281234741211,
+        "windDirection10m": 241.03244018554688,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T04:00:00.000Z",
+        "temperature": 14.369999885559082,
+        "relativeHumidity": 91,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 8.942214012145996,
+        "windDirection10m": 310.100830078125,
+        "weather_code": 53
+      },
+      {
+        "date": "2024-10-29T05:00:00.000Z",
+        "temperature": 14.420000076293945,
+        "relativeHumidity": 92,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 8.049844741821289,
+        "windDirection10m": 280.3047790527344,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T06:00:00.000Z",
+        "temperature": 14.420000076293945,
+        "relativeHumidity": 92,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 8.049844741821289,
+        "windDirection10m": 296.5649719238281,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T07:00:00.000Z",
+        "temperature": 14.369999885559082,
+        "relativeHumidity": 91,
+        "precipitation": 0,
+        "visibility": 19580,
+        "windSpeed10m": 7.1003098487854,
+        "windDirection10m": 300.4654541015625,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T08:00:00.000Z",
+        "temperature": 14.119999885559082,
+        "relativeHumidity": 93,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 6.130578517913818,
+        "windDirection10m": 220.2362823486328,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T09:00:00.000Z",
+        "temperature": 14.519999504089355,
+        "relativeHumidity": 90,
+        "precipitation": 0.10000000149011612,
+        "visibility": 24140,
+        "windSpeed10m": 7.091177463531494,
+        "windDirection10m": 293.9624938964844,
+        "weather_code": 51
+      },
+      {
+        "date": "2024-10-29T10:00:00.000Z",
+        "temperature": 14.670000076293945,
+        "relativeHumidity": 87,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 7.491114139556885,
+        "windDirection10m": 305.2176818847656,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T11:00:00.000Z",
+        "temperature": 14.769999504089355,
+        "relativeHumidity": 84,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 7.172948837280273,
+        "windDirection10m": 287.5256652832031,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T12:00:00.000Z",
+        "temperature": 14.720000267028809,
+        "relativeHumidity": 83,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 6.6380720138549805,
+        "windDirection10m": 282.52880859375,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T13:00:00.000Z",
+        "temperature": 13.298999786376953,
+        "relativeHumidity": 96,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 9.793059349060059,
+        "windDirection10m": 323.9725341796875,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T14:00:00.000Z",
+        "temperature": 13.39900016784668,
+        "relativeHumidity": 95,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 7.903619289398193,
+        "windDirection10m": 329.9314880371094,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T15:00:00.000Z",
+        "temperature": 13.499000549316406,
+        "relativeHumidity": 95,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 9,
+        "windDirection10m": 16.26028060913086,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T16:00:00.000Z",
+        "temperature": 13.449000358581543,
+        "relativeHumidity": 96,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 10.137691497802734,
+        "windDirection10m": 6.115414619445801,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T17:00:00.000Z",
+        "temperature": 13.14900016784668,
+        "relativeHumidity": 97,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 8.473393440246582,
+        "windDirection10m": 12.264769554138184,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T18:00:00.000Z",
+        "temperature": 12.949000358581543,
+        "relativeHumidity": 97,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 8.31124496459961,
+        "windDirection10m": 17.650222778320312,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T19:00:00.000Z",
+        "temperature": 12.749000549316406,
+        "relativeHumidity": 99,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 8.404285430908203,
+        "windDirection10m": 43.26433181762695,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T20:00:00.000Z",
+        "temperature": 12.949000358581543,
+        "relativeHumidity": 100,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 10.703569412231445,
+        "windDirection10m": 47.72637176513672,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T21:00:00.000Z",
+        "temperature": 13.249000549316406,
+        "relativeHumidity": 96,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 11.304228782653809,
+        "windDirection10m": 52.76508331298828,
+        "weather_code": 3
+      },
+      {
+        "date": "2024-10-29T22:00:00.000Z",
+        "temperature": 13.598999977111816,
+        "relativeHumidity": 92,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 10.00903606414795,
+        "windDirection10m": 52.30569839477539,
+        "weather_code": 2
+      },
+      {
+        "date": "2024-10-29T23:00:00.000Z",
+        "temperature": 14.048999786376953,
+        "relativeHumidity": 91,
+        "precipitation": 0,
+        "visibility": 24140,
+        "windSpeed10m": 10.948972702026367,
+        "windDirection10m": 46.3321533203125,
+        "weather_code": 3
+      }
+    ],
+    "basicTides": [
+      {
+        "key": "High",
+        "value": "Time: 04:30, Height: 7.92"
+      },
+      {
+        "key": "Low",
+        "value": "Time: 10:50, Height: 2.79"
+      },
+      {
+        "key": "High",
+        "value": "Time: 16:40, Height: 8.17"
+      },
+      {
+        "key": "Low",
+        "value": "Time: 23:10, Height: 2.44"
+      }
+    ],
+    "hourlyTides": [
+      {
+        "time": "00:00",
+        "height": "3.59"
+      },
+      {
+        "time": "00:30",
+        "height": "4.11"
+      },
+      {
+        "time": "01:00",
+        "height": "4.71"
+      },
+      {
+        "time": "01:30",
+        "height": "5.33"
+      },
+      {
+        "time": "02:00",
+        "height": "5.96"
+      },
+      {
+        "time": "02:30",
+        "height": "6.56"
+      },
+      {
+        "time": "03:00",
+        "height": "7.10"
+      },
+      {
+        "time": "03:30",
+        "height": "7.53"
+      },
+      {
+        "time": "04:00",
+        "height": "7.81"
+      },
+      {
+        "time": "04:30",
+        "height": "7.92"
+      },
+      {
+        "time": "05:00",
+        "height": "7.84"
+      },
+      {
+        "time": "05:30",
+        "height": "7.57"
+      },
+      {
+        "time": "06:00",
+        "height": "7.17"
+      },
+      {
+        "time": "06:30",
+        "height": "6.68"
+      },
+      {
+        "time": "07:00",
+        "height": "6.11"
+      },
+      {
+        "time": "07:30",
+        "height": "5.51"
+      },
+      {
+        "time": "08:00",
+        "height": "4.90"
+      },
+      {
+        "time": "08:30",
+        "height": "4.32"
+      },
+      {
+        "time": "09:00",
+        "height": "3.80"
+      },
+      {
+        "time": "09:30",
+        "height": "3.37"
+      },
+      {
+        "time": "10:00",
+        "height": "3.04"
+      },
+      {
+        "time": "10:30",
+        "height": "2.84"
+      },
+      {
+        "time": "11:00",
+        "height": "2.80"
+      },
+      {
+        "time": "11:30",
+        "height": "2.97"
+      },
+      {
+        "time": "12:00",
+        "height": "3.34"
+      },
+      {
+        "time": "12:30",
+        "height": "3.87"
+      },
+      {
+        "time": "13:00",
+        "height": "4.49"
+      },
+      {
+        "time": "13:30",
+        "height": "5.16"
+      },
+      {
+        "time": "14:00",
+        "height": "5.84"
+      },
+      {
+        "time": "14:30",
+        "height": "6.49"
+      },
+      {
+        "time": "15:00",
+        "height": "7.09"
+      },
+      {
+        "time": "15:30",
+        "height": "7.59"
+      },
+      {
+        "time": "16:00",
+        "height": "7.96"
+      },
+      {
+        "time": "16:30",
+        "height": "8.15"
+      },
+      {
+        "time": "17:00",
+        "height": "8.14"
+      },
+      {
+        "time": "17:30",
+        "height": "7.93"
+      },
+      {
+        "time": "18:00",
+        "height": "7.54"
+      },
+      {
+        "time": "18:30",
+        "height": "7.03"
+      },
+      {
+        "time": "19:00",
+        "height": "6.45"
+      },
+      {
+        "time": "19:30",
+        "height": "5.82"
+      },
+      {
+        "time": "20:00",
+        "height": "5.16"
+      },
+      {
+        "time": "20:30",
+        "height": "4.51"
+      },
+      {
+        "time": "21:00",
+        "height": "3.90"
+      },
+      {
+        "time": "21:30",
+        "height": "3.37"
+      },
+      {
+        "time": "22:00",
+        "height": "2.94"
+      },
+      {
+        "time": "22:30",
+        "height": "2.62"
+      },
+      {
+        "time": "23:00",
+        "height": "2.45"
+      },
+      {
+        "time": "23:30",
+        "height": "2.48"
+      }
+    ]
+  }
+]
