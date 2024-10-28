@@ -37,7 +37,7 @@ class TideStorageService {
 
 	/**
 	 * @async
-	 * @returns {Promise<Array<TideData>>}
+	 * @returns {Promise<Array<Tide>>}
 	 */
 	async getAllTideData() {
 		try {
@@ -58,14 +58,14 @@ class TideStorageService {
 	/**
 	 * Save tide data to storage
 	 * @async
-	 * @param {TideData[]} tideData - Array of tide data to save
+	 * @param {Tide[]} tides - Array of tide data to save
 	 * @returns {Promise<boolean>}
 	 */
-	async saveTideData(tideData) {
+	async saveTideData(tides) {
 		try {
 			const filePath = path.join(this.dataDir, this.tidesFile);
 
-			await writeFile(filePath, JSON.stringify(tideData, null, 2));
+			await writeFile(filePath, JSON.stringify(tides, null, 2));
 			return true;
 		} catch (error) {
 			console.error('Error saving tide data:', error);
@@ -89,8 +89,8 @@ class TideStorageService {
 	/**
 	 * Add a new Tide
 	 * @async
-	 * @param {Omit<TideData, 'id'>} item
-	 * @returns {Promise<TideData|null>}
+	 * @param {Omit<Tide, 'id'>} item
+	 * @returns {Promise<Tide|null>}
 	 */
 
 	async addTide(item) {
@@ -109,8 +109,8 @@ class TideStorageService {
 	 * Updates exiting tide data
 	 * @async
 	 * @param {string} id
-	 * @param {Partial<TideData>} updates
-	 * @returns {Promise<TideData|null>}
+	 * @param {Partial<Tide>} updates
+	 * @returns {Promise<Tide|null>}
 	 */
 
 	async updateTide(id, updates) {

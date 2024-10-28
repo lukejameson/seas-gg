@@ -2,7 +2,7 @@
  * GET Handler for tides
  * @param {import('@sveltejs/kit').RequestEvent} event
  */
-import { tideScraper } from '$lib/server/tides-scraper';
+import { main } from '$lib/server/main';
 
 /**
  *
@@ -19,7 +19,7 @@ export async function GET({ url }) {
 	}
 
 	try {
-		const tide = await tideScraper.getTideForDate(date);
+		const tide = await main.getTideForDate(date);
 
 		if (!tide) {
 			return new Response(JSON.stringify({ error: 'Not found' }), {

@@ -19,7 +19,7 @@ class HtmlParser {
 	/**
 	 *
 	 * @param {string} html
-	 * @returns {Record<string, string>[]|null}
+	 * @returns {TideData[]|null}
 	 */
 	getBasicTidesTable(html) {
 		if (!html) {
@@ -37,8 +37,8 @@ class HtmlParser {
 				const [name, time, height] = [...tr.querySelectorAll('td')];
 
 				return {
-					key: name?.textContent?.trim() || '',
-					value: `Time: ${time?.textContent?.trim() || ''}, Height: ${
+					time: name?.textContent?.trim() || '',
+					height: `Time: ${time?.textContent?.trim() || ''}, Height: ${
 						height?.textContent?.trim() || ''
 					}`
 				};
@@ -50,7 +50,7 @@ class HtmlParser {
 	/**
 	 *
 	 * @param {string} html
-	 * @returns {Record<string, string>[]|null}}
+	 * @returns {TideData[]|null}}
 	 */
 	getHourlyTides(html) {
 		if (!html) return null;
@@ -58,12 +58,12 @@ class HtmlParser {
 		const parsedHtml = this.parseHtml(html).documentElement;
 
 		/**
-		 * @typedef{Record<string, string>[]}
+		 * @typedef{TideData[]}
 		 */
 
 		const container = [...parsedHtml.querySelectorAll('div.parent:nth-child(7) > div > table')];
 
-		/** @typedef {Record<string, string>[]} Tables */
+		/** @typedef {TideData[]} Tables */
 
 		/** @type {Tables} */
 		const tables = [];
