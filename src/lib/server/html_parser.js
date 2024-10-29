@@ -29,13 +29,13 @@ class HtmlParser {
 		const parsedHtml = this.parseHtml(html).documentElement;
 
 		/**
-		 * @typeof {Record<string, string>[]}
+		 * @typeof {TideData}
 		 */
 		const tidesTable = [...parsedHtml.querySelectorAll('div.float-left:nth-child(3) > table tr')]
 			.slice(1)
 			.map((tr) => {
 				const [name, time, height] = [...tr.querySelectorAll('td')];
-
+				
 				return {
 					time: name?.textContent?.trim() || '',
 					height: `Time: ${time?.textContent?.trim() || ''}, Height: ${
@@ -73,9 +73,11 @@ class HtmlParser {
 			rows.forEach((tr) => {
 				const [timeCell, heightCell] = [...tr.querySelectorAll('td')];
 
+				const height = heightCell?.querySelector('div')?.textContent?.trim();
+
 				tables.push({
 					time: timeCell?.textContent?.trim() || '',
-					height: heightCell?.querySelector('div')?.textContent?.trim() || ''
+					height: parseInt(height ? height : '0') || 0
 				});
 			});
 		});

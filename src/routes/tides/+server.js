@@ -18,6 +18,12 @@ export async function GET({ url }) {
 		});
 	}
 
+	if (!main.isWithinOneDays(date)) {
+		return new Response(JSON.stringify({ error: 'Date outside of accepted range' }), {
+			status: 403
+		});
+	}
+
 	try {
 		const tide = await main.getTideForDate(date);
 

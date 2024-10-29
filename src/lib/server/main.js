@@ -1,9 +1,10 @@
-import { differenceInDays, format } from 'date-fns';
+import { format } from 'date-fns';
 import { htmlParser } from './html_parser';
 import { tideStorage } from './storage';
+import { tideSequence } from './tide_sequence';
 import { tideScraper } from './tides-scraper';
 import { weatherScraper } from './weather-scraper';
-import { tideSequence } from './tide_sequence';
+import { dataCleanup } from './data_cleanup';
 
 class Main {
 	constructor() {}
@@ -15,26 +16,27 @@ class Main {
 	 * @returns {Promise<void>}
 	 */
 	async processTideWeatherData(date) {
+		await dataCleanup.processOldTideRecords();
+
 		const rawTideHtml = await tideScraper.scrapeTidesForDate(date);
 		const weather = await weatherScraper.getWeatherForDate(format(date, 'yyyy-MM-dd'));
 		const basicTides = htmlParser.getBasicTidesTable(rawTideHtml);
 		const hourlyTides = htmlParser.getHourlyTides(rawTideHtml);
-        const dailyExtremes = tideSequence.processTideData(hourlyTides)
+		const dailyExtremes = tideSequence.processTideData(hourlyTides);
 
-		/** @type {Tide[]} */
-		const tideData = [
-			{
-				id: crypto.randomUUID(),
-				date: format(new Date(date), 'yyyy-MM-dd'),
-				weather: weather,
-				basicTides: basicTides,
-				hourlyTides: hourlyTides,
-                dailyExtremes: dailyExtremes
-			}
-		];
+		/** @type {Tide} */
+		const tideData = {
+			id: crypto.randomUUID(),
+			date: format(new Date(date), 'yyyy-MM-dd'),
+			weather: weather,
+			basicTides: basicTides,
+			hourlyTides: hourlyTides,
+			dailyExtremes: dailyExtremes
+		};
 
 		if (!tideData) return;
-		await tideStorage.saveTideData(tideData);
+
+		await tideStorage.addTide(tideData);
 	}
 
 	/**
@@ -43,14 +45,6 @@ class Main {
 	 * @returns {Promise<Tide|undefined>}
 	 */
 	async getTideForDate(date) {
-		if (!date) {
-			return;
-		}
-
-		if (!this.isWithinOneDays(date)) {
-			return;
-		}
-
 		try {
 			const formattedDate = format(date, 'yyyy-MM-dd');
 
@@ -71,15 +65,31 @@ class Main {
 	}
 
 	/**
-	 * @private
 	 * @param {Date} date
 	 * @returns {boolean}
 	 */
 	isWithinOneDays(date) {
-		const nowDate = new Date(date);
-		const diffInDays = differenceInDays(date, nowDate);
+		const inputDate = new Date(date);
+		const today = new Date();
+		const yesterday = new Date();
+		const tomorrow = new Date();
+		yesterday.setDate(yesterday.getDate() - 1);
+		tomorrow.setDate(tomorrow.getDate() + 1);
 
-		return Math.abs(diffInDays) <= 1;
+		inputDate.setHours(0, 0, 0, 0);
+		today.setHours(0, 0, 0, 0);
+		yesterday.setHours(0, 0, 0, 0);
+		tomorrow.setHours(0, 0, 0, 0);
+
+		if (inputDate.getTime() === today.getTime()) {
+			return true;
+		} else if (inputDate.getTime() === yesterday.getTime()) {
+			return true;
+		} else if (inputDate.getTime() === tomorrow.getTime()) {
+			return true;
+		}
+
+		return false;
 	}
 }
 export const main = new Main();

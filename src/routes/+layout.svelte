@@ -1,6 +1,6 @@
 <script>
 	/** @type {import('./$types').LayoutData} */
-	export let data;
+	// export let data;
 
 	import '../app.css';
 	import './layout.css';
