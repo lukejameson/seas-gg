@@ -1,0 +1,59 @@
+.body {
+    background-color: #edf5f7;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+h4 {
+    margin: 0;
+    padding: 0;
+}
+
+.wave-background {
+    position: absolute;
+    top: 4rem;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    backdrop-filter: blur(20px);
+}
+
+.page-icon {
+	margin-top: 0.5rem;
+	margin-left: 0.5rem;
+	height: 2.5rem;
+}
+
+.header {
+    display: flex;
+    z-index: 3;
+    background-color: transparent;
+    width: 100%;
+    height: 4rem;
+    font-size: 1.6rem;
+    padding: 0.2rem 0.2rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px -1px rgba(149, 157, 165, 0.2);
+    position: relative;
+}
+
+.title {
+    line-height: 3.5rem;
+	padding-left: 0.5rem;
+}
+
+.title h4 {
+    display: inline;
+    vertical-align: middle;
+}
+
+.wave-background svg {
+    display: block;
+    position: absolute;
+}

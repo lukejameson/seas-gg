@@ -26,6 +26,7 @@
  * @property {TideData[]|null} basicTides
  * @property {TideData[]|null} hourlyTides
  * @property {DailyExtremes[]|null} dailyExtremes
+ * @property {TideData | null} currentTideHeight
  */
 
 /**

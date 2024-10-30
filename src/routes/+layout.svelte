@@ -1,21 +1,24 @@
 <script>
 	/** @type {import('./$types').LayoutData} */
-	// export let data;
-
+	import img from '$lib/images/favicon.svg';
 	import '../app.css';
-	import './layout.css';
+	import '$lib/styles/layout.css';
 </script>
 
 <div class="body">
-	<div class="side-container">
-
-	</div>
 	<div class="header">
-		<div class="title-card">
-			<h1>Tides</h1>
+		<img class="page-icon" src={img} alt="" />
+
+		<div class="title">
+			<h4>Tides</h4>
 		</div>
 	</div>
-	<div class="sub-content">
-		<!-- <slot></slot> -->
+
+	<div class="wave-background">
+		<svg viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+			<path d="M0,100 C150,200 350,0 500,100 L500,00 L0,0 Z" style="stroke: none; fill:#e8f4f8;"></path>
+		</svg>
 	</div>
+
+	<slot></slot>
 </div>

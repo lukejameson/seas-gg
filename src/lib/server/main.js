@@ -1,13 +1,13 @@
 import { format } from 'date-fns';
+import { dataCleanup } from './data_cleanup';
 import { htmlParser } from './html_parser';
 import { tideStorage } from './storage';
 import { tideSequence } from './tide_sequence';
 import { tideScraper } from './tides-scraper';
 import { weatherScraper } from './weather-scraper';
-import { dataCleanup } from './data_cleanup';
 
 /**
- * 
+ *
  * @class Main
  */
 class Main {
@@ -35,7 +35,8 @@ class Main {
 			weather: weather,
 			basicTides: basicTides,
 			hourlyTides: hourlyTides,
-			dailyExtremes: dailyExtremes
+			dailyExtremes: dailyExtremes,
+			currentTideHeight: null
 		};
 
 		if (!tideData) return;
