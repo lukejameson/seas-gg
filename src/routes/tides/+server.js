@@ -19,7 +19,7 @@ export async function GET({ url }) {
 	}
 
 	if (!main.isWithinOneDays(date)) {
-		return new Response(JSON.stringify({ error: 'Date outside of accepted range' }), {
+		return new Response(JSON.stringify({ error: 'Date outside of accepted range, +1 or -1 days are allowed' }), {
 			status: 403
 		});
 	}

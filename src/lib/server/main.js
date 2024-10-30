@@ -6,6 +6,10 @@ import { tideScraper } from './tides-scraper';
 import { weatherScraper } from './weather-scraper';
 import { dataCleanup } from './data_cleanup';
 
+/**
+ * 
+ * @class Main
+ */
 class Main {
 	constructor() {}
 

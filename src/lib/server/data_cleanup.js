@@ -1,9 +1,16 @@
 import { main } from './main';
 import { tideStorage } from './storage';
 
+/**
+ * Used to remove data that is older than yesterday.
+ * @class DataCleanup
+ */
 class DataCleanup {
 	constructor() {}
 
+	/**
+	 * Reads all the current tides then removed all records that are > 1 away
+	 */
 	async processOldTideRecords() {
 		const existingTides = await tideStorage.getAllTideData();
 

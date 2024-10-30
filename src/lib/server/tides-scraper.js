@@ -1,6 +1,10 @@
 import { env } from '$env/dynamic/private';
 import { getDayOfYear, getYear } from 'date-fns';
 
+/**
+ * Scrapes the tides website,
+ * @class TideScraper
+ */
 class TideScraper {
 	constructor() {
 		this.tideUrl = env.TIDE_URL;

@@ -1,7 +1,8 @@
 import { fetchWeatherApi } from 'openmeteo';
 
 /**
- * Class for fetching and processing weather data
+ * Fetch's and processing weather data
+ * @class WeatherScraper
  */
 class WeatherScraper {
 	constructor() {}

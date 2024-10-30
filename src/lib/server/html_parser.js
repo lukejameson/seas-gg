@@ -1,6 +1,7 @@
 import { JSDOM } from 'jsdom';
 
 /**
+ * Used to parse the html from tides.digimap
  * @class HtmlParser
  */
 class HtmlParser {

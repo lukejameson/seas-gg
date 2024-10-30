@@ -8,7 +8,6 @@ import { format } from 'date-fns';
  * Service for handling the saving of tide data;
  * @class StorageService
  */
-
 class TideStorageService {
 	constructor() {
 		this.dataDir = path.join(process.cwd(), 'data');

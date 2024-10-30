@@ -4,6 +4,10 @@
  * @property {TideData[]} points
  */
 
+/**
+ * Takes in the list of tides and works out the tide cycles
+ * @class TideSequence
+ */
 class TideSequence {
 	constructor() {
 		/**
@@ -18,7 +22,6 @@ class TideSequence {
 		this.threshold = 6.5;
 	}
 	/**
-	 *
 	 * @param {TideData[]} records
 	 */
 	parseTideData(records) {
