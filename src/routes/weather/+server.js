@@ -1,14 +1,6 @@
-/**
- * GET Handler for tides
- * @param {import('@sveltejs/kit').RequestEvent} event
- */
-import { main } from '$lib/server/main';
+import { dailyWeatherService } from '$lib/server/daily-weather-service';
 
-/**
- *
- * @param {*} url
- * @returns
- */
+/** @type {import('./$types').RequestHandler} */
 export async function GET({ url }) {
 	const date = url.searchParams.get('date');
 
@@ -18,25 +10,16 @@ export async function GET({ url }) {
 		});
 	}
 
-	// if (!main.isWithinTenDays(date)) {
-	// 	return new Response(
-	// 		JSON.stringify({ error: 'Date outside of accepted range, +1 or -1 days are allowed' }),
-	// 		{
-	// 			status: 403
-	// 		}
-	// 	);
-	// }
-
 	try {
-		const tide = await main.getTideForDate(date);
+		const weather = await dailyWeatherService.getWeatherForDate(date);
 
-		if (!tide) {
+		if (!weather) {
 			return new Response(JSON.stringify({ error: 'Not found' }), {
 				status: 404
 			});
 		}
 
-		return new Response(JSON.stringify(tide), {
+		return new Response(JSON.stringify(weather), {
 			headers: {
 				'Content-Type': 'application/json'
 			}

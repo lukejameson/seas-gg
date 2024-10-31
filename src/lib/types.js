@@ -2,6 +2,7 @@
 
 /**
  * @typedef {Object} TideData
+ * @property {string|null} typeof;
  * @property {string} time;
  * @property {number} height;
  */
@@ -22,11 +23,9 @@
  * @typedef {Object} Tide
  * @property {string} id
  * @property {string} date
- * @property {HourlyWeather[]|null} weather
  * @property {TideData[]|null} basicTides
  * @property {TideData[]|null} hourlyTides
  * @property {DailyExtremes[]|null} dailyExtremes
- * @property {TideData | null} currentTideHeight
  */
 
 /**

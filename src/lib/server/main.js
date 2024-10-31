@@ -1,10 +1,8 @@
 import { format } from 'date-fns';
-import { dataCleanup } from './data_cleanup';
 import { htmlParser } from './html_parser';
-import { tideStorage } from './storage';
+import { supabaseWorker } from './supabase';
 import { tideSequence } from './tide_sequence';
 import { tideScraper } from './tides-scraper';
-import { weatherScraper } from './weather-scraper';
 
 /**
  *
@@ -17,13 +15,10 @@ class Main {
 	 * Gathers all the data
 	 * @private
 	 * @param {Date} date
-	 * @returns {Promise<void>}
+	 * @returns {Promise<Tide|null>}
 	 */
-	async processTideWeatherData(date) {
-		await dataCleanup.processOldTideRecords();
-
+	async processTideData(date) {
 		const rawTideHtml = await tideScraper.scrapeTidesForDate(date);
-		const weather = await weatherScraper.getWeatherForDate(format(date, 'yyyy-MM-dd'));
 		const basicTides = htmlParser.getBasicTidesTable(rawTideHtml);
 		const hourlyTides = htmlParser.getHourlyTides(rawTideHtml);
 		const dailyExtremes = tideSequence.processTideData(hourlyTides);
@@ -32,54 +27,50 @@ class Main {
 		const tideData = {
 			id: crypto.randomUUID(),
 			date: format(new Date(date), 'yyyy-MM-dd'),
-			weather: weather,
 			basicTides: basicTides,
 			hourlyTides: hourlyTides,
-			dailyExtremes: dailyExtremes,
-			currentTideHeight: null
+			dailyExtremes: dailyExtremes
 		};
 
-		if (!tideData) return;
+		if (!tideData) return null;
 
-		await tideStorage.addTide(tideData);
+		await supabaseWorker.storeTideRecord(tideData);
+
+		return await supabaseWorker.getTideRecord(date);
 	}
 
 	/**
 	 *
 	 * @param {Date} date
-	 * @returns {Promise<Tide|undefined>}
+	 * @returns {Promise<Tide|null>}
 	 */
 	async getTideForDate(date) {
 		try {
-			const formattedDate = format(date, 'yyyy-MM-dd');
-
-			let tideData = await tideStorage.getTideDataByDate(formattedDate);
+			let tideData = await supabaseWorker.getTideRecord(date);
 
 			if (!tideData) {
-				await this.processTideWeatherData(date);
-
-				tideData = await tideStorage.getTideDataByDate(formattedDate);
-
-				return tideData;
+				tideData = await this.processTideData(date);
 			}
 
 			return tideData;
 		} catch (error) {
 			console.error(error);
 		}
+
+		return null;
 	}
 
 	/**
 	 * @param {Date} date
 	 * @returns {boolean}
 	 */
-	isWithinOneDays(date) {
+	isWithinTenDays(date) {
 		const inputDate = new Date(date);
 		const today = new Date();
 		const yesterday = new Date();
 		const tomorrow = new Date();
-		yesterday.setDate(yesterday.getDate() - 1);
-		tomorrow.setDate(tomorrow.getDate() + 1);
+		yesterday.setDate(yesterday.getDate() - 10);
+		tomorrow.setDate(tomorrow.getDate() + 10);
 
 		inputDate.setHours(0, 0, 0, 0);
 		today.setHours(0, 0, 0, 0);

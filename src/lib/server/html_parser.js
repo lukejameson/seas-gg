@@ -36,12 +36,11 @@ class HtmlParser {
 			.slice(1)
 			.map((tr) => {
 				const [name, time, height] = [...tr.querySelectorAll('td')];
-				
+
 				return {
-					time: name?.textContent?.trim() || '',
-					height: `Time: ${time?.textContent?.trim() || ''}, Height: ${
-						height?.textContent?.trim() || ''
-					}`
+					typeof: name?.textContent?.trim() || '',
+					time: `${time?.textContent?.trim() || ''}`,
+					height: `${height?.textContent?.trim() || ''}`
 				};
 			});
 
@@ -77,6 +76,7 @@ class HtmlParser {
 				const height = heightCell?.querySelector('div')?.textContent?.trim();
 
 				tables.push({
+					typeof: null,
 					time: timeCell?.textContent?.trim() || '',
 					height: parseInt(height ? height : '0') || 0
 				});
