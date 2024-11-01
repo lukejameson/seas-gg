@@ -39,13 +39,27 @@
 		99: ['Thunderstorm with heavy hail', 'fa-solid fa-cloud-bolt-sun']
 	};
 
+	$: {
+		setCurrentTime();
+	}
+
 	/**@param {number} angle*/
 	function formatWindDirection(angle) {
 		if (angle == undefined) {
 			return 'Unknown';
 		}
 
-		const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+		/**@type {Array<codeAndIcon>}*/
+		const directions = [
+			['N', ''],
+			['NE', ''],
+			['E', ''],
+			['SE', ''],
+			['S', ''],
+			['SW', ''],
+			['W', ''],
+			['NW', '']
+		];
 		const index = Math.round(((angle %= 360) < 0 ? angle + 360 : angle) / 45) % 8;
 
 		return directions[index];
@@ -59,13 +73,13 @@
 		const paddedKey = Number(String(code).padStart(3, '0'));
 		let key = weatherCodes[paddedKey];
 
-		const isNightTime = new Date(weather[currentPage].date).getHours() < 6;
+		const isNightTime = new Date(weather[currentPage].date).getHours() < 6 || new Date(weather[currentPage].date).getHours() > 18;
 
-		// if (paddedKey == 0 && isNightTime) {
-		// 	key[1] = 'fa-solid fa-moon-stars';
-		// } else {
-		// 	key[1] = 'fa-solid fa-sun';
-		// }
+		if (isNightTime) {
+			key[1] = key[1].replace('sun', 'moon');
+		} else {
+			key[1] = key[1].replace('moon', 'sun');
+		}
 
 		return key;
 	}
@@ -74,7 +88,7 @@
 	let currentPage = 0;
 
 	function moveForward() {
-		if (currentPage < pages) {
+		if (currentPage <= pages) {
 			currentPage++;
 		}
 	}
@@ -85,36 +99,74 @@
 		}
 	}
 
-	function getCurrentWeather() {}
+	function getCurrentWeather() {
+		const refDate = new Date();
+
+		const dates = weather.map((date, index) => {
+			return { date: date.date, index };
+		});
+
+		return dates.reduce((closest, current) => {
+			const closestDiff = Math.abs(new Date(closest.date).getTime() - refDate.getTime());
+			const currentDiff = Math.abs(new Date(current.date).getTime() - refDate.getTime());
+
+			return currentDiff < closestDiff ? current : closest;
+		}).index;
+	}
+
+	function setCurrentTime() {
+		currentPage = getCurrentWeather();
+	}
 </script>
 
 <div class="card">
 	<div class="d-flex flex-fill justify-content-between">
-		<div class="d-flex align-items-center weather-code">
+		<div class="d-flex align-items-center flex-wrap flex-gap-2">
 			{#if getWeatherCode(weather[currentPage].weather_code)[1]}
-				<i class="{getWeatherCode(weather[currentPage].weather_code)[1]} font-3rem"></i>
+				<i class="{getWeatherCode(weather[currentPage].weather_code)[1]} fa-2xl"></i>
 			{:else}
 				{getWeatherCode(weather[currentPage].weather_code)[0]}
 			{/if}
 
-			<div style="padding-left: 16px; font-size: 1.25rem" class="font-weight-bold">
-				{format(weather[currentPage].date, 'HH:mm')}
-			</div>
-			<div style="padding-left: 16px; font-size: 1.25rem" class="font-weight-bold">
-				{Math.round(weather[currentPage].temperature)}c
-			</div>
+			<div class="pl-3">
+				<div class="d-flex flex-gap-2">
+					<div class="font-weight-bold f-18">
+						{format(weather[currentPage].date, 'HH:mm')}
+					</div>
+					|
+					<div class="font-weight-bold f-18">
+						{Math.round(weather[currentPage].temperature)}°C
+					</div>
+					|
+					<div class="font-weight-bold f-18">
+						{formatWindDirection(weather[currentPage].windDirection10m)[0]}
+						{Math.round(weather[currentPage].windSpeed10m)}<span class="font-14">mph</span>
+					</div>
+				</div>
 
-			<div style="padding-left: 16px; font-size: 1.25rem" class="font-weight-bold">
-				{Math.round(weather[currentPage].windSpeed10m)}mph
-				{formatWindDirection(weather[currentPage].windDirection10m)}
+				<div class="d-flex flex-gap-2">
+					<div class="font-weight-bold f-16">
+						H: {weather[currentPage].relativeHumidity}%
+					</div>
+					|
+					<div class="font-weight-bold f-16">
+						P: {Math.round(weather[currentPage].precipitation)}mm
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="buttons">
-			<button class="btn btn-sm" on:click={() => moveBackwards()}
-				><i class="fa-solid fa-chevron-left"></i></button
+		<div class="d-flex align-items-center">
+			<button
+				class="btn btn-sm"
+				on:click={() => moveBackwards()}
+				aria-label="1 Hour Back"
+				class:disabled={currentPage == 0}><i class="fa-solid fa-chevron-left"></i></button
 			>
-			<button class="btn btn-sm" on:click={() => moveForward()}
-				><i class="fa-solid fa-chevron-right"></i></button
+			<button
+				class="btn btn-sm"
+				on:click={() => moveForward()}
+				aria-label="1 Hour Forward"
+				class:disabled={currentPage == 23}><i class="fa-solid fa-chevron-right"></i></button
 			>
 		</div>
 	</div>

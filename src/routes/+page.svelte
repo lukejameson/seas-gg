@@ -4,9 +4,11 @@
 	import { format } from 'date-fns';
 	import { addDays } from 'date-fns/addDays';
 	import { subDays } from 'date-fns/subDays';
-	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import Tides from '$lib/components/+Tides.svelte';
 	import Weather from '$lib/components/+Weather.svelte';
+	import '@fortawesome/fontawesome-free/css/all.min.css';
+	import '@fortawesome/fontawesome-pro/css/all.min.css';
+	import TideChart from '$lib/components/+TideChart.svelte';
 
 	export let data;
 	$: tide = data.tide;
@@ -14,20 +16,16 @@
 	const currentDate = new Date();
 	let selectedDate = new Date();
 
-	function handleYesterdayClick() {
-		selectedDate = subDays(selectedDate, 1);
+	/**
+	 * Takes in a number then applies that to the date
+	 * @param {number} operator
+	 */
+	function onDateNavigationClicked(operator) {
+		if (operator == 0) {
+			selectedDate = new Date();
+		}
 
-		loadData(selectedDate);
-	}
-
-	function handleTodayClick() {
-		selectedDate = new Date();
-
-		loadData(selectedDate);
-	}
-
-	function handleTomorrowClick() {
-		selectedDate = addDays(selectedDate, 1);
+		selectedDate = addDays(selectedDate, operator);
 
 		loadData(selectedDate);
 	}
@@ -39,6 +37,20 @@
 		if (!date) return false;
 
 		if (format(selectedDate, 'yyyy-MM-dd') == format(date, 'yyyy-MM-dd')) return true;
+	}
+
+	/**
+	 *
+	 * @returns {boolean}
+	 */
+	function isYesterdayDisabled() {
+		console.log(selectedDate)
+
+
+		if (format(selectedDate, 'yyyy-MM-dd') == format(new Date(), 'yyyy-MM-dd')) return true;
+
+
+		return false;
 	}
 
 	/** @param {Date} date */
@@ -76,31 +88,32 @@
 				type="button"
 				class="btn"
 				aria-label="Yesterday"
-				on:click={() => handleYesterdayClick()}
+				on:click={() => onDateNavigationClicked(-1)}
 				class:btn-selected={isButtonSelected(subDays(currentDate, 1))}
+				disabled={isYesterdayDisabled()}
 				><i class="fa-solid fa-chevron-left"></i></button
 			>
 			<button
 				type="button"
 				class="btn"
 				aria-label="Today"
-				on:click={() => handleTodayClick()}
+				on:click={() => onDateNavigationClicked(0)}
 				class:btn-selected={isButtonSelected(currentDate)}
-				disabled={isButtonSelected(currentDate)}><i class="fa-solid fa-calendar-day"></i></button
+				disabled={format(currentDate, "yyyy-MM-dd") == format(selectedDate, "yyyy-MM-dd")}><i class="fa-solid fa-calendar-day"></i></button
 			>
 			<button
 				type="button"
 				class="btn"
 				aria-label="Tomorrow"
-				on:click={() => handleTomorrowClick()}
+				on:click={() => onDateNavigationClicked(1)}
 				class:btn-selected={isButtonSelected(addDays(currentDate, 1))}
 				><i class="fa-solid fa-chevron-right"></i></button
 			>
 		</div>
 	</div>
 
-	<div class="card-container">
-		<div class="top-card-container">
+	<div class="d-flex flex-wrap pt-2">
+		<div class="d-flex flex-wrap flex-gap-2">
 			<div class="card-item">
 				<Tides tide={tide.basicTides}></Tides>
 			</div>
@@ -109,23 +122,10 @@
 				<Weather weather={data.weather}></Weather>
 			</div>
 		</div>
+
+		<TideChart hourlyTides={tide.hourlyTides}></TideChart>
 	</div>
 </div>
 
 <style>
-	.card-container {
-		padding-top: 0.75rem;
-	}
-	.top-card-container {
-		display: flex;
-		flex-direction: row;
-		align-items: stretch;
-		width: 100%;
-		gap: 0.5rem;
-		flex: 1;
-	}
-
-	.card-item {
-		width: 50%;
-	}
 </style>

@@ -78,7 +78,7 @@ class HtmlParser {
 				tables.push({
 					typeof: null,
 					time: timeCell?.textContent?.trim() || '',
-					height: parseInt(height ? height : '0') || 0
+					height: parseFloat(height ? height : '0') || 0
 				});
 			});
 		});
