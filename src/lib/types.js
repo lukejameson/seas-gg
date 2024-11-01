@@ -1,6 +1,19 @@
 // src/lib/types.js
 
 /**
+ * @typedef {Object} WeeklyTides
+ * @property {Date} startOfWeekDate
+ * @property {Date} endOfWeekDate
+ * @property {TideRecord[]} tideRecords
+ */
+
+/**
+ * @typedef {Object} TideRecord
+ * @property {Date} date
+ * @property {TideData[]} tideData
+ */
+
+/**
  * @typedef {Object} TideData
  * @property {string|null} typeof;
  * @property {string} time;

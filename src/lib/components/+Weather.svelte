@@ -119,7 +119,7 @@
 	}
 </script>
 
-<div class="card">
+<div class="card h-100">
 	<div class="d-flex flex-fill justify-content-between">
 		<div class="d-flex align-items-center flex-wrap flex-gap-2">
 			{#if getWeatherCode(weather[currentPage].weather_code)[1]}

@@ -1,5 +1,5 @@
 <script>
-	import { Chart } from 'chart.js/auto';
+	import { Chart, Legend } from 'chart.js/auto';
 	import { onMount } from 'svelte';
 
 	/**
@@ -39,16 +39,22 @@
 			responsive: true,
 			plugins: {
 				title: {
-					display: true,
-					text: 'Tidal Range'
+					display: false
 				},
 				legend: {
-					position: 'top'
+					display: false
 				}
 			},
 			scales: {
 				y: {
-					beginAtZero: true
+					grid: {
+						display: false
+					}
+				},
+				x: {
+					grid: {
+						display: false
+					}
 				}
 			}
 		}
@@ -76,8 +82,18 @@
 </script>
 
 <div class="card">
-	<canvas bind:this={canvas}></canvas>
+	<div class="col">
+		<div class="row flex-fill justify-content-end pb-2">
+			<button type="btn" class="btn">Week</button>
+		</div>
+		<div class="row">
+			<canvas bind:this={canvas}></canvas>
+		</div>
+	</div>
 </div>
 
 <style>
+	.btn {
+		width: 100px;
+	}
 </style>

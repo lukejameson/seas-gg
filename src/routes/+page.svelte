@@ -44,11 +44,9 @@
 	 * @returns {boolean}
 	 */
 	function isYesterdayDisabled() {
-		console.log(selectedDate)
-
+		console.log(selectedDate);
 
 		if (format(selectedDate, 'yyyy-MM-dd') == format(new Date(), 'yyyy-MM-dd')) return true;
-
 
 		return false;
 	}
@@ -90,8 +88,7 @@
 				aria-label="Yesterday"
 				on:click={() => onDateNavigationClicked(-1)}
 				class:btn-selected={isButtonSelected(subDays(currentDate, 1))}
-				disabled={isYesterdayDisabled()}
-				><i class="fa-solid fa-chevron-left"></i></button
+				disabled={isYesterdayDisabled()}><i class="fa-solid fa-chevron-left"></i></button
 			>
 			<button
 				type="button"
@@ -99,7 +96,8 @@
 				aria-label="Today"
 				on:click={() => onDateNavigationClicked(0)}
 				class:btn-selected={isButtonSelected(currentDate)}
-				disabled={format(currentDate, "yyyy-MM-dd") == format(selectedDate, "yyyy-MM-dd")}><i class="fa-solid fa-calendar-day"></i></button
+				disabled={format(currentDate, 'yyyy-MM-dd') == format(selectedDate, 'yyyy-MM-dd')}
+				><i class="fa-solid fa-calendar-day"></i></button
 			>
 			<button
 				type="button"
@@ -112,18 +110,22 @@
 		</div>
 	</div>
 
-	<div class="d-flex flex-wrap pt-2">
-		<div class="d-flex flex-wrap flex-gap-2">
-			<div class="card-item">
-				<Tides tide={tide.basicTides}></Tides>
+	<div class="container">
+		<div class="col pb-2">
+			<div class="row gap-2 pb-1">
+				<div class="col">
+					<Tides tide={tide.basicTides}></Tides>
+				</div>
+
+				<div class="col">
+					<Weather weather={data.weather}></Weather>
+				</div>
 			</div>
 
-			<div class="card-item">
-				<Weather weather={data.weather}></Weather>
+			<div class="row gap-2">
+				<TideChart hourlyTides={tide.hourlyTides}></TideChart>
 			</div>
 		</div>
-
-		<TideChart hourlyTides={tide.hourlyTides}></TideChart>
 	</div>
 </div>
 

@@ -43,6 +43,11 @@ class SupabaseWorker {
 
 		return data.data;
 	}
+
+
+	async storeWeeklyTides(data) {
+		
+	}
 }
 
 export const supabaseWorker = new SupabaseWorker();
