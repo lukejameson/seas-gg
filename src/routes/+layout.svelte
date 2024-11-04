@@ -4,8 +4,9 @@
 	import { browser } from '$app/environment';
 	import { initBootstrap } from '$lib/bootstrap';
 	import img from '$lib/images/favicon.svg';
-	import '$lib/styles/global.css';
+
 	import '$lib/styles/layout.css';
+	import 'bootstrap/dist/css/bootstrap.min.css';
 	import '../app.css';
 
 	onMount(() => {

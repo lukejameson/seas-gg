@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
-	import '$lib/styles/card.css';
-	import '$lib/styles/global.css';
+
+	import '../../app.css';
 	import { format } from 'date-fns';
 
 	/**@type {HourlyWeather[]}*/

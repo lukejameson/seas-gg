@@ -5,7 +5,7 @@
 	import Tides from '$lib/components/+Tides.svelte';
 	import Weather from '$lib/components/+Weather.svelte';
 	import TideChartParent from '$lib/components/tide-charts/+TideChartParent.svelte';
-	import '$lib/styles/global.css';
+
 	import '$lib/styles/tides.css';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import '@fortawesome/fontawesome-pro/css/all.min.css';

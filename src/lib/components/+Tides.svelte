@@ -1,8 +1,5 @@
 <!-- Tides.svelte -->
 <script>
-	import '$lib/styles/card.css';
-	import '$lib/styles/global.css';
-
 	/** @type {Array<TideData>} */
 	export let tide;
 </script>

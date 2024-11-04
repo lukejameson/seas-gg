@@ -12,5 +12,8 @@ export default defineConfig({
 	server: {
 		host: '0.0.0.0', // This allows external connections
 		port: 3000 // Default port, you can change it
+	},
+	css: {
+		devSourcemap: false
 	}
 });
