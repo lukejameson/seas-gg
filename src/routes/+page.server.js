@@ -1,25 +1,45 @@
-import { format } from 'date-fns';
+import { redirect } from '@sveltejs/kit';
+import { addDays, format, isValid } from 'date-fns';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ fetch, url }) {
 	const date = url.searchParams.get('date') || format(new Date(), 'yyyy-MM-dd');
+	const parsedDate = new Date(date);
+
+	// Validate date and redirect if necessary
+	if (!isValid(parsedDate)) {
+		throw redirect(303, `/?date=${format(new Date(), 'yyyy-MM-dd')}`);
+	}
+
+	const maxDate = addDays(new Date(), 5);
+	const selectedDatePlusOne = addDays(parsedDate, 1);
+
+	if (selectedDatePlusOne > maxDate) {
+		throw redirect(303, `/?date=${format(new Date(), 'yyyy-MM-dd')}`);
+	}
 
 	try {
-		const [tideResponse, weatherResponse] = await Promise.all([
+		const [tideResponse, weatherResponse, weeklyTideResponse] = await Promise.all([
 			fetch(`/tides?date=${date}`),
-			fetch(`/weather?date=${date}`)
+			fetch(`/weather?date=${date}`),
+			fetch(`/tides/weekly?date=${date}`)
 		]);
 
-		if (!tideResponse.ok || !weatherResponse.ok) {
+		if (!tideResponse.ok || !weatherResponse.ok || !weeklyTideResponse.ok) {
 			throw new Error('One or more API requests failed');
 		}
 
-		const [tide, weather] = await Promise.all([tideResponse.json(), weatherResponse.json()]);
+		const [tide, weeklyTides, weather] = await Promise.all([
+			tideResponse.json(),
+			weeklyTideResponse.json(),
+			weatherResponse.json()
+		]);
 
 		return {
-			tide,
-			weather,
-			date
+			tide: tide,
+			weeklyTides: weeklyTides,
+			weather: weather,
+			date: date
 		};
 	} catch (error) {
 		console.error('Failed to fetch data:', error);
@@ -27,8 +47,55 @@ export async function load({ fetch, url }) {
 		return {
 			tide: null,
 			weather: null,
+			weeklyTides: null,
 			date,
 			error: 'Failed to load data'
 		};
+	}
+}
+
+/** @type {import('./$types').Actions} */
+export const actions = {
+	getWeeklyTides: async ({ request, fetch }) => {
+		const formData = await request.formData();
+		const date = formData.get('date');
+
+		try {
+			const response = await fetch(`/tides/weekly?date=${date}`);
+
+			if (!response.ok) {
+				throw new Error('Failed to fetch weekly tides');
+			}
+
+			const weeklyTides = await response.json();
+
+			return {
+				type: 'success',
+				data: weeklyTides
+			};
+		} catch (error) {
+			console.error('Action failed:', error);
+			return {
+				type: 'error',
+				error: 'Failed to load weekly tides'
+			};
+		}
+	}
+};
+
+/**
+ * @param {Date} date
+ */
+
+async function dateGuard(date) {
+	const maxDate = addDays(new Date(), 5);
+	const selectedDatePlusOne = addDays(date, 1);
+
+	if (selectedDatePlusOne > maxDate) {
+		try {
+			throw redirect(303, `/date=${format(new Date(), 'yyyy-MM-dd')}`);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 }

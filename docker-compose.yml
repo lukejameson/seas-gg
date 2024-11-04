@@ -1,0 +1,26 @@
+services:
+  sveltekit-app:
+    build:
+      context: .
+      args:
+        - FONTAWESOME_TOKEN=${FONTAWESOME_TOKEN}
+        - SUPABASE_URL=${SUPABASE_URL}
+        - SUPABASE_KEY=${SUPABASE_KEY}
+        - TIDE_URL=${TIDE_URL}
+    container_name: guernseytides-app
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - TIDE_URL=${TIDE_URL}
+    restart: unless-stopped
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.sveltekit.rule=Host(`app.localhost`)' # We'll change this to your domain later
+      - 'traefik.http.routers.sveltekit.entrypoints=web'
+      - 'traefik.http.services.sveltekit.loadbalancer.server.port=3000'
+    networks:
+      - web
+
+networks:
+  web:
+    external: true

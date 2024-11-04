@@ -1,5 +1,6 @@
 import { env } from '$env/dynamic/private';
 import { createClient } from '@supabase/supabase-js';
+import { format } from 'date-fns';
 
 if (!env.SUPABASE_URL || !env.SUPABASE_KEY) {
 	throw new Error('Supabase config not provided');
@@ -44,9 +45,47 @@ class SupabaseWorker {
 		return data.data;
 	}
 
+	/**
+	 *
+	 * @param {WeeklyTides} data
+	 */
 
 	async storeWeeklyTides(data) {
-		
+		const { error } = await supabase.from('weekly_tides').upsert(
+			{
+				id: data.id,
+				startofweekdate: data.startofweekdate,
+				endofweekdate: data.startofweekdate,
+				data: data.data
+			},
+			{
+				onConflict: 'startofweekdate'
+			}
+		);
+
+		if (error) throw error;
+	}
+
+	/**
+	 *
+	 * @param {Date} startOfWeekDate
+	 * @param {Date} endOfWeekDate
+	 * @returns {Promise<Tide|null>}
+	 */
+	async getWeeksTideRecords(startOfWeekDate, endOfWeekDate) {
+		const formattedStart = format(startOfWeekDate, 'yyyy-MM-dd');
+		const formattedEnd = format(endOfWeekDate, 'yyyy-MM-dd');
+
+		const { data, error } = await supabase
+			.from('weekly_tides')
+			.select('*')
+			.eq('startofweekdate', formattedStart)
+			.eq('endofweekdate', formattedEnd)
+			.single();
+
+		if (error) return null;
+
+		return data;
 	}
 }
 

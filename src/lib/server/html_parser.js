@@ -20,6 +20,36 @@ class HtmlParser {
 	/**
 	 *
 	 * @param {string} html
+	 * @returns {VerboseTideData[]|null}
+	 */
+	getVerboseBasicTidesTable(html) {
+		if (!html) {
+			return null;
+		}
+
+		const parsedHtml = this.parseHtml(html).documentElement;
+
+		/**
+		 * @typeof {VerboseTideData[]}
+		 */
+		const tidesTable = [...parsedHtml.querySelectorAll('div.float-left:nth-child(3) > table tr')]
+			.slice(1)
+			.map((tr) => {
+				const [name, time, height] = [...tr.querySelectorAll('td')];
+
+				return {
+					typeof: name?.textContent?.trim() || '',
+					time: `${time?.textContent?.trim() || ''}`,
+					height: `${height?.textContent?.trim() || ''}`
+				};
+			});
+
+		return tidesTable;
+	}
+
+	/**
+	 *
+	 * @param {string} html
 	 * @returns {TideData[]|null}
 	 */
 	getBasicTidesTable(html) {
@@ -30,7 +60,7 @@ class HtmlParser {
 		const parsedHtml = this.parseHtml(html).documentElement;
 
 		/**
-		 * @typeof {TideData}
+		 * @typeof {TideData[]}
 		 */
 		const tidesTable = [...parsedHtml.querySelectorAll('div.float-left:nth-child(3) > table tr')]
 			.slice(1)
@@ -38,7 +68,6 @@ class HtmlParser {
 				const [name, time, height] = [...tr.querySelectorAll('td')];
 
 				return {
-					typeof: name?.textContent?.trim() || '',
 					time: `${time?.textContent?.trim() || ''}`,
 					height: `${height?.textContent?.trim() || ''}`
 				};
@@ -76,7 +105,6 @@ class HtmlParser {
 				const height = heightCell?.querySelector('div')?.textContent?.trim();
 
 				tables.push({
-					typeof: null,
 					time: timeCell?.textContent?.trim() || '',
 					height: parseFloat(height ? height : '0') || 0
 				});

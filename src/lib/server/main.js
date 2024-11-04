@@ -3,6 +3,7 @@ import { htmlParser } from './html_parser';
 import { supabaseWorker } from './supabase';
 import { tideSequence } from './tide_sequence';
 import { tideScraper } from './tides-scraper';
+import { faGameConsoleHandheldCrank } from '@fortawesome/pro-solid-svg-icons';
 
 /**
  *
@@ -19,7 +20,7 @@ class Main {
 	 */
 	async processTideData(date) {
 		const rawTideHtml = await tideScraper.scrapeTidesForDate(date);
-		const basicTides = htmlParser.getBasicTidesTable(rawTideHtml);
+		const basicTides = htmlParser.getVerboseBasicTidesTable(rawTideHtml);
 		const hourlyTides = htmlParser.getHourlyTides(rawTideHtml);
 		const dailyExtremes = tideSequence.processTideData(hourlyTides);
 
@@ -58,6 +59,50 @@ class Main {
 		}
 
 		return null;
+	}
+
+	/**
+	 *
+	 * @param {Date} date - Any date of the week
+	 */
+	async getTidesForWeek(date) {
+		const { start, end } = tideScraper.getDateRangeForWeek(date);
+
+		const records = await supabaseWorker.getWeeksTideRecords(start, end);
+
+		if (!records) {
+			const tideData = await tideScraper.scrapeTidesForWeek(date);
+
+			/**@type {TideRecord[]} */
+			let tideRecords = [];
+
+			tideData.forEach((tideData) => {
+				tideRecords.push({
+					date: tideData.date,
+					tideData: htmlParser.getBasicTidesTable(tideData.tide)
+				});
+			});
+
+			try {
+				/**
+				 * @type {WeeklyTides}
+				 */
+				const wholeWeek = {
+					id: crypto.randomUUID(),
+					startOfWeekDate: tideRecords[0].date,
+					endOfWeekDate: tideRecords[6].date,
+					data: tideRecords
+				};
+
+				await supabaseWorker.storeWeeklyTides(wholeWeek);
+			} catch (error) {
+				console.error(error);
+			}
+
+			return await supabaseWorker.getWeeksTideRecords(tideRecords[0].date, tideRecords[6].date);
+		}
+
+		return records;
 	}
 
 	/**

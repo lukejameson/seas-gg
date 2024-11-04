@@ -2,19 +2,26 @@
 
 /**
  * @typedef {Object} WeeklyTides
- * @property {Date} startOfWeekDate
- * @property {Date} endOfWeekDate
- * @property {TideRecord[]} tideRecords
+ * @property {string} id
+ * @property {Date} startofweekdate
+ * @property {Date} endofweekdate
+ * @property {TideRecord[]} data
  */
 
 /**
  * @typedef {Object} TideRecord
  * @property {Date} date
- * @property {TideData[]} tideData
+ * @property {TideData[]|null} tideData
  */
 
 /**
  * @typedef {Object} TideData
+ * @property {string} time;
+ * @property {number} height;
+ */
+
+/**
+ * @typedef {Object} VerboseTideData
  * @property {string|null} typeof;
  * @property {string} time;
  * @property {number} height;
@@ -36,7 +43,7 @@
  * @typedef {Object} Tide
  * @property {string} id
  * @property {string} date
- * @property {TideData[]|null} basicTides
+ * @property {VerboseTideData[]|null} basicTides
  * @property {TideData[]|null} hourlyTides
  * @property {DailyExtremes[]|null} dailyExtremes
  */

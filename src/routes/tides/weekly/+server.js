@@ -2,10 +2,7 @@
  * GET Handler for tides
  * @param {import('@sveltejs/kit').RequestEvent} event
  */
-import { goto } from '$app/navigation';
 import { main } from '$lib/server/main';
-import { redirect } from '@sveltejs/kit';
-import { addDays, format } from 'date-fns';
 
 /**
  *
@@ -22,7 +19,7 @@ export async function GET({ url }) {
 	}
 
 	try {
-		const tide = await main.getTideForDate(date);
+		const tide = await main.getTidesForWeek(date);
 
 		if (!tide) {
 			return new Response(JSON.stringify({ error: 'Not found' }), {

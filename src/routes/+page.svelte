@@ -1,20 +1,25 @@
 <script>
-	import '$lib/styles/tides.css';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import Pools from '$lib/components/+Pools.svelte';
+	import Tides from '$lib/components/+Tides.svelte';
+	import Weather from '$lib/components/+Weather.svelte';
+	import TideChartParent from '$lib/components/tide-charts/+TideChartParent.svelte';
 	import '$lib/styles/global.css';
+	import '$lib/styles/tides.css';
+	import '@fortawesome/fontawesome-free/css/all.min.css';
+	import '@fortawesome/fontawesome-pro/css/all.min.css';
 	import { format } from 'date-fns';
 	import { addDays } from 'date-fns/addDays';
 	import { subDays } from 'date-fns/subDays';
-	import Tides from '$lib/components/+Tides.svelte';
-	import Weather from '$lib/components/+Weather.svelte';
-	import '@fortawesome/fontawesome-free/css/all.min.css';
-	import '@fortawesome/fontawesome-pro/css/all.min.css';
-	import TideChart from '$lib/components/+TideChart.svelte';
 
-	export let data;
-	$: tide = data.tide;
+	$: tide = $page.data.tide;
+	$: weeklyTides = $page.data.weeklyTides;
+	$: weather = $page.data.weather;
+	$: date = $page.data.date;
 
 	const currentDate = new Date();
-	let selectedDate = new Date();
+	let selectedDate = $page.data.date;
 
 	/**
 	 * Takes in a number then applies that to the date
@@ -44,86 +49,116 @@
 	 * @returns {boolean}
 	 */
 	function isYesterdayDisabled() {
-		console.log(selectedDate);
-
 		if (format(selectedDate, 'yyyy-MM-dd') == format(new Date(), 'yyyy-MM-dd')) return true;
+
+		return false;
+	}
+
+	/**
+	 * @returns {boolean}
+	 */
+
+	function isTomorrowDisabled() {
+		const maxDate = addDays(new Date(), 4);
+		const selectedDatePlusOne = addDays(selectedDate, 1);
+
+		if (selectedDatePlusOne > maxDate) return true;
 
 		return false;
 	}
 
 	/** @param {Date} date */
 	async function loadData(date) {
-		const formattedDate = format(date, 'yyyy-MM-dd');
+		// First, update selectedDate
+		selectedDate = date; // Make sure this updates first
 
-		const [tideResponse, weatherResponse] = await Promise.all([
-			fetch(`/tides?date=${formattedDate}`),
-			fetch(`/weather?date=${formattedDate}`)
-		]);
+		const formattedDate = format(selectedDate, 'yyyy-MM-dd');
 
-		if (!tideResponse.ok || !weatherResponse.ok) {
-		}
-
-		const [tide, weather] = await Promise.all([tideResponse.json(), weatherResponse.json()]);
-
-		data = {
-			tide: tide,
-			weather: weather,
-			date: formattedDate
-		};
+		// Then navigate with the new date
+		await goto(`?date=${formattedDate}`, {
+			replaceState: true
+		});
 	}
 </script>
 
 <div class="content">
 	<div class="container-header">
-		{#if data}
-			<div class="date-title">
-				<h3>{data.date}</h3>
+		{#if date}
+			<div class="pl-2">
+				<h3 class="font-weight-bold">{date}</h3>
 			</div>
 		{/if}
 
-		<div class="button-group">
-			<button
-				type="button"
-				class="btn"
-				aria-label="Yesterday"
-				on:click={() => onDateNavigationClicked(-1)}
-				class:btn-selected={isButtonSelected(subDays(currentDate, 1))}
-				disabled={isYesterdayDisabled()}><i class="fa-solid fa-chevron-left"></i></button
+		<div class="d-flex gap-1">
+			<div
+				data-toggle="tooltip"
+				data-placement="top"
+				title={isYesterdayDisabled() ? 'Cannot go back before today' : 'Previous Day'}
 			>
-			<button
-				type="button"
-				class="btn"
-				aria-label="Today"
-				on:click={() => onDateNavigationClicked(0)}
-				class:btn-selected={isButtonSelected(currentDate)}
-				disabled={format(currentDate, 'yyyy-MM-dd') == format(selectedDate, 'yyyy-MM-dd')}
-				><i class="fa-solid fa-calendar-day"></i></button
+				<button
+					type="button"
+					class="btn"
+					aria-label="-1 Day"
+					on:click={() => onDateNavigationClicked(-1)}
+					class:btn-selected={isButtonSelected(subDays(currentDate, 1))}
+					disabled={isYesterdayDisabled()}><i class="fa-solid fa-chevron-left"></i></button
+				>
+			</div>
+
+			<div
+				data-toggle="tooltip"
+				data-placement="top"
+				title={format(currentDate, 'yyyy-MM-dd') == format(selectedDate, 'yyyy-MM-dd')
+					? 'Today already selected'
+					: 'Today'}
 			>
-			<button
-				type="button"
-				class="btn"
-				aria-label="Tomorrow"
-				on:click={() => onDateNavigationClicked(1)}
-				class:btn-selected={isButtonSelected(addDays(currentDate, 1))}
-				><i class="fa-solid fa-chevron-right"></i></button
+				<button
+					type="button"
+					class="btn"
+					aria-label="Today"
+					on:click={() => onDateNavigationClicked(0)}
+					class:btn-selected={isButtonSelected(currentDate)}
+					disabled={format(currentDate, 'yyyy-MM-dd') == format(selectedDate, 'yyyy-MM-dd')}
+					><i class="fa-solid fa-calendar-day"></i></button
+				>
+			</div>
+
+			<div
+				data-toggle="tooltip"
+				data-placement="top"
+				title={isTomorrowDisabled() ? 'Cannot go ahead more than 5 days' : 'Next Day'}
 			>
+				<button
+					type="button"
+					class="btn"
+					aria-label="Tomorrow"
+					on:click={() => onDateNavigationClicked(1)}
+					disabled={isTomorrowDisabled()}
+					class:btn-selected={isButtonSelected(addDays(currentDate, 1))}
+					><i class="fa-solid fa-chevron-right"></i></button
+				>
+			</div>
 		</div>
 	</div>
 
 	<div class="container">
-		<div class="col pb-2">
-			<div class="row gap-2 pb-1">
-				<div class="col">
+		<div class="col gap-2">
+			<div class="row pb-2 gap-2">
+				<div class="col p-0">
 					<Tides tide={tide.basicTides}></Tides>
 				</div>
 
-				<div class="col">
-					<Weather weather={data.weather}></Weather>
+				<div class="col p-0">
+					<Weather {weather}></Weather>
 				</div>
 			</div>
 
+			<div class="row gap-2 pb-2">
+				<Pools tides={tide.hourlyTides}></Pools>
+			</div>
+
 			<div class="row gap-2">
-				<TideChart hourlyTides={tide.hourlyTides}></TideChart>
+				<TideChartParent hourlyTides={tide.hourlyTides} {weeklyTides}></TideChartParent>
 			</div>
 		</div>
 	</div>
