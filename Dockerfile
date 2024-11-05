@@ -9,7 +9,6 @@ COPY .npmrc ./
 
 # Build arguments
 ARG FONTAWESOME_TOKEN
-
 ARG SUPABASE_URL
 ARG SUPABASE_KEY
 ARG TIDE_URL
@@ -35,7 +34,6 @@ COPY .npmrc ./
 # Need to pass the arg again for this stage
 ARG FONTAWESOME_TOKEN
 RUN npm install --omit=dev && rm -f .npmrc
-
 
 EXPOSE 3000
 CMD ["node", "build"]
