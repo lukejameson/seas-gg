@@ -17,6 +17,7 @@
 	$: weeklyTides = $page.data.weeklyTides;
 	$: weather = $page.data.weather;
 	$: date = $page.data.date;
+	$: dailyStaticUrl = $page.data.dailyStaticUrl
 
 	const currentDate = new Date();
 	let selectedDate = $page.data.date;
@@ -158,7 +159,7 @@
 			</div>
 
 			<div class="row gap-2">
-				<TideChartParent hourlyTides={tide.hourlyTides} {weeklyTides}></TideChartParent>
+				<TideChartParent hourlyTides={tide.hourlyTides} weeklyTides={tide.weeklyTides} dailyStaticUrl={dailyStaticUrl}></TideChartParent>
 			</div>
 		</div>
 	</div>

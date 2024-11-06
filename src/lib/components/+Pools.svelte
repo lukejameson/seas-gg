@@ -22,17 +22,17 @@
 	 */
 
 	/**@type {Period[]|null}*/
-	let mainPoolsTimes;
-	/**@type {Period[]|null}*/
 	let ladiesPoolTimes;
 	/**@type {Period[]|null}*/
 	let gentsPoolsTimes;
+	/**@type {Period[]|null}*/
+	let kidsPoolsTimes;
 
 	$: {
 		if (tides) {
-			mainPoolsTimes = getTideTimeMinAndMaxForHeight(6, '06:00', '18:00');
-			ladiesPoolTimes = getTideTimeMinAndMaxForHeight(7, '06:00', '18:00');
-			gentsPoolsTimes = getTideTimeMinAndMaxForHeight(5, '06:00', '18:00');
+			gentsPoolsTimes = getTideTimeMinAndMaxForHeight(5, '06:00', '18:00'); // First Pool;
+			ladiesPoolTimes = getTideTimeMinAndMaxForHeight(6, '06:00', '18:00'); // Main Big Pool;
+			kidsPoolsTimes = getTideTimeMinAndMaxForHeight(7, '06:00', '18:00'); // Side Pool next to big pool;
 		}
 	}
 
@@ -128,23 +128,7 @@
 	<div class="card-body p-2">
 		<div class="row g-3">
 			<div class="col">
-				<h6 class="mb-2">Main Pool</h6>
-				{#if !mainPoolsTimes}
-					<small class="text-muted">
-						<i class="fas fa-exclamation-circle"></i> No times available
-					</small>
-				{:else}
-					{#each mainPoolsTimes as window}
-						<div class="mb-1">
-							<i class="far fa-clock me-1"></i>
-							<small>{window.start} - {window.end}</small>
-						</div>
-					{/each}
-				{/if}
-			</div>
-
-			<div class="col">
-				<h6 class="mb-2">Ladies Pool</h6>
+				<h6 class="mb-2">Ladies Pool <i class="fa-solid fa-circle-info fa-sm" title="Large Pool"></i></h6>
 				{#if !ladiesPoolTimes}
 					<small class="text-muted">
 						<i class="fas fa-exclamation-circle"></i> No times available
@@ -160,13 +144,29 @@
 			</div>
 
 			<div class="col">
-				<h6 class="mb-2">Gents Pool</h6>
+				<h6 class="mb-2">Gents Pool <i class="fa-solid fa-circle-info fa-sm" title="Pool next to Ladies Pool"></i></h6>
 				{#if !gentsPoolsTimes}
 					<small class="text-muted">
 						<i class="fas fa-exclamation-circle"></i> No times available
 					</small>
 				{:else}
 					{#each gentsPoolsTimes as window}
+						<div class="mb-1">
+							<i class="far fa-clock me-1"></i>
+							<small>{window.start} - {window.end}</small>
+						</div>
+					{/each}
+				{/if}
+			</div>
+
+			<div class="col">
+				<h6 class="mb-2">Kids Pool <i class="fa-solid fa-circle-info fa-sm" title="First pool"></i></h6>
+				{#if !kidsPoolsTimes}
+					<small class="text-muted">
+						<i class="fas fa-exclamation-circle"></i> No times available
+					</small>
+				{:else}
+					{#each kidsPoolsTimes as window}
 						<div class="mb-1">
 							<i class="far fa-clock me-1"></i>
 							<small>{window.start} - {window.end}</small>

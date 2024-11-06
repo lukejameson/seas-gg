@@ -5,38 +5,11 @@
 	import WeeklyTideChart from './+WeeklyTideChart.svelte';
 	import DailyTideChart from './+DailyTideChart.svelte';
 
-	/** @type {TideData[]} */
-	export let hourlyTides;
-	/** @type {WeeklyTides} */
-	export let weeklyTides;
+	/**@type {{hourlyTides: TideData[], weeklyTides: WeeklyTides, dailyStaticUrl: string}}*/
+	let props = $props();
 
-	/**
-	 * @param {Date} date
-	 */
-	async function fetchWeeklyTides(date) {
-		const formattedDate = format(date, 'yyyy-MM-dd');
-
-		// Use SvelteKit's pushState instead of window.history
-		await pushState('', { date: formattedDate });
-
-		const response = await fetch('?/getWeeklyTides', {
-			method: 'POST',
-			headers: {
-				'x-sveltekit-action': 'true'
-			},
-			body: new URLSearchParams({
-				date: formattedDate
-			})
-		});
-
-		const result = await response.json();
-		if (result.type === 'success') {
-			await invalidateAll();
-		}
-		await applyAction(result);
-	}
 	/** @enum {('day'|'week')} chartType*/
-	let chartType = 'day';
+	let chartType = $state('day');
 
 	function onChartChangeButtonClick() {
 		if (chartType == 'day') {
@@ -50,15 +23,15 @@
 <div class="card p-2">
 	<div class="col">
 		<div class="d-flex flex-fill justify-content-end pb-2">
-			<button type="button" class="btn" on:click={onChartChangeButtonClick}>
+			<button type="button" class="btn" onclick={onChartChangeButtonClick}>
 				<span>{chartType == 'day' ? 'Week' : 'Day'}</span>
 			</button>
 		</div>
 		<div class="row px-3">
 			{#if chartType == 'day'}
-				<DailyTideChart {hourlyTides}></DailyTideChart>
+				<DailyTideChart hourlyTides={props.hourlyTides} dailyStaticUrl={props.dailyStaticUrl}></DailyTideChart>
 			{:else if chartType == 'week'}
-				<WeeklyTideChart {weeklyTides}></WeeklyTideChart>
+				<WeeklyTideChart weeklyTides={props.weeklyTides}></WeeklyTideChart>
 			{/if}
 		</div>
 	</div>
