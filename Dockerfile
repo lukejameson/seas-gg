@@ -37,5 +37,5 @@ ARG FONTAWESOME_TOKEN
 RUN npm install --omit=dev && rm -f .npmrc
 
 
-EXPOSE 3000
+EXPOSE 5000
 CMD ["node", "build"]
