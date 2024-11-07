@@ -7,7 +7,7 @@ services:
         - SUPABASE_URL=${SUPABASE_URL}
         - SUPABASE_KEY=${SUPABASE_KEY}
         - TIDE_URL=${TIDE_URL}
-    container_name: guernseytides-app
+    container_name: guernseytides
     environment:
       - SUPABASE_URL=${SUPABASE_URL}
       - SUPABASE_KEY=${SUPABASE_KEY}
