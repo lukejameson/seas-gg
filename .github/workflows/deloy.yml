@@ -30,6 +30,6 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /path/to/your/app
+            cd /opt/guernseytides-app
             docker compose pull
             docker compose up -d
