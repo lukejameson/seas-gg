@@ -22,6 +22,8 @@ jobs:
         with:
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
+          build-args: |
+            FONTAWESOME_TOKEN=${{ secrets.FONTAWESOME_TOKEN }}
       
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
