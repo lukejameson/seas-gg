@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions: 
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v3
       
@@ -22,7 +25,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: ghcr.io/${{ github.repository_owner }}/guernseytides:latest
           build-args: |
             FONTAWESOME_TOKEN=${{ secrets.FONTAWESOME_TOKEN }}
             SUPABASE_URL=${{ secrets.SUPABASE_URL }}
@@ -36,6 +39,13 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /opt/guernseytides-app
-            docker compose pull
-            docker compose up -d
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+            docker pull ghcr.io/${{ github.repository_owner }}/guernseytides:latest
+            docker stop guernseytides || true
+            docker rm guernseytides || true
+            docker run -d \
+              --name guernseytides \
+              -p 3000:3000 \
+              --restart unless-stopped \
+              ghcr.io/${{ github.repository_owner }}/guernseytides:latest
+            docker logout ghcr.io
