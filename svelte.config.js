@@ -10,7 +10,14 @@ const config = {
 			out: 'build',
 			precompress: false,
 			envPrefix: ''
-		})
+		}),
+		paths: {
+			base: '',
+			assets: ''
+		},
+		csrf: {
+			checkOrigin: false
+		}
 	}
 };
 
