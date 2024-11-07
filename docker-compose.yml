@@ -17,7 +17,7 @@ services:
       - 'traefik.enable=true'
       - 'traefik.http.routers.sveltekit.rule=Host(`guernseytides.co.uk`)' # We'll change this to your domain later
       - 'traefik.http.routers.sveltekit.entrypoints=web'
-      - 'traefik.http.services.sveltekit.loadbalancer.server.port=3000'
+      - 'traefik.http.services.sveltekit.loadbalancer.server.port=5000'
     networks:
       - web
 
