@@ -8,6 +8,9 @@ RUN apk add --no-cache git
 WORKDIR /app
 
 ARG FONTAWESOME_TOKEN
+ARG TIDE_URL
+ARG SUPABASE_URL
+ARG SUPABASE_KEY
 RUN npm config set "@fortawesome:registry" "https://npm.fontawesome.com/" && \
     npm config set "//npm.fontawesome.com/:_authToken" "${FONTAWESOME_TOKEN}"
 
