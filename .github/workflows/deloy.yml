@@ -3,6 +3,7 @@ name: Deploy to VPS
 on:
   push:
     branches: [ master ]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -24,6 +25,9 @@ jobs:
           tags: ghcr.io/${{ github.repository }}:latest
           build-args: |
             FONTAWESOME_TOKEN=${{ secrets.FONTAWESOME_TOKEN }}
+            SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+            SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}
+            TIDE_URL=${{ secrets.TIDE_URL }}
       
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
