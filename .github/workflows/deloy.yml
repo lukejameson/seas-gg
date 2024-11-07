@@ -45,9 +45,14 @@ jobs:
             docker pull ghcr.io/${{ github.repository_owner }}/guernseytides:latest
             docker stop guernseytides || true
             docker rm guernseytides || true
+            # Create docker network if it doesn't exist
+            docker network inspect web >/dev/null 2>&1 || docker network create web
             docker run -d \
               --name guernseytides \
+              --network web \
               -p ${{secrets.APPLICATION_PORT}}:${{secrets.APPLICATION_PORT}} \
               --restart unless-stopped \
               ghcr.io/${{ github.repository_owner }}/guernseytides:latest
             docker logout ghcr.io
+
+            docker image prune -f
