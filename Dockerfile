@@ -7,6 +7,7 @@ WORKDIR /app
 
 # Set build arguments
 ARG FONTAWESOME_TOKEN
+ARG TIDE_URL
 ARG SUPABASE_URL
 ARG SUPABASE_KEY
 ARG PORT=5000
@@ -22,7 +23,7 @@ RUN npm config set "@fortawesome:registry" "https://npm.fontawesome.com/" && \
 COPY package*.json package-lock.json* ./
 
 # Install dependencies
-RUN npm install --verbose
+RUN npm install
 
 # Copy all files
 COPY . .

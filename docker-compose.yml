@@ -20,8 +20,6 @@ services:
       - 'traefik.http.services.sveltekit.loadbalancer.server.port=5000'
     networks:
       - web
-          - ports:
-            - "3000:3000"
 
 networks:
   web:
