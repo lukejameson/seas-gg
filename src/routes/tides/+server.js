@@ -2,10 +2,7 @@
  * GET Handler for tides
  * @param {import('@sveltejs/kit').RequestEvent} event
  */
-import { goto } from '$app/navigation';
 import { main } from '$lib/server/main';
-import { redirect } from '@sveltejs/kit';
-import { addDays, format } from 'date-fns';
 
 /**
  *
