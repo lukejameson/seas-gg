@@ -7,7 +7,7 @@ services:
         - SUPABASE_URL=${SUPABASE_URL}
         - SUPABASE_KEY=${SUPABASE_KEY}
         - TIDE_URL=${TIDE_URL}
-    container_name: guernseytides-app
+    container_name: guernseytides
     environment:
       - SUPABASE_URL=${SUPABASE_URL}
       - SUPABASE_KEY=${SUPABASE_KEY}
@@ -15,9 +15,9 @@ services:
     restart: unless-stopped
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.sveltekit.rule=Host(`app.localhost`)' # We'll change this to your domain later
+      - 'traefik.http.routers.sveltekit.rule=Host(`guernseytides.co.uk`)' # We'll change this to your domain later
       - 'traefik.http.routers.sveltekit.entrypoints=web'
-      - 'traefik.http.services.sveltekit.loadbalancer.server.port=3000'
+      - 'traefik.http.services.sveltekit.loadbalancer.server.port=5000'
     networks:
       - web
           - ports:
