@@ -7,13 +7,25 @@ export default defineConfig({
 		noExternal: ['bootstrap', 'chart.js']
 	},
 	optimizeDeps: {
-		include: ['bootstrap', 'canvas']
+		include: ['bootstrap']
 	},
 	server: {
-		host: '0.0.0.0', // This allows external connections
-		port: 5000 // Default port, you can change it
+		host: '0.0.0.0',
+		port: 5000
 	},
 	css: {
 		devSourcemap: false
+	},
+	build: {
+		rollupOptions: {
+			output: {
+				assetFileNames: 'assets/[name][extname]',
+				chunkFileNames: 'assets/[name]-[hash].js',
+				entryFileNames: 'assets/[name]-[hash].js'
+			}
+		},
+		// Ensure proper MIME types for different file types
+		assetsInlineLimit: 0, // Prevents inlining of small assets
+		sourcemap: false
 	}
 });
