@@ -2,7 +2,7 @@
  * GET Handler for tides
  * @param {import('@sveltejs/kit').RequestEvent} event
  */
-import { main } from '$lib/server/main';
+import { main } from '$lib/server/main.js';
 
 /**
  *
