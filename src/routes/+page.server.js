@@ -35,8 +35,6 @@ export async function load({ fetch, url }) {
 			weatherResponse.json()
 		]);
 
-
-
 		return {
 			tide: tide,
 			weeklyTides: weeklyTides,

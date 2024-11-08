@@ -7,7 +7,7 @@ export default defineConfig({
 		noExternal: ['bootstrap', 'chart.js']
 	},
 	optimizeDeps: {
-		include: ['bootstrap','canvas']
+		include: ['bootstrap', 'canvas']
 	},
 	server: {
 		host: '0.0.0.0', // This allows external connections
