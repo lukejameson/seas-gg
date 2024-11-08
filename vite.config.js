@@ -4,10 +4,10 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	plugins: [sveltekit()],
 	ssr: {
-		noExternal: ['bootstrap']
+		noExternal: ['bootstrap', 'chart.js']
 	},
 	optimizeDeps: {
-		include: ['bootstrap']
+		include: ['bootstrap','canvas']
 	},
 	server: {
 		host: '0.0.0.0', // This allows external connections

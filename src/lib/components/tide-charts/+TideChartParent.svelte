@@ -1,9 +1,6 @@
 <script>
-	import { applyAction } from '$app/forms';
-	import { invalidateAll, pushState } from '$app/navigation';
-	import { format, nextMonday } from 'date-fns';
-	import WeeklyTideChart from './+WeeklyTideChart.svelte';
 	import DailyTideChart from './+DailyTideChart.svelte';
+	import WeeklyTideChart from './+WeeklyTideChart.svelte';
 
 	/**@type {{hourlyTides: TideData[], weeklyTides: WeeklyTides, dailyStaticUrl: string}}*/
 	let props = $props();
@@ -29,7 +26,7 @@
 		</div>
 		<div class="row px-3">
 			{#if chartType == 'day'}
-				<DailyTideChart hourlyTides={props.hourlyTides} dailyStaticUrl={props.dailyStaticUrl}></DailyTideChart>
+				<DailyTideChart hourlyTides={props.hourlyTides}></DailyTideChart>
 			{:else if chartType == 'week'}
 				<WeeklyTideChart weeklyTides={props.weeklyTides}></WeeklyTideChart>
 			{/if}

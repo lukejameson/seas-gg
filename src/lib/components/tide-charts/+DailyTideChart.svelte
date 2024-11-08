@@ -1,10 +1,7 @@
 <script>
-	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { Chart } from 'chart.js/auto';
 	import { format } from 'date-fns';
-	import { onMount } from 'svelte';
-	import { fade } from 'svelte/transition';
 
 	/** @type {{hourlyTides: TideData[], dailyStaticUrl: string}}*/
 	let props = $props();
@@ -86,16 +83,6 @@
 		}
 	}
 
-	onMount(() => {
-		if (browser && props.hourlyTides) {
-			requestAnimationFrame(() => {});
-			chartInstance = new Chart(canvas, config);
-			hasChartLoaded = true;
-		}
-
-		return () => chartInstance.destroy();
-	});
-
 	/**@param {any} node*/
 	function myAction(node) {
 		$effect(() => {
@@ -105,13 +92,5 @@
 	}
 </script>
 
-{#if !hasChartLoaded && props.dailyStaticUrl}
-	<img
-		src={props.dailyStaticUrl}
-		alt="Tide chart"
-		class="absolute inset-0 w-full h-full object-contain"
-		out:fade={{ duration: 300 }}
-	/>
-{/if}
 
 <canvas class="p-0" use:myAction bind:this={canvas}></canvas>

@@ -1,4 +1,3 @@
-import { renderStaticTideChart } from '$lib/server/charts/daily-chart-render';
 import { redirect } from '@sveltejs/kit';
 import { addDays, format, isValid } from 'date-fns';
 
@@ -36,16 +35,13 @@ export async function load({ fetch, url }) {
 			weatherResponse.json()
 		]);
 
-		console.log(tide)
 
-		const staticChartUrl = await renderStaticTideChart(tide, parsedDate);
 
 		return {
 			tide: tide,
 			weeklyTides: weeklyTides,
 			weather: weather,
-			date: date,
-			dailyChartUrl: staticChartUrl
+			date: date
 		};
 	} catch (error) {
 		console.error('Failed to fetch data:', error);
