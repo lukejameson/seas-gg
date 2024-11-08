@@ -3,7 +3,7 @@
 	import { Chart } from 'chart.js/auto';
 	import { format } from 'date-fns';
 
-	/** @type {{hourlyTides: TideData[], dailyStaticUrl: string}}*/
+	/** @type {{hourlyTides: TideData[]}}*/
 	let props = $props();
 
 	/** @type {import("chart.js").ChartItem} */
@@ -71,6 +71,7 @@
 		updateChart();
 
 		if (chartInstance && $page.data.date) {
+			// @ts-ignore
 			chartInstance.options.plugins.title.text = getLabel();
 			chartInstance.update('none');
 		}
