@@ -1,5 +1,6 @@
 <!-- Tides.svelte -->
 <script>
+	import '../../app.css';
 	/** @type {Array<TideData>} */
 	export let tide;
 </script>

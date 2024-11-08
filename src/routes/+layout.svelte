@@ -2,12 +2,11 @@
 	/** @type {import('./$types').LayoutData} */
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
-	import { initBootstrap } from '$lib/bootstrap';
+	import { initBootstrap } from '$lib/bootstrap.js';
 	import img from '$lib/images/favicon.svg';
 
-	import '$lib/styles/layout.css';
-	import 'bootstrap/dist/css/bootstrap.min.css';
 	import '../app.css';
+	import 'bootstrap/dist/css/bootstrap.min.css';
 
 	onMount(() => {
 		if (browser) {

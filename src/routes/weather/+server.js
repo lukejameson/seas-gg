@@ -1,4 +1,4 @@
-import { dailyWeatherService } from '$lib/server/daily-weather-service';
+import { dailyWeatherService } from '$lib/server/daily-weather-service.js';
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url }) {

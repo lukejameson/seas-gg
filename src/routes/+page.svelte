@@ -6,7 +6,7 @@
 	import Weather from '$lib/components/+Weather.svelte';
 	import TideChartParent from '$lib/components/tide-charts/+TideChartParent.svelte';
 
-	import '$lib/styles/tides.css';
+	import '../app.css';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import '@fortawesome/fontawesome-pro/css/all.min.css';
 	import { format } from 'date-fns';
@@ -163,6 +163,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-</style>
