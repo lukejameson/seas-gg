@@ -15,13 +15,13 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tides.rule=Host(`guernseytides.co.uk`)"
-      - "traefik.http.routers.tides.entrypoints=websecure"
-      - "traefik.http.routers.tides.tls.certresolver=letsencrypt"
-      # Handle static assets with correct MIME types
-      - "traefik.http.middlewares.tides-headers.headers.customResponseHeaders.Content-Type=application/javascript;charset=utf-8||text/css;charset=utf-8"
-      - "traefik.http.routers.tides.middlewares=tides-headers"
-      - "traefik.http.services.tides.loadbalancer.server.port=5000"
+      - "traefik.docker.network=web"
+      - "traefik.http.routers.guernsey.rule=Host(`guernseytides.co.uk`)"
+      - "traefik.http.routers.guernsey.entrypoints=websecure"
+      - "traefik.http.routers.guernsey.tls.certresolver=letsencrypt"
+      - "traefik.http.services.guernsey.loadbalancer.server.port=5000"
+      - "traefik.http.middlewares.sveltekit.headers.customResponseHeaders.Content-Type=application/javascript"
+      - "traefik.http.routers.guernsey.middlewares=sveltekit@docker"
     networks:
       - web
 
