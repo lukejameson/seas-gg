@@ -1,9 +1,8 @@
 import { format } from 'date-fns';
-import { htmlParser } from './html_parser';
-import { supabaseWorker } from './supabase';
-import { tideSequence } from './tide_sequence';
-import { tideScraper } from './tides-scraper';
-import { faGameConsoleHandheldCrank } from '@fortawesome/pro-solid-svg-icons';
+import { htmlParser } from './html_parser.js';
+import { supabaseWorker } from './supabase.js';
+import { tideSequence } from './tide_sequence.js';
+import { tideScraper } from './tides-scraper.js';
 
 /**
  *
@@ -89,8 +88,8 @@ class Main {
 				 */
 				const wholeWeek = {
 					id: crypto.randomUUID(),
-					startOfWeekDate: tideRecords[0].date,
-					endOfWeekDate: tideRecords[6].date,
+					startofweekdate: tideRecords[0].date,
+					endofweekdate: tideRecords[6].date,
 					data: tideRecords
 				};
 
