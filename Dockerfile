@@ -20,7 +20,7 @@ RUN npm config set "@fortawesome:registry" "https://npm.fontawesome.com/" && \
     npm config set "//npm.fontawesome.com/:_authToken" "${FONTAWESOME_TOKEN}"
 
 # Copy package files
-COPY package*.json package-lock.json* ./
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install

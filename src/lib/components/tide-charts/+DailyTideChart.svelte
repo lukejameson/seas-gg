@@ -92,5 +92,4 @@
 	}
 </script>
 
-
 <canvas class="p-0" use:myAction bind:this={canvas}></canvas>

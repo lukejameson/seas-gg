@@ -13,11 +13,10 @@
 	import { addDays } from 'date-fns/addDays';
 	import { subDays } from 'date-fns/subDays';
 
-	$: tide = $page.data.tide
+	$: tide = $page.data.tide;
 	$: weeklyTides = $page.data.weeklyTides;
 	$: weather = $page.data.weather;
 	$: date = $page.data.date;
-
 
 	const currentDate = new Date();
 	let selectedDate = $page.data.date;
@@ -159,7 +158,7 @@
 			</div>
 
 			<div class="row gap-2">
-				<TideChartParent hourlyTides={tide.hourlyTides} weeklyTides={weeklyTides}></TideChartParent>
+				<TideChartParent hourlyTides={tide.hourlyTides} {weeklyTides}></TideChartParent>
 			</div>
 		</div>
 	</div>

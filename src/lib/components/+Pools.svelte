@@ -128,7 +128,9 @@
 	<div class="card-body p-2">
 		<div class="row g-3">
 			<div class="col">
-				<h6 class="mb-2">Ladies Pool <i class="fa-solid fa-circle-info fa-sm" title="Large Pool"></i></h6>
+				<h6 class="mb-2">
+					Ladies Pool <i class="fa-solid fa-circle-info fa-sm" title="Large Pool"></i>
+				</h6>
 				{#if !ladiesPoolTimes}
 					<small class="text-muted">
 						<i class="fas fa-exclamation-circle"></i> No times available
@@ -144,7 +146,9 @@
 			</div>
 
 			<div class="col">
-				<h6 class="mb-2">Gents Pool <i class="fa-solid fa-circle-info fa-sm" title="Pool next to Ladies Pool"></i></h6>
+				<h6 class="mb-2">
+					Gents Pool <i class="fa-solid fa-circle-info fa-sm" title="Pool next to Ladies Pool"></i>
+				</h6>
 				{#if !gentsPoolsTimes}
 					<small class="text-muted">
 						<i class="fas fa-exclamation-circle"></i> No times available
@@ -160,7 +164,9 @@
 			</div>
 
 			<div class="col">
-				<h6 class="mb-2">Kids Pool <i class="fa-solid fa-circle-info fa-sm" title="First pool"></i></h6>
+				<h6 class="mb-2">
+					Kids Pool <i class="fa-solid fa-circle-info fa-sm" title="First pool"></i>
+				</h6>
 				{#if !kidsPoolsTimes}
 					<small class="text-muted">
 						<i class="fas fa-exclamation-circle"></i> No times available
