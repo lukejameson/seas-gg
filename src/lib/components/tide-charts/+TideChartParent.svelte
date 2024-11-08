@@ -2,7 +2,7 @@
 	import DailyTideChart from './+DailyTideChart.svelte';
 	import WeeklyTideChart from './+WeeklyTideChart.svelte';
 
-	/**@type {{hourlyTides: TideData[], weeklyTides: WeeklyTides, dailyStaticUrl: string}}*/
+	/**@type {{hourlyTides: TideData[], weeklyTides: WeeklyTides}}*/
 	let props = $props();
 
 	/** @enum {('day'|'week')} chartType*/
