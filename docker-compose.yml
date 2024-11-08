@@ -14,10 +14,14 @@ services:
       - TIDE_URL=${TIDE_URL}
     restart: unless-stopped
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.sveltekit.rule=Host(`guernseytides.co.uk`)' # We'll change this to your domain later
-      - 'traefik.http.routers.sveltekit.entrypoints=web'
-      - 'traefik.http.services.sveltekit.loadbalancer.server.port=5000'
+      - "traefik.enable=true"
+      - "traefik.http.routers.tides.rule=Host(`guernseytides.co.uk`)"
+      - "traefik.http.routers.tides.entrypoints=websecure"
+      - "traefik.http.routers.tides.tls.certresolver=letsencrypt"
+      # Handle static assets with correct MIME types
+      - "traefik.http.middlewares.tides-headers.headers.customResponseHeaders.Content-Type=application/javascript;charset=utf-8||text/css;charset=utf-8"
+      - "traefik.http.routers.tides.middlewares=tides-headers"
+      - "traefik.http.services.tides.loadbalancer.server.port=5000"
     networks:
       - web
 
