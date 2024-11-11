@@ -1,5 +1,5 @@
 # Base node image
-FROM node:20-alpine AS builder
+FROM node:23-alpine AS builder
 # Add necessary build tools
 RUN apk add --no-cache git
 # Set working directory
@@ -33,7 +33,7 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM node:18-alpine AS production
+FROM node:23-alpine AS production
 WORKDIR /app
 
 # Set runtime environment variables
