@@ -128,7 +128,7 @@
 	<h4 class="card-title">Pools</h4>
 	<div class="card-body p-2">
 		<div class="row g-3">
-			<div class="col">
+			<div class="col-6 col-md-4">
 				<h6 class="mb-2">
 					Ladies Pool <i class="fa-solid fa-circle-info fa-sm" title="Large Pool"></i>
 				</h6>
@@ -146,7 +146,7 @@
 				{/if}
 			</div>
 
-			<div class="col">
+			<div class="col-6 col-md-4">
 				<h6 class="mb-2">
 					Gents Pool <i class="fa-solid fa-circle-info fa-sm" title="Pool next to Ladies Pool"></i>
 				</h6>
@@ -164,7 +164,7 @@
 				{/if}
 			</div>
 
-			<div class="col">
+			<div class="col-6 col-md-4">
 				<h6 class="mb-2">
 					Kids Pool <i class="fa-solid fa-circle-info fa-sm" title="First pool"></i>
 				</h6>

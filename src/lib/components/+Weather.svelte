@@ -203,7 +203,7 @@
 	}
 </script>
 
-<div class="card h-100">
+<div class="card h-100 w-100">
 	<div class="d-flex flex-fill flex-wrap justify-content-between">
 		<div class="d-flex align-items-center flex-wrap gap-2">
 			{#if isSummaryMode}

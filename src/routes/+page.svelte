@@ -141,25 +141,21 @@
 		</div>
 	</div>
 
-	<div class="container">
-		<div class="col gap-2">
-			<div class="row pb-2 gap-2">
-				<div class="col p-0">
-					<Tides tide={tide.basicTides}></Tides>
-				</div>
+	<div class="">
+		<div class="component">
+			<Tides tide={tide.basicTides}></Tides>
+		</div>
 
-				<div class="col p-0">
-					<Weather {weather}></Weather>
-				</div>
-			</div>
+		<div class="component">
+			<Weather {weather}></Weather>
+		</div>
 
-			<div class="row gap-2 pb-2">
-				<Pools tides={tide.hourlyTides}></Pools>
-			</div>
+		<div class="component">
+			<Pools tides={tide.hourlyTides}></Pools>
+		</div>
 
-			<div class="row gap-2">
-				<TideChartParent hourlyTides={tide.hourlyTides} {weeklyTides}></TideChartParent>
-			</div>
+		<div class="component">
+			<TideChartParent hourlyTides={tide.hourlyTides} {weeklyTides}></TideChartParent>
 		</div>
 	</div>
 </div>
