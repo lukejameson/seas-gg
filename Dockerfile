@@ -23,6 +23,8 @@ RUN npm config set "@fortawesome:registry" "https://npm.fontawesome.com/" && \
 # Copy package files
 COPY package*.json ./
 
+COPY node_modules ./node_modules || true
+
 # Install dependencies
 RUN npm install
 
