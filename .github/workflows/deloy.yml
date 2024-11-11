@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Cache npm packages
         uses: actions/cache@v3
@@ -29,7 +29,11 @@ jobs:
 
       - name: Install Dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: |
+          echo "@fortawesome:registry=https://npm.fontawesome.com/" > .npmrc
+          echo "//npm.fontawesome.com/:_authToken=${{ secrets.FONTAWESOME_TOKEN }}" >> .npmrc
+          npm ci
+          rm .npmrc
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
