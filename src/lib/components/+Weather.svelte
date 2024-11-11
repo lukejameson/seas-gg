@@ -225,7 +225,7 @@
 		<div class="d-flex align-items-center flex-wrap gap-2">
 			{#if isSummaryMode}
 				<div>
-					<div class="text-center">
+					<div style="width: 60px" class="text-center">
 						<Icon name={weatherSummary.modeWeatherCodeAndIcon[1]} size="32px"></Icon>
 					</div>
 
@@ -257,10 +257,10 @@
 			{:else}
 				{#if getWeatherCode(weather[currentPage].weather_code)[1]}
 					<div>
-						<div class="text-center">
+						<div style="width: 60px" class="text-center">
 							<Icon name={getWeatherCode(weather[currentPage].weather_code)[1]} size="32px"></Icon>
+							<span>{getWeatherCode(weather[currentPage].weather_code)[0]}</span>
 						</div>
-						<span>{getWeatherCode(weather[currentPage].weather_code)[0]}</span>
 					</div>
 				{:else}
 					{getWeatherCode(weather[currentPage].weather_code)[0]}
