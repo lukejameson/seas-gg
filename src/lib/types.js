@@ -60,3 +60,9 @@
  * @typedef {Object} DailyExtremes
  * @property {TideCycle[]} cycles
  */
+
+/**
+ * @typedef {Object} SeaTemperature
+ * @property {Date} date
+ * @property {string} sea_temp_c
+ */

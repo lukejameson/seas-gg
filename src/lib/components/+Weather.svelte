@@ -225,7 +225,7 @@
 						<div class="font-weight-bold f-16">
 							{weatherSummary.tempAvg}°C
 						</div>
-						|
+						&nbsp;|&nbsp;
 						<div class="font-weight-bold f-16">
 							{weatherSummary.windDirectionAvg}
 							{weatherSummary.windSpeedAvg}<span class="font-14">mph</span>
@@ -236,7 +236,7 @@
 						<div class="font-weight-bold f-16">
 							H: {weatherSummary.humidityAvg}%
 						</div>
-						|
+						&nbsp; | &nbsp;
 						<div class="font-weight-bold f-16">
 							P: {weatherSummary.precipitationTotal}mm
 						</div>
@@ -258,11 +258,11 @@
 						<div class="font-weight-bold f-16">
 							{format(weather[currentPage].date, 'HH:mm')}
 						</div>
-						|
+						&nbsp;|&nbsp;
 						<div class="font-weight-bold f-16">
 							{Math.round(weather[currentPage].temperature)}°C
 						</div>
-						|
+						&nbsp;|&nbsp;
 						<div class="font-weight-bold f-16">
 							{formatWindDirection(weather[currentPage].windDirection10m)[0]}
 							{Math.round(weather[currentPage].windSpeed10m)}<span class="font-14">mph</span>
@@ -273,7 +273,7 @@
 						<div class="font-weight-bold f-16">
 							H: {weather[currentPage].relativeHumidity}%
 						</div>
-						|
+						&nbsp;|&nbsp;
 						<div class="font-weight-bold f-16">
 							P: {Math.round(weather[currentPage].precipitation)}mm
 						</div>

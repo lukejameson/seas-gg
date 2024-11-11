@@ -1,8 +1,9 @@
-import { format } from 'date-fns';
+import { format, isSameDay } from 'date-fns';
 import { htmlParser } from './html_parser.js';
 import { supabaseWorker } from './supabase.js';
 import { tideSequence } from './tide_sequence.js';
 import { tideScraper } from './tides-scraper.js';
+import { seaTemperatureScraper } from './sea-temperature-scraper.js';
 
 /**
  *
@@ -102,6 +103,48 @@ class Main {
 		}
 
 		return records;
+	}
+
+	/**
+	 *
+	 * @param {Date} date
+	 * @returns {Promise<SeaTemperature|null>}
+	 */
+	async getSeaTempForDate(date) {
+		try {
+			const existingData = await supabaseWorker.getSeaTempForDate(date);
+
+			/**@type {Date} */
+			const today = new Date();
+			const parsedDate = new Date(date);
+			today.setHours(0, 0, 0, 0);
+			parsedDate.setHours(0, 0, 0, 0);
+
+			if (!existingData) {
+				if (isSameDay(today, parsedDate)) {
+					const seaTempHtml = await seaTemperatureScraper.scrapeSeaTempForToday();
+					let parsedHTML = htmlParser.getSeaTempTable(seaTempHtml);
+
+					if (!parsedHTML) {
+						{
+							parsedHTML = 'No Data';
+						}
+					}
+
+					await supabaseWorker.storeSeaTemperatures(date, parsedHTML);
+
+					return await supabaseWorker.getSeaTempForDate(date);
+				} else {
+					return {date: date, sea_temp_c: 'Not available'};
+				}
+			}
+
+			return existingData;
+		} catch (error) {
+			console.error(error);
+		}
+
+		return null;
 	}
 
 	/**

@@ -19,26 +19,30 @@ export async function load({ fetch, url }) {
 	}
 
 	try {
-		const [tideResponse, weatherResponse, weeklyTideResponse] = await Promise.all([
-			fetch(`/tides?date=${date}`),
-			fetch(`/weather?date=${date}`),
-			fetch(`/tides/weekly?date=${date}`)
-		]);
+		const [tideResponse, weatherResponse, weeklyTideResponse, seaTemperatureResponse] =
+			await Promise.all([
+				fetch(`/tides?date=${date}`),
+				fetch(`/weather?date=${date}`),
+				fetch(`/tides/weekly?date=${date}`),
+				fetch(`/sea_temp?date=${date}`)
+			]);
 
 		if (!tideResponse.ok || !weatherResponse.ok || !weeklyTideResponse.ok) {
 			throw new Error('One or more API requests failed');
 		}
 
-		const [tide, weeklyTides, weather] = await Promise.all([
+		const [tide, weeklyTides, weather, seaTemperature] = await Promise.all([
 			tideResponse.json(),
 			weeklyTideResponse.json(),
-			weatherResponse.json()
+			weatherResponse.json(),
+			seaTemperatureResponse.json()
 		]);
 
 		return {
 			tide: tide,
 			weeklyTides: weeklyTides,
 			weather: weather,
+			seaTemperature: seaTemperature,
 			date: date
 		};
 	} catch (error) {
@@ -49,6 +53,7 @@ export async function load({ fetch, url }) {
 			weather: null,
 			weeklyTides: null,
 			date,
+			seaTemperature: null,
 			error: 'Failed to load data'
 		};
 	}

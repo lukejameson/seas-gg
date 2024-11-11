@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Pools from '$lib/components/+Pools.svelte';
+	import SeaTemperature from '$lib/components/+SeaTemperature.svelte';
 	import Tides from '$lib/components/+Tides.svelte';
 	import Weather from '$lib/components/+Weather.svelte';
 	import TideChartParent from '$lib/components/tide-charts/+TideChartParent.svelte';
@@ -17,6 +18,7 @@
 	$: weeklyTides = $page.data.weeklyTides;
 	$: weather = $page.data.weather;
 	$: date = $page.data.date;
+	$: seaTemperature = $page.data.seaTemperature;
 
 	const currentDate = new Date();
 	let selectedDate = $page.data.date;
@@ -147,11 +149,15 @@
 		</div>
 
 		<div class="component">
-			<Weather {weather}></Weather>
+			<SeaTemperature seaTemperature={seaTemperature}></SeaTemperature>
 		</div>
 
 		<div class="component">
 			<Pools tides={tide.hourlyTides}></Pools>
+		</div>
+
+		<div class="component">
+			<Weather {weather}></Weather>
 		</div>
 
 		<div class="component">
