@@ -1,10 +1,15 @@
 <script>
 	import '../../app.css';
 	import { page } from '$app/stores';
-	import { format } from 'date-fns';
+	import { format, isSameDay } from 'date-fns';
 
 	/**@type {HourlyWeather[]}*/
 	export let weather;
+
+	/**
+	 * @type {Date}
+	 */
+	export let date;
 
 	/**
 	 * @typedef {Object} WeatherSummary
@@ -22,11 +27,12 @@
 
 	let pages = weather.length;
 	let currentPage = 0;
-	let isSummaryMode = true;
+	let isSummaryMode = false;
 
 	$: if (weather) {
 		setCurrentTime();
 		setWeatherAverage();
+		setIsSummaryMode();
 	}
 
 	/** @typedef {[string, string]} codeAndIcon */
@@ -132,6 +138,16 @@
 		const index = Math.round(((angle %= 360) < 0 ? angle + 360 : angle) / 45) % 8;
 
 		return directions[index];
+	}
+
+	function setIsSummaryMode() {
+		const currentDate = new Date();
+
+		if (!isSameDay(currentDate, date)) {
+			isSummaryMode = true;
+		} else {
+			isSummaryMode = false;
+		}
 	}
 
 	/**
