@@ -55,17 +55,54 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Deploy to VPS
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.VPS }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
-          port: ${{secrets.VPS_SSH_PORT}}
-          script: |
-            cd ~/docker-apps/seas-gg
-            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-            docker pull ghcr.io/${{ github.repository_owner }}/seas-gg:latest
-            docker compose down
-            docker compose up -d
-            docker logout ghcr.io
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.VPS }}
+                username: ${{ secrets.VPS_USERNAME }}
+                key: ${{ secrets.VPS_SSH_KEY }}
+                passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
+                port: ${{secrets.VPS_SSH_PORT}}
+                script: |
+                  cd ~/docker-apps/seas-gg
+                  # Create docker-compose.yml if it doesn't exist
+                  cat > docker-compose.yml << 'EOL'
+                  services:
+                    sveltekit-app:
+                      image: ghcr.io/${{ github.repository_owner }}/seas-gg:latest
+                      container_name: seas-gg
+                      environment:
+                        - SUPABASE_URL=${SUPABASE_URL}
+                        - SUPABASE_KEY=${SUPABASE_KEY}
+                        - SEA_TEMP_URL=${SEA_TEMP_URL}
+                        - TIDE_URL=${TIDE_URL}
+                      restart: unless-stopped
+                      labels:
+                        - 'traefik.enable=true'
+                        - 'traefik.docker.network=web'
+                        - 'traefik.http.routers.seas-gg.rule=Host(`seas.gg`)'
+                        - 'traefik.http.routers.seas-gg.entrypoints=websecure'
+                        - 'traefik.http.routers.seas-gg.tls.certresolver=letsencrypt'
+                        - 'traefik.http.services.seas-gg.loadbalancer.server.port=5000'
+                        - 'traefik.http.middlewares.security-headers.headers.frameDeny=true'
+                        - 'traefik.http.middlewares.security-headers.headers.sslRedirect=true'
+                        - 'traefik.http.middlewares.security-headers.headers.browserXssFilter=true'
+                        - 'traefik.http.routers.seas-gg.middlewares=security-headers@docker'
+                      networks:
+                        - web
+                  networks:
+                    web:
+                      external: true
+                  EOL
+
+                  # Create .env file
+                  cat > .env << 'EOL'
+                  SUPABASE_URL=${SUPABASE_URL}
+                  SUPABASE_KEY=${SUPABASE_KEY}
+                  TIDE_URL=${TIDE_URL}
+                  EOL
+
+                  docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+                  docker pull ghcr.io/${{ github.repository_owner }}/seas-gg:latest
+                  docker compose down
+                  docker compose up -d
+                  docker logout ghcr.io
