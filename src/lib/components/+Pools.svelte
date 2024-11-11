@@ -132,7 +132,7 @@
 	<div class="card-body p-2">
 		<div class="row g-3">
 			<div class="col-6 col-md-4">
-				<h6 class="mb-2">
+				<h6 class="mb-2 font-weight-bold">
 					Ladies Pool
 				</h6>
 				{#if !ladiesPoolTimes}
@@ -150,7 +150,7 @@
 			</div>
 
 			<div class="col-6 col-md-4">
-				<h6 class="mb-2">
+				<h6 class="mb-2 font-weight-bold">
 					Gents Pool
 				</h6>
 				{#if !gentsPoolsTimes}
@@ -168,7 +168,7 @@
 			</div>
 
 			<div class="col-6 col-md-4">
-				<h6 class="mb-2">
+				<h6 class="mb-2 font-weight-bold">
 					Kids Pool
 				</h6>
 				{#if !kidsPoolsTimes}

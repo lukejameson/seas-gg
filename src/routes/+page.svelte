@@ -13,6 +13,7 @@
 	import { format } from 'date-fns';
 	import { addDays } from 'date-fns/addDays';
 	import { subDays } from 'date-fns/subDays';
+	import { isMobile } from '$lib/stores/device';
 
 	$: tide = $page.data.tide;
 	$: weeklyTides = $page.data.weeklyTides;
@@ -150,9 +151,9 @@
 		</div>
 	</div>
 
-	<div class="">
+	<div>
 		<div class="component">
-			<Weather date={date} {weather}></Weather>
+			<Weather {date} {weather}></Weather>
 		</div>
 
 		{#if isTodaySelected()}
@@ -160,7 +161,7 @@
 				<SeaTemperature tides={tide.hourlyTides} {seaTemperature}></SeaTemperature>
 			</div>
 		{/if}
-		
+
 		<div class="component">
 			<Pools tides={tide.hourlyTides}></Pools>
 		</div>
@@ -169,8 +170,10 @@
 			<Tides tide={tide.basicTides}></Tides>
 		</div>
 
-		<div class="component">
-			<TideChartParent hourlyTides={tide.hourlyTides} {weeklyTides}></TideChartParent>
-		</div>
+		{#if !$isMobile}
+			<div class="component">
+				<TideChartParent hourlyTides={tide.hourlyTides} {weeklyTides}></TideChartParent>
+			</div>
+		{/if}
 	</div>
 </div>
