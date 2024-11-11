@@ -18,7 +18,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=web'
-      - 'traefik.http.routers.guernsey.rule=Host(`guernseytides.co.uk`)'
+      - 'traefik.http.routers.guernsey.rule=Host(`seas.gg`)'
       - 'traefik.http.routers.guernsey.entrypoints=websecure'
       - 'traefik.http.routers.guernsey.tls.certresolver=letsencrypt'
       - 'traefik.http.services.guernsey.loadbalancer.server.port=5000'
