@@ -49,4 +49,4 @@ COPY --from=builder /app/node_modules node_modules/
 EXPOSE 5000
 
 # Start the application with explicit port
-CMD ["sh", "-c", "PORT=5000 node build"]
+CMD ["node", "build"]

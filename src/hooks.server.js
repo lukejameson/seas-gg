@@ -2,20 +2,33 @@
 export async function handle({ event, resolve }) {
   const response = await resolve(event);
   const headers = new Headers(response.headers);
-  
   const path = event.url.pathname;
-  
-  // Add proper MIME types
-  if (path.endsWith('.js')) {
-    headers.set('Content-Type', 'application/javascript; charset=utf-8');
-  } else if (path.endsWith('.css')) {
-    headers.set('Content-Type', 'text/css; charset=utf-8');
-  } else if (path.endsWith('.svg')) {
-    headers.set('Content-Type', 'image/svg+xml');
-  } else if (path.endsWith('.woff2')) {
-    headers.set('Content-Type', 'font/woff2');
-  } else if (path.endsWith('.woff')) {
-    headers.set('Content-Type', 'font/woff');
+
+  // Add security headers
+  headers.set('Cross-Origin-Embedder-Policy', 'require-corp');
+  headers.set('Cross-Origin-Opener-Policy', 'same-origin');
+  headers.set('X-Content-Type-Options', 'nosniff');
+
+  // Handle static assets
+  if (path.startsWith('/_app/')) {
+    if (path.endsWith('.js')) {
+      headers.set('Content-Type', 'application/javascript; charset=utf-8');
+    } else if (path.endsWith('.css')) {
+      headers.set('Content-Type', 'text/css; charset=utf-8');
+    } else if (path.endsWith('.svg')) {
+      headers.set('Content-Type', 'image/svg+xml');
+    } else if (path.endsWith('.png')) {
+      headers.set('Content-Type', 'image/png');
+    } else if (path.endsWith('.jpg') || path.endsWith('.jpeg')) {
+      headers.set('Content-Type', 'image/jpeg');
+    }
+    
+    // Cache control for immutable content
+    if (path.includes('/immutable/')) {
+      headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+    } else {
+      headers.set('Cache-Control', 'public, max-age=3600');
+    }
   }
 
   return new Response(response.body, {
