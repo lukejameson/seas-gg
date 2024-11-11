@@ -5,17 +5,15 @@ export async function handle({ event, resolve }) {
   
   const path = event.url.pathname;
   
-  // Add proper MIME types
-  if (path.endsWith('.js')) {
-    headers.set('Content-Type', 'application/javascript; charset=utf-8');
-  } else if (path.endsWith('.css')) {
-    headers.set('Content-Type', 'text/css; charset=utf-8');
-  } else if (path.endsWith('.svg')) {
-    headers.set('Content-Type', 'image/svg+xml');
-  } else if (path.endsWith('.woff2')) {
-    headers.set('Content-Type', 'font/woff2');
-  } else if (path.endsWith('.woff')) {
-    headers.set('Content-Type', 'font/woff');
+  // Handle _app/immutable directory specifically
+  if (path.includes('/_app/immutable/')) {
+    if (path.endsWith('.js')) {
+      headers.set('Content-Type', 'application/javascript; charset=utf-8');
+    } else if (path.endsWith('.css')) {
+      headers.set('Content-Type', 'text/css; charset=utf-8');
+    }
+    // Add cache headers for immutable content
+    headers.set('Cache-Control', 'public, max-age=31536000, immutable');
   }
 
   return new Response(response.body, {
