@@ -3,8 +3,6 @@
 	import '../../app.css';
 	/** @type {SeaTemperature} */
 	export let seaTemperature;
-
-	console.log(seaTemperature);
 </script>
 
 <div class="card">
