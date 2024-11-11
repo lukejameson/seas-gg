@@ -10,7 +10,7 @@
 	{#if tide && tide.length > 0}
 		<div class="row row-cols-1 row-cols-sm-2 g-1">
 			{#each tide as item}
-				<div class="col">
+				<div class="col-6 col-md-4">
 					<small>
 						<i
 							class="fas {item.typeof === 'High' ? 'fa-chevron-up' : 'fa-chevron-down'} me-1"
