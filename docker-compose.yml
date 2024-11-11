@@ -20,11 +20,12 @@ services:
       - "traefik.http.routers.guernsey.entrypoints=websecure"
       - "traefik.http.routers.guernsey.tls.certresolver=letsencrypt"
       - "traefik.http.services.guernsey.loadbalancer.server.port=5000"
-      - "traefik.http.middlewares.sveltekit.headers.customResponseHeaders.Content-Type=application/javascript"
-      - "traefik.http.routers.guernsey.middlewares=sveltekit@docker"
+      - "traefik.http.middlewares.security-headers.headers.frameDeny=true"
+      - "traefik.http.middlewares.security-headers.headers.sslRedirect=true"
+      - "traefik.http.middlewares.security-headers.headers.browserXssFilter=true"
+      - "traefik.http.routers.guernsey.middlewares=security-headers@docker"
     networks:
       - web
-
 networks:
   web:
     external: true
