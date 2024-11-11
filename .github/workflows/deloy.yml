@@ -26,10 +26,7 @@ jobs:
       - name: Install Dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: |
-          echo "@fortawesome:registry=https://npm.fontawesome.com/" > .npmrc
-          echo "//npm.fontawesome.com/:_authToken=${{ secrets.FONTAWESOME_TOKEN }}" >> .npmrc
           npm ci
-          rm .npmrc
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
@@ -47,7 +44,6 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/seas-gg:latest
           build-args: |
-            FONTAWESOME_TOKEN=${{ secrets.FONTAWESOME_TOKEN }}
             SUPABASE_URL=${{ secrets.SUPABASE_URL }}
             SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}
             TIDE_URL=${{ secrets.TIDE_URL }}

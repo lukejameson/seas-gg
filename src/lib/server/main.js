@@ -135,7 +135,7 @@ class Main {
 
 					return await supabaseWorker.getSeaTempForDate(date);
 				} else {
-					return {date: date, sea_temp_c: 'Not available'};
+					return { date: date, sea_temp_c: 'Not available' };
 				}
 			}
 

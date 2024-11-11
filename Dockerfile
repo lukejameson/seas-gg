@@ -10,7 +10,6 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Set build arguments
-ARG FONTAWESOME_TOKEN
 ARG TIDE_URL
 ARG SUPABASE_URL
 ARG SUPABASE_KEY
@@ -24,17 +23,7 @@ ENV HOST=0.0.0.0
 # Copy package files first
 COPY package*.json ./
 
-# Copy the entire node_modules directory
-COPY node_modules ./node_modules
-
-# Setup Font Awesome and install any missing dependencies
-RUN npm config set "@fortawesome:registry" "https://npm.fontawesome.com/" && \
-    npm config set "//npm.fontawesome.com/:_authToken" "${FONTAWESOME_TOKEN}" && \
-    if [ ! -d "node_modules/@fortawesome" ]; then \
-        echo "Installing Font Awesome packages..." && \
-        npm install @fortawesome/fontawesome-pro @fortawesome/pro-solid-svg-icons @fortawesome/pro-regular-svg-icons; \
-    fi && \
-    npm ci --prefer-offline
+RUN npm ci
 
 # Copy all files
 COPY . .

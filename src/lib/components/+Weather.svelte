@@ -2,6 +2,7 @@
 	import '../../app.css';
 	import { page } from '$app/stores';
 	import { format, isSameDay } from 'date-fns';
+	import Icon from './+Icon.svelte';
 
 	/**@type {HourlyWeather[]}*/
 	export let weather;
@@ -38,34 +39,34 @@
 	/** @typedef {[string, string]} codeAndIcon */
 	/** @type {Record<number, codeAndIcon>}[] */
 	const weatherCodes = {
-		0: ['Clear', 'fa-solid fa-sun'],
-		1: ['Clear', 'fa-solid fa-sun-cloud'],
-		2: ['Cloudy', 'fa-solid fa-cloud-sun'],
-		3: ['Overcast', 'fa-solid fa-cloud'],
-		45: ['Fog', 'fa-solid fa-fog'],
-		48: ['Smog', 'fa-solid fa-smog'],
-		51: ['Drizzle', 'fa-solid fa-cloud-drizzle'],
-		53: ['Drizzle', 'fa-solid fa-cloud-drizzle'],
-		55: ['Heavy Drizzle', 'fa-solid fa-cloud-showers-heavy'],
-		56: ['Freezing', 'fa-solid fa-snowflake'],
-		57: ['Freezing', 'fa-solid fa-snowflake'],
-		61: ['Rain', 'fa-solid fa-cloud-rain'],
-		63: ['Rain', 'fa-solid fa-cloud-showers'],
-		65: ['Heavy Rain', 'fa-solid fa-cloud-showers-heavy'],
-		66: ['Sleet', 'fa-solid fa-cloud-sleet'],
-		67: ['Sleet', 'fa-solid fa-cloud-sleet'],
-		71: ['Snow', 'fa-solid fa-snowflake'],
-		73: ['Snow', 'fa-solid fa-snowflakes'],
-		75: ['Heavy Snow', 'fa-solid fa-cloud-snow'],
-		77: ['Snow', 'fa-solid fa-snowflake'],
-		80: ['Showers', 'fa-solid fa-cloud-rain'],
-		81: ['Showers', 'fa-solid fa-cloud-showers'],
-		82: ['Heavy Rain', 'fa-solid fa-cloud-showers-heavy'],
-		85: ['Snow', 'fa-solid fa-snowflake'],
-		86: ['Heavy Snow', 'fa-solid fa-cloud-snow'],
-		95: ['Storm', 'fa-solid fa-cloud-bolt'],
-		96: ['Storm', 'fa-solid fa-cloud-bolt'],
-		99: ['Storm', 'fa-solid fa-cloud-bolt-sun']
+		0: ['Clear', 'sun'],
+		1: ['Clear', 'sunCloud'],
+		2: ['Cloudy', 'cloudSun'],
+		3: ['Overcast', 'cloud'],
+		45: ['Fog', 'fog'],
+		48: ['Smog', 'smog'],
+		51: ['Drizzle', 'cloudDrizzle'],
+		53: ['Drizzle', 'cloudDrizzle'],
+		55: ['Heavy Drizzle', 'cloudShowersHeavy'],
+		56: ['Freezing', 'snowflake'],
+		57: ['Freezing', 'snowflake'],
+		61: ['Rain', 'cloudRain'],
+		63: ['Rain', 'cloudShowers'],
+		65: ['Heavy Rain', 'cloudShowersHeavy'],
+		66: ['Sleet', 'cloudSleet'],
+		67: ['Sleet', 'cloudSleet'],
+		71: ['Snow', 'snowflake'],
+		73: ['Snow', 'snowflakes'],
+		75: ['Heavy Snow', 'cloudSnow'],
+		77: ['Snow', 'snowflake'],
+		80: ['Showers', 'cloudRain'],
+		81: ['Showers', 'cloudShowers'],
+		82: ['Heavy Rain', 'cloudShowersHeavy'],
+		85: ['Snow', 'snowflake'],
+		86: ['Heavy Snow', 'cloudSnow'],
+		95: ['Storm', 'cloudBolt'],
+		96: ['Storm', 'cloudBolt'],
+		99: ['Storm', 'cloudBoltSun']
 	};
 	function setWeatherAverage() {
 		/**@type{HourlyWeather[]}*/
@@ -225,12 +226,7 @@
 			{#if isSummaryMode}
 				<div>
 					<div class="text-center">
-						<i
-							class="{weatherSummary.modeWeatherCodeAndIcon[1]} fa-2xl"
-							data-toggle="tooltip"
-							data-placement="top"
-							title={weatherSummary.modeWeatherCodeAndIcon[0]}
-						></i>
+						<Icon name={weatherSummary.modeWeatherCodeAndIcon[1]} size="32px"></Icon>
 					</div>
 
 					<span>{weatherSummary.modeWeatherCodeAndIcon[0]}</span>
@@ -262,7 +258,7 @@
 				{#if getWeatherCode(weather[currentPage].weather_code)[1]}
 					<div>
 						<div class="text-center">
-							<i class="{getWeatherCode(weather[currentPage].weather_code)[1]} fa-2xl"></i>
+							<Icon name={getWeatherCode(weather[currentPage].weather_code)[1]} size="32px"></Icon>
 						</div>
 						<span>{getWeatherCode(weather[currentPage].weather_code)[0]}</span>
 					</div>
@@ -306,7 +302,7 @@
 				data-placement="top"
 				title={'Summary Mode'}
 				aria-label="1 Hour Forward"
-				class:disabled={currentPage == 23}><i class="fa-solid fa-list"></i></button
+				class:disabled={currentPage == 23}><Icon name="list" size="14px"></Icon></button
 			>
 			<button
 				class="btn btn-sm"
@@ -315,7 +311,7 @@
 				data-toggle="tooltip"
 				data-placement="top"
 				title={'1 Hour Back'}
-				class:disabled={currentPage == 0}><i class="fa-solid fa-chevron-left"></i></button
+				class:disabled={currentPage == 0}><Icon name="chevronLeft" size="14px"></Icon></button
 			>
 			<button
 				class="btn btn-sm"
@@ -324,7 +320,7 @@
 				data-toggle="tooltip"
 				data-placement="top"
 				title={'1 Hour Forward'}
-				class:disabled={currentPage == 23}><i class="fa-solid fa-chevron-right"></i></button
+				class:disabled={currentPage == 23}><Icon name="chevronRight" size="14px"></Icon></button
 			>
 		</div>
 	</div>

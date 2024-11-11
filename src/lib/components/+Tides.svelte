@@ -1,6 +1,7 @@
 <!-- Tides.svelte -->
 <script>
 	import '../../app.css';
+	import Icon from './+Icon.svelte';
 	/** @type {Array<TideData>} */
 	export let tide;
 </script>
@@ -11,11 +12,8 @@
 		<div class="row row-cols-1 row-cols-sm-2 g-1">
 			{#each tide as item}
 				<div class="col-6 col-md-4">
-					<small>
-						<i
-							class="fas {item.typeof === 'High' ? 'fa-chevron-up' : 'fa-chevron-down'} me-1"
-							style="font-size: 0.8rem;"
-						></i>
+					<small style="display: block;">
+						<Icon name={item.typeof === 'High' ? 'chevronUp' : 'chevronDown'} size="12px"></Icon>
 						<span class="fw-bold">{item.typeof}</span>
 						{item.height}m @ {item.time}
 					</small>

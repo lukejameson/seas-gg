@@ -23,7 +23,7 @@ class HtmlParser {
 	 * @returns {string|null|undefined}
 	 */
 	getSeaTempTable(html) {
-		if(!html) {
+		if (!html) {
 			return null;
 		}
 
