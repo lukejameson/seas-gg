@@ -19,7 +19,7 @@
 	<div class="header p-3 d-flex align-items-center justify-content-start">
 		<img width="48px" height="48px" src={img} alt="" />
 
-		<div class="pl-4">Seas.gg</div>
+		<div class="pl-4">Guernsey Tides</div>
 	</div>
 
 	<div class="wave-background">
