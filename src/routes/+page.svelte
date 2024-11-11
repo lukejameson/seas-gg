@@ -8,12 +8,11 @@
 	import TideChartParent from '$lib/components/tide-charts/+TideChartParent.svelte';
 
 	import '../app.css';
-	import '@fortawesome/fontawesome-free/css/all.min.css';
-	import '@fortawesome/fontawesome-pro/css/all.min.css';
 	import { format } from 'date-fns';
 	import { addDays } from 'date-fns/addDays';
 	import { subDays } from 'date-fns/subDays';
 	import { isMobile } from '$lib/stores/device';
+	import Icon from '$lib/components/+Icon.svelte';
 
 	$: tide = $page.data.tide;
 	$: weeklyTides = $page.data.weeklyTides;
@@ -111,8 +110,10 @@
 					aria-label="-1 Day"
 					on:click={() => onDateNavigationClicked(-1)}
 					class:btn-selected={isButtonSelected(subDays(currentDate, 1))}
-					disabled={isYesterdayDisabled()}><i class="fa-solid fa-chevron-left"></i></button
+					disabled={isYesterdayDisabled()}
 				>
+					<Icon name="chevronLeft" size="18px"></Icon>
+				</button>
 			</div>
 
 			<div
@@ -129,8 +130,9 @@
 					on:click={() => onDateNavigationClicked(0)}
 					class:btn-selected={isButtonSelected(currentDate)}
 					disabled={format(currentDate, 'yyyy-MM-dd') == format(selectedDate, 'yyyy-MM-dd')}
-					><i class="fa-solid fa-calendar-day"></i></button
 				>
+					<Icon name="calendar" size="18px"></Icon>
+				</button>
 			</div>
 
 			<div
@@ -145,8 +147,9 @@
 					on:click={() => onDateNavigationClicked(1)}
 					disabled={isTomorrowDisabled()}
 					class:btn-selected={isButtonSelected(addDays(currentDate, 1))}
-					><i class="fa-solid fa-chevron-right"></i></button
 				>
+					<Icon name="chevronRight" size="18px"></Icon>
+				</button>
 			</div>
 		</div>
 	</div>

@@ -6,6 +6,7 @@
 
 	import 'bootstrap/dist/css/bootstrap.min.css';
 	import '../app.css';
+	import Icon from '$lib/components/+Icon.svelte';
 
 	onMount(() => {
 		if (browser) {
@@ -18,10 +19,7 @@
 	<div class="header p-3 d-flex align-items-center justify-content-start">
 		<!-- <img width="48px" src={img} alt="" /> -->
 		<div class="logo">
-			<i
-				class="fa-duotone fa-solid fa-water fa-lg"
-				style="--fa-primary-color: #3584e4; --fa-secondary-color: #1a5fb4;"
-			></i>
+			<Icon name="water" size="42px"></Icon>
 			<span class="icon-text">seas.gg</span>
 		</div>
 
@@ -47,17 +45,17 @@
 					data-bs-placement="top"
 					aria-label="GitHub"
 				>
-					<i class="fa-brands fa-github fa-xl"></i></a
-				>
+					<Icon name="github" size="1.8rem"></Icon>
+				</a>
 				<a href="https://www.instagram.com/lukej_ameson/" target="_blank" aria-label="Instagram">
-					<i class="fa-brands fa-instagram fa-xl"></i></a
-				>
+					<Icon name="instagram" size="1.8rem"></Icon>
+				</a>
 				<a href="https://lukejameson.gg" target="_blank" aria-label="Portfolio">
-					<i class="fa-regular fa-browser fa-xl"></i></a
-				>
+					<Icon name="browser" size="1.8rem"></Icon>
+				</a>
 				<a href="mailto:lukejameson@live.co.uk" target="_blank" aria-label="Email">
-					<i class="fa-regular fa-envelope fa-xl"></i></a
-				>
+					<Icon name="envelope" size="1.8rem"></Icon>
+				</a>
 			</div>
 		</div>
 	</div>

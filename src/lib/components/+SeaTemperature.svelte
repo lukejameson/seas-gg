@@ -62,7 +62,8 @@
 				{seaTemperature.sea_temp_c}
 			</div>
 			<div>
-				<span class="font-weight-bold">Tide Status: </span> {getCurrentTideState()}
+				<span class="font-weight-bold">Tide Status: </span>
+				{getCurrentTideState()}
 			</div>
 		</div>
 	{:else}
