@@ -8,7 +8,7 @@ services:
         - SUPABASE_KEY=${SUPABASE_KEY}
         - SEA_TEMP_URL=${SEA_TEMP_URL}
         - TIDE_URL=${TIDE_URL}
-    container_name: guernseytides
+    container_name: seas-gg
     environment:
       - SUPABASE_URL=${SUPABASE_URL}
       - SUPABASE_KEY=${SUPABASE_KEY}
@@ -18,14 +18,14 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=web'
-      - 'traefik.http.routers.guernsey.rule=Host(`seas.gg`)'
-      - 'traefik.http.routers.guernsey.entrypoints=websecure'
-      - 'traefik.http.routers.guernsey.tls.certresolver=letsencrypt'
-      - 'traefik.http.services.guernsey.loadbalancer.server.port=5000'
+      - 'traefik.http.routers.seas-gg.rule=Host(`seas.gg`)'
+      - 'traefik.http.routers.seas-gg.entrypoints=websecure'
+      - 'traefik.http.routers.seas-gg.tls.certresolver=letsencrypt'
+      - 'traefik.http.services.seas-gg.loadbalancer.server.port=5000'
       - 'traefik.http.middlewares.security-headers.headers.frameDeny=true'
       - 'traefik.http.middlewares.security-headers.headers.sslRedirect=true'
       - 'traefik.http.middlewares.security-headers.headers.browserXssFilter=true'
-      - 'traefik.http.routers.guernsey.middlewares=security-headers@docker'
+      - 'traefik.http.routers.seas-gg.middlewares=security-headers@docker'
     networks:
       - web
 networks:
