@@ -87,6 +87,44 @@ class SupabaseWorker {
 
 		return data;
 	}
+
+	/**
+	 *
+	 * @param {Date} date
+	 * @param {string} temp
+	 */
+	async storeSeaTemperatures(date, temp) {
+		const formattedDate = format(date, 'yyyy-MM-dd');
+
+		const { error } = await supabase.from('sea_temp').upsert(
+			{
+				date: formattedDate,
+				sea_temp_c: temp
+			},
+			{
+				onConflict: 'date'
+			}
+		);
+
+		if (error) throw error;
+	}
+
+	/**
+	 *
+	 * @param {Date} date
+	 * @returns {Promise<SeaTemperature|null>}
+	 */
+	async getSeaTempForDate(date) {
+		const { data, error } = await supabase
+			.from('sea_temp')
+			.select('date, sea_temp_c')
+			.eq('date', date)
+			.single();
+
+		if (error) return null;
+
+		return data;
+	}
 }
 
 export const supabaseWorker = new SupabaseWorker();

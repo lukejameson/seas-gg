@@ -20,6 +20,23 @@ class HtmlParser {
 	/**
 	 *
 	 * @param {string} html
+	 * @returns {string|null|undefined}
+	 */
+	getSeaTempTable(html) {
+		if(!html) {
+			return null;
+		}
+
+		const parsedHtml = this.parseHtml(html);
+
+		const seaTemp = parsedHtml.querySelector(`.temperature`)?.textContent;
+
+		return seaTemp;
+	}
+
+	/**
+	 *
+	 * @param {string} html
 	 * @returns {VerboseTideData[]|null}
 	 */
 	getVerboseBasicTidesTable(html) {
