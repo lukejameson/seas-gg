@@ -32,8 +32,8 @@
 	$: {
 		if (tides) {
 			gentsPoolsTimes = getTideTimeMinAndMaxForHeight(5, '06:00', '18:00'); // First Pool;
-			ladiesPoolTimes = getTideTimeMinAndMaxForHeight(6, '06:00', '18:00'); // Main Big Pool;
-			kidsPoolsTimes = getTideTimeMinAndMaxForHeight(7, '06:00', '18:00'); // Side Pool next to big pool;
+			ladiesPoolTimes = getTideTimeMinAndMaxForHeight(6.7, '06:00', '18:00'); // Main Big Pool;
+			kidsPoolsTimes = getTideTimeMinAndMaxForHeight(7.5, '06:00', '18:00'); // Side Pool next to big pool;
 		}
 	}
 
@@ -125,12 +125,15 @@
 </script>
 
 <div class="card">
-	<h4 class="card-title">Pools</h4>
+	<div>
+		<h4 class="card-title">Pools</h4>
+		<span class="text-muted" style="font-size: 12px">(*Approx above water times)</span>
+	</div>
 	<div class="card-body p-2">
 		<div class="row g-3">
 			<div class="col-6 col-md-4">
-				<h6 class="mb-2">
-					Ladies Pool <i class="fa-solid fa-circle-info fa-sm" title="Large Pool"></i>
+				<h6 class="mb-2 font-weight-bold">
+					Ladies Pool
 				</h6>
 				{#if !ladiesPoolTimes}
 					<small class="text-muted">
@@ -147,8 +150,8 @@
 			</div>
 
 			<div class="col-6 col-md-4">
-				<h6 class="mb-2">
-					Gents Pool <i class="fa-solid fa-circle-info fa-sm" title="Pool next to Ladies Pool"></i>
+				<h6 class="mb-2 font-weight-bold">
+					Gents Pool
 				</h6>
 				{#if !gentsPoolsTimes}
 					<small class="text-muted">
@@ -165,8 +168,8 @@
 			</div>
 
 			<div class="col-6 col-md-4">
-				<h6 class="mb-2">
-					Kids Pool <i class="fa-solid fa-circle-info fa-sm" title="First pool"></i>
+				<h6 class="mb-2 font-weight-bold">
+					Kids Pool
 				</h6>
 				{#if !kidsPoolsTimes}
 					<small class="text-muted">

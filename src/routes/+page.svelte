@@ -13,6 +13,7 @@
 	import { format } from 'date-fns';
 	import { addDays } from 'date-fns/addDays';
 	import { subDays } from 'date-fns/subDays';
+	import { isMobile } from '$lib/stores/device';
 
 	$: tide = $page.data.tide;
 	$: weeklyTides = $page.data.weeklyTides;
@@ -67,6 +68,13 @@
 		if (selectedDatePlusOne > maxDate) return true;
 
 		return false;
+	}
+
+	function isTodaySelected() {
+		const formattedCurrentDate = format(currentDate, 'yyyy-MM-dd');
+		const formattedSelectedDate = format(selectedDate, 'yyyy-MM-dd');
+
+		if (formattedCurrentDate == formattedSelectedDate) return true;
 	}
 
 	/** @param {Date} date */
@@ -143,25 +151,29 @@
 		</div>
 	</div>
 
-	<div class="">
+	<div>
 		<div class="component">
-			<Tides tide={tide.basicTides}></Tides>
+			<Weather {date} {weather}></Weather>
 		</div>
 
-		<div class="component">
-			<SeaTemperature seaTemperature={seaTemperature}></SeaTemperature>
-		</div>
+		{#if isTodaySelected()}
+			<div class="component">
+				<SeaTemperature tides={tide.hourlyTides} {seaTemperature}></SeaTemperature>
+			</div>
+		{/if}
 
 		<div class="component">
 			<Pools tides={tide.hourlyTides}></Pools>
 		</div>
 
 		<div class="component">
-			<Weather {weather}></Weather>
+			<Tides tide={tide.basicTides}></Tides>
 		</div>
 
-		<div class="component">
-			<TideChartParent hourlyTides={tide.hourlyTides} {weeklyTides}></TideChartParent>
-		</div>
+		{#if !$isMobile}
+			<div class="component">
+				<TideChartParent hourlyTides={tide.hourlyTides} {weeklyTides}></TideChartParent>
+			</div>
+		{/if}
 	</div>
 </div>
