@@ -42,6 +42,14 @@
 		}
 	}
 
+	function getCurrentTideHeight() {
+		const currentTideIndex = closestTideRecordIndex();
+
+		if (!currentTideIndex) return 'Unknown';
+
+		return tides[currentTideIndex].height;
+	}
+
 	/**
 	 * Converts time string to minutes since midnight
 	 * @param {string} time - Time in HH:mm format
@@ -54,9 +62,9 @@
 </script>
 
 <div class="card">
-	<div class="card-title">Sea State and Info</div>
+	<div class="card-title">Live Info</div>
 	{#if seaTemperature && seaTemperature.sea_temp_c != 'Not available'}
-		<div class="row row-cols-1 row-cols-sm-2 g-1 px-2">
+		<div class="row row-cols-2 row-cols-sm-3 g-1 px-2">
 			<div>
 				<span class="font-weight-bold">Temp:</span>
 				{seaTemperature.sea_temp_c}
@@ -64,6 +72,10 @@
 			<div>
 				<span class="font-weight-bold">Tide Status: </span>
 				{getCurrentTideState()}
+			</div>
+			<div>
+				<span class="font-weight-bold">Tide Height:</span>
+				{getCurrentTideHeight()}m
 			</div>
 		</div>
 	{:else}

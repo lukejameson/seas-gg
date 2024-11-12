@@ -73,6 +73,12 @@
 		box-shadow: 0 2px 10px -1px #e8f4f8;
 	}
 
+	@media only screen and (max-height: 864px) {
+		.footer {
+			position: sticky;
+		}
+	}
+
 	a {
 		padding: 8px;
 		color: black;
