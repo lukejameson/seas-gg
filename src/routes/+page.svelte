@@ -2,20 +2,17 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Pools from '$lib/components/+Pools.svelte';
-	import SeaTemperature from '$lib/components/+SeaTemperature.svelte';
 	import Tides from '$lib/components/+Tides.svelte';
 	import Weather from '$lib/components/+Weather.svelte';
-	import TideChartParent from '$lib/components/tide-charts/+TideChartParent.svelte';
 
-	import '../app.css';
+	import Icon from '$lib/components/+Icon.svelte';
 	import { format } from 'date-fns';
 	import { addDays } from 'date-fns/addDays';
 	import { subDays } from 'date-fns/subDays';
-	import { isMobile } from '$lib/stores/device';
-	import Icon from '$lib/components/+Icon.svelte';
+	import '../app.css';
+	import Info from '$lib/components/+Info.svelte';
 
 	$: tide = $page.data.tide;
-	$: weeklyTides = $page.data.weeklyTides;
 	$: weather = $page.data.weather;
 	$: date = $page.data.date;
 	$: seaTemperature = $page.data.seaTemperature;
@@ -67,13 +64,6 @@
 		if (selectedDatePlusOne > maxDate) return true;
 
 		return false;
-	}
-
-	function isTodaySelected() {
-		const formattedCurrentDate = format(currentDate, 'yyyy-MM-dd');
-		const formattedSelectedDate = format(selectedDate, 'yyyy-MM-dd');
-
-		if (formattedCurrentDate == formattedSelectedDate) return true;
 	}
 
 	/** @param {Date} date */
@@ -159,11 +149,9 @@
 			<Weather {date} {weather}></Weather>
 		</div>
 
-		{#if isTodaySelected()}
-			<div class="component">
-				<SeaTemperature tides={tide.hourlyTides} {seaTemperature}></SeaTemperature>
-			</div>
-		{/if}
+		<div class="component">
+			<Info tides={tide.hourlyTides} {seaTemperature}></Info>
+		</div>
 
 		<div class="component">
 			<Pools tides={tide.hourlyTides}></Pools>
@@ -172,11 +160,5 @@
 		<div class="component">
 			<Tides tide={tide.basicTides}></Tides>
 		</div>
-
-		{#if !$isMobile}
-			<div class="component">
-				<TideChartParent hourlyTides={tide.hourlyTides} {weeklyTides}></TideChartParent>
-			</div>
-		{/if}
 	</div>
 </div>

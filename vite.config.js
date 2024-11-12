@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	plugins: [sveltekit()],
 	ssr: {
-		noExternal: ['bootstrap', 'chart.js']
+		noExternal: ['bootstrap']
 	},
 	optimizeDeps: {
 		include: ['bootstrap']

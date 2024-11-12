@@ -131,8 +131,8 @@
 		<span class="text-muted" style="font-size: 12px">(*Approx above water times)</span>
 	</div>
 	<div class="card-body p-2">
-		<div class="row g-3">
-			<div class="col-6 col-md-4">
+		<div class="row row-cols-2 row-cols-sm-3">
+			<div>
 				<h6 class="mb-2 font-weight-bold">Ladies Pool</h6>
 				{#if !ladiesPoolTimes}
 					<small class="text-muted">
@@ -148,7 +148,7 @@
 					{/each}
 				{/if}
 			</div>
-			<div class="col-6 col-md-4">
+			<div>
 				<h6 class="mb-2 font-weight-bold">Gents Pool</h6>
 				{#if !gentsPoolsTimes}
 					<small class="text-muted">
@@ -164,7 +164,7 @@
 				{/if}
 			</div>
 
-			<div class="col-6 col-md-4">
+			<div>
 				<h6 class="mb-2 font-weight-bold">Kids Pool</h6>
 				{#if !kidsPoolsTimes}
 					<small class="text-muted">

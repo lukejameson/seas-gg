@@ -31,8 +31,6 @@
 	"dependencies": {
 		"@supabase/supabase-js": "^2.46.1",
 		"bootstrap": "^5.3.3",
-		"chart.js": "^4.4.6",
-		"chartjs-adapter-date-fns": "^3.0.0",
 		"cheerio": "^1.0.0",
 		"date-fns": "^4.1.0",
 		"jsdom": "^25.0.1",
