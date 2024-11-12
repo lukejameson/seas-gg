@@ -1,12 +1,12 @@
 <!-- Tides.svelte -->
 <script>
 	import '../../app.css';
-	/** @type {SeaTemperature} */
-	export let seaTemperature;
+	/** @type {SeaTemperature|null} */
+	export let seaTemperature = null;
 	/**
-	 * @type {TideData[]}
+	 * @type {TideData[]|null}
 	 */
-	export let tides;
+	export let tides = null;
 
 	function closestTideRecordIndex() {
 		if (!tides) return;
@@ -27,6 +27,8 @@
 	}
 
 	function getCurrentTideState() {
+		if (!tides) return;
+
 		const currentTideIndex = closestTideRecordIndex();
 
 		if (!currentTideIndex) return;
@@ -43,6 +45,8 @@
 	}
 
 	function getCurrentTideHeight() {
+		if (!tides) return;
+
 		const currentTideIndex = closestTideRecordIndex();
 
 		if (!currentTideIndex) return 'Unknown';
@@ -63,14 +67,29 @@
 
 <div class="card">
 	<div class="card-title">Live Info</div>
-	{#if seaTemperature && seaTemperature.sea_temp_c != 'Not available'}
+	{#if seaTemperature === null || tides === null}
+		<div class="row row-cols-2 row-cols-sm-3 g-1 px-2">
+			<div>
+				<span class="font-weight-bold">Temp:</span>
+				345
+			</div>
+			<div>
+				<span class="font-weight-bold">Tide: </span>
+				Rising
+			</div>
+			<div>
+				<span class="font-weight-bold">Tide Height:</span>
+				4.23m
+			</div>
+		</div>
+	{:else if seaTemperature && seaTemperature.sea_temp_c != 'Not available'}
 		<div class="row row-cols-2 row-cols-sm-3 g-1 px-2">
 			<div>
 				<span class="font-weight-bold">Temp:</span>
 				{seaTemperature.sea_temp_c}
 			</div>
 			<div>
-				<span class="font-weight-bold">Tide Status: </span>
+				<span class="font-weight-bold">Tide: </span>
 				{getCurrentTideState()}
 			</div>
 			<div>
@@ -78,7 +97,5 @@
 				{getCurrentTideHeight()}m
 			</div>
 		</div>
-	{:else}
-		<small class="text-muted">No tide data available</small>
 	{/if}
 </div>
