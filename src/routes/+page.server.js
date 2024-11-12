@@ -1,106 +1,71 @@
 import { redirect } from '@sveltejs/kit';
-import { addDays, format, isValid } from 'date-fns';
+import { addDays, format, isBefore, isValid, startOfDay } from 'date-fns';
+
+const DATE_FORMAT = 'yyyy-MM-dd';
+const MAX_DAYS_AHEAD = 5;
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ fetch, url }) {
-	const date = url.searchParams.get('date') || format(new Date(), 'yyyy-MM-dd');
-	const parsedDate = new Date(date);
+    // Get and validate date first, before any data fetching
+    const today = startOfDay(new Date());
+    const maxDate = addDays(today, MAX_DAYS_AHEAD);
+    const defaultDate = format(today, DATE_FORMAT);
+    
+    // Get the requested date or use today
+    const dateParam = url.searchParams.get('date') || defaultDate;
+    const parsedDate = startOfDay(new Date(dateParam));
 
-	// Validate date and redirect if necessary
-	if (!isValid(parsedDate)) {
-		throw redirect(303, `/?date=${format(new Date(), 'yyyy-MM-dd')}`);
-	}
+    // Validate date and redirect if necessary - do this BEFORE any data fetching
+    if (!isValid(parsedDate)) {
+        throw redirect(303, `/?date=${defaultDate}`);
+    }
 
-	const maxDate = addDays(new Date(), 5);
-	const selectedDatePlusOne = addDays(parsedDate, 1);
+    if (isBefore(parsedDate, today)) {
+        throw redirect(303, `/?date=${defaultDate}`);
+    }
 
-	if (selectedDatePlusOne > maxDate) {
-		throw redirect(303, `/?date=${format(new Date(), 'yyyy-MM-dd')}`);
-	}
+    if (isBefore(maxDate, parsedDate)) {
+        throw redirect(303, `/?date=${defaultDate}`);
+    }
 
-	try {
-		const [tideResponse, weatherResponse, weeklyTideResponse, seaTemperatureResponse] =
-			await Promise.all([
-				fetch(`/tides?date=${date}`),
-				fetch(`/weather?date=${date}`),
-				fetch(`/tides/weekly?date=${date}`),
-				fetch(`/sea_temp?date=${date}`)
-			]);
+    // Only fetch data if date is valid
+    try {
+        const date = format(parsedDate, DATE_FORMAT);
+        const [tideResponse, weatherResponse, weeklyTideResponse, seaTemperatureResponse] =
+            await Promise.all([
+                fetch(`/tides?date=${date}`),
+                fetch(`/weather?date=${date}`),
+                fetch(`/tides/weekly?date=${date}`),
+                fetch(`/sea_temp?date=${date}`)
+            ]);
 
-		if (!tideResponse.ok || !weatherResponse.ok || !weeklyTideResponse.ok) {
-			throw new Error('One or more API requests failed');
-		}
+        if (!tideResponse.ok || !weatherResponse.ok || !weeklyTideResponse.ok) {
+            throw new Error('One or more API requests failed');
+        }
 
-		const [tide, weeklyTides, weather, seaTemperature] = await Promise.all([
-			tideResponse.json(),
-			weeklyTideResponse.json(),
-			weatherResponse.json(),
-			seaTemperatureResponse.json()
-		]);
+        const [tide, weeklyTides, weather, seaTemperature] = await Promise.all([
+            tideResponse.json(),
+            weeklyTideResponse.json(),
+            weatherResponse.json(),
+            seaTemperatureResponse.json()
+        ]);
 
-		return {
-			tide: tide,
-			weeklyTides: weeklyTides,
-			weather: weather,
-			seaTemperature: seaTemperature,
-			date: date
-		};
-	} catch (error) {
-		console.error('Failed to fetch data:', error);
-
-		return {
-			tide: null,
-			weather: null,
-			weeklyTides: null,
-			date,
-			seaTemperature: null,
-			error: 'Failed to load data'
-		};
-	}
-}
-
-/** @type {import('./$types').Actions} */
-export const actions = {
-	getWeeklyTides: async ({ request, fetch }) => {
-		const formData = await request.formData();
-		const date = formData.get('date');
-
-		try {
-			const response = await fetch(`/tides/weekly?date=${date}`);
-
-			if (!response.ok) {
-				throw new Error('Failed to fetch weekly tides');
-			}
-
-			const weeklyTides = await response.json();
-
-			return {
-				type: 'success',
-				data: weeklyTides
-			};
-		} catch (error) {
-			console.error('Action failed:', error);
-			return {
-				type: 'error',
-				error: 'Failed to load weekly tides'
-			};
-		}
-	}
-};
-
-/**
- * @param {Date} date
- */
-
-async function dateGuard(date) {
-	const maxDate = addDays(new Date(), 5);
-	const selectedDatePlusOne = addDays(date, 1);
-
-	if (selectedDatePlusOne > maxDate) {
-		try {
-			throw redirect(303, `/date=${format(new Date(), 'yyyy-MM-dd')}`);
-		} catch (error) {
-			console.log(error);
-		}
-	}
+        return {
+            tide,
+            weeklyTides,
+            weather,
+            seaTemperature,
+            date
+        };
+    } catch (error) {
+        console.error('Failed to fetch data:', error);
+        return {
+            tide: null,
+            weather: null,
+            weeklyTides: null,
+            seaTemperature: null,
+            date: format(today, DATE_FORMAT),
+            error: 'Failed to load data'
+        };
+    }
 }

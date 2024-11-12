@@ -136,30 +136,29 @@
 				<h6 class="mb-2 font-weight-bold">Ladies Pool</h6>
 				{#if !ladiesPoolTimes}
 					<small class="text-muted">
-						<Icon name="circleExclamation" size="12px"></Icon>
+						<Icon name="circleExclamation" size="0.75rem"></Icon>
 						No times available
 					</small>
 				{:else}
 					{#each ladiesPoolTimes as window}
-						<div class="mb-1">
-							<Icon name="clock" size="12px"></Icon>
-							<small>{window.start} - {window.end}</small>
+						<div class="d-flex align-items-center gap-2 mb-1">
+							<Icon name="clock" size="0.75rem"></Icon>
+							<span>{window.start} - {window.end}</span>
 						</div>
 					{/each}
 				{/if}
 			</div>
-
 			<div class="col-6 col-md-4">
 				<h6 class="mb-2 font-weight-bold">Gents Pool</h6>
 				{#if !gentsPoolsTimes}
 					<small class="text-muted">
-						<Icon name="circleExclamation" size="12px"></Icon> No times available
+						<Icon name="circleExclamation" size="0.75rem"></Icon> No times available
 					</small>
 				{:else}
 					{#each gentsPoolsTimes as window}
-						<div class="mb-1">
-							<Icon name="clock" size="12px"></Icon>
-							<small>{window.start} - {window.end}</small>
+						<div class="d-flex align-items-center gap-2 mb-1">
+							<Icon name="clock" size="0.75rem"></Icon>
+							<span>{window.start} - {window.end}</span>
 						</div>
 					{/each}
 				{/if}
@@ -169,13 +168,13 @@
 				<h6 class="mb-2 font-weight-bold">Kids Pool</h6>
 				{#if !kidsPoolsTimes}
 					<small class="text-muted">
-						<Icon name="circleExclamation" size="12px"></Icon> No times available
+						<Icon name="circleExclamation" size="0.75rem"></Icon> No times available
 					</small>
 				{:else}
 					{#each kidsPoolsTimes as window}
-						<div class="mb-1">
-							<Icon name="clock" size="12px"></Icon>
-							<small>{window.start} - {window.end}</small>
+						<div class="d-flex align-items-center gap-2 mb-1">
+							<Icon name="clock" size="0.75rem"></Icon>
+							<span>{window.start} - {window.end}</span>
 						</div>
 					{/each}
 				{/if}
