@@ -15,18 +15,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '23'
-      - name: Cache npm packages
-        uses: actions/cache@v3
-        id: npm-cache
-        with:
-          path: |
-            **/node_modules
-            ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependencies
-        if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: |
-          npm ci
+        run: npm ci
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
@@ -48,8 +38,6 @@ jobs:
             SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}
             TIDE_URL=${{ secrets.TIDE_URL }}
             SEA_TEMP_URL=${{secrets.SEA_TEMP_URL}}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         env:

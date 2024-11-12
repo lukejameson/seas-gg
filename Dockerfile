@@ -1,52 +1,26 @@
-# Base node image
-FROM node:23-slim AS builder
+FROM node:18-slim
+WORKDIR /app
 
-# Install git and build essentials
+# Install build dependencies
 RUN apt-get update && \
-    apt-get install -y git python3 make g++ && \
+    apt-get install -y python3 make g++ && \
     rm -rf /var/lib/apt/lists/*
 
-# Set working directory
-WORKDIR /app
-
-# Set build arguments
-ARG TIDE_URL
-ARG SUPABASE_URL
-ARG SUPABASE_KEY
-ARG SEA_TEMP_URL
-ARG PORT=5000
-
-# Set environment variables for build
-ENV PORT=5000
-ENV HOST=0.0.0.0
-
-# Copy package files first
+# Install dependencies
 COPY package*.json ./
+RUN npm ci --quiet && \
+    npm install @rollup/rollup-linux-x64-gnu
 
-RUN npm ci
-
-# Copy all files
+# Copy source files
 COPY . .
 
-# Build the app
+# Build the application
 RUN npm run build
 
-# Production stage
-FROM node:23-slim AS production
-WORKDIR /app
-
-# Set runtime environment variables
+# Set environment and start command
 ENV PORT=5000
 ENV HOST=0.0.0.0
 ENV NODE_ENV=production
 
-# Copy built assets from builder
-COPY --from=builder /app/build build/
-COPY --from=builder /app/package.json .
-COPY --from=builder /app/node_modules node_modules/
-
-# Expose the port the app runs on
 EXPOSE 5000
-
-# Start the application with explicit port
 CMD ["node", "build"]
