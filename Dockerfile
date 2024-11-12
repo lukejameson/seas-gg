@@ -1,6 +1,17 @@
 FROM node:18-slim
 WORKDIR /app
 
+ARG SUPABASE_URL
+ARG SUPABASE_KEY
+ARG TIDE_URL
+ARG SEA_TEMP_URL
+
+# Set as environment variables during build
+ENV SUPABASE_URL=${SUPABASE_URL}
+ENV SUPABASE_KEY=${SUPABASE_KEY}
+ENV TIDE_URL=${TIDE_URL}
+ENV SEA_TEMP_URL=${SEA_TEMP_URL}
+
 # Install build dependencies
 RUN apt-get update && \
     apt-get install -y python3 make g++ && \
