@@ -65,37 +65,26 @@
 	}
 </script>
 
-<div class="card">
-	<div class="card-title">Live Info</div>
-	{#if seaTemperature === null || tides === null}
-		<div class="row row-cols-2 row-cols-sm-3 g-1 px-2">
-			<div>
-				<span class="font-weight-bold">Temp:</span>
-				345
+{#if seaTemperature?.sea_temp_c != 'Not available'}
+	<div class="card">
+		<div class="card-title">Live Info</div>
+		{#if seaTemperature && seaTemperature.sea_temp_c != 'Not available'}
+			<div class="row row-cols-2 row-cols-sm-3 g-1 px-2">
+				<div>
+					<span class="font-weight-bold">Sea Temp:</span>
+					<span>{seaTemperature.sea_temp_c}</span>
+				</div>
+				<div>
+					<span class="font-weight-bold">Tide: </span>
+					{getCurrentTideState()}
+				</div>
+				<div>
+					<span class="font-weight-bold">Tide Height:</span>
+					{getCurrentTideHeight()}m
+				</div>
 			</div>
-			<div>
-				<span class="font-weight-bold">Tide: </span>
-				Rising
-			</div>
-			<div>
-				<span class="font-weight-bold">Tide Height:</span>
-				4.23m
-			</div>
-		</div>
-	{:else if seaTemperature && seaTemperature.sea_temp_c != 'Not available'}
-		<div class="row row-cols-2 row-cols-sm-3 g-1 px-2">
-			<div>
-				<span class="font-weight-bold">Temp:</span>
-				{seaTemperature.sea_temp_c}
-			</div>
-			<div>
-				<span class="font-weight-bold">Tide: </span>
-				{getCurrentTideState()}
-			</div>
-			<div>
-				<span class="font-weight-bold">Tide Height:</span>
-				{getCurrentTideHeight()}m
-			</div>
-		</div>
-	{/if}
-</div>
+		{/if}
+	</div>
+{:else}
+	<div></div>
+{/if}
