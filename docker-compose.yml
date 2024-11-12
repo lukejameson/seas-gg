@@ -2,6 +2,11 @@ services:
   sveltekit-app:
     build:
       context: .
+      args:
+        - SUPABASE_URL=${SUPABASE_URL}
+        - SUPABASE_KEY=${SUPABASE_KEY}
+        - SEA_TEMP_URL=${SEA_TEMP_URL}
+        - TIDE_URL=${TIDE_URL}
     container_name: seas-gg
     environment:
       - SUPABASE_URL=${SUPABASE_URL}
