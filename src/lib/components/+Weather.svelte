@@ -226,10 +226,9 @@
 			{#if isSummaryMode}
 				<div>
 					<div style="width: 60px" class="text-center">
-						<Icon name={weatherSummary.modeWeatherCodeAndIcon[1]} size="32px"></Icon>
+						<Icon name={weatherSummary.modeWeatherCodeAndIcon[1]} size="3rem"></Icon>
+						<span>{weatherSummary.modeWeatherCodeAndIcon[0]}</span>
 					</div>
-
-					<span>{weatherSummary.modeWeatherCodeAndIcon[0]}</span>
 				</div>
 
 				<div class="pl-3">
@@ -258,14 +257,14 @@
 				{#if getWeatherCode(weather[currentPage].weather_code)[1]}
 					<div>
 						<div style="width: 60px" class="text-center">
-							<Icon name={getWeatherCode(weather[currentPage].weather_code)[1]} size="32px"></Icon>
+							<Icon name={getWeatherCode(weather[currentPage].weather_code)[1]} size="3rem"></Icon>
 							<span>{getWeatherCode(weather[currentPage].weather_code)[0]}</span>
 						</div>
 					</div>
 				{:else}
 					{getWeatherCode(weather[currentPage].weather_code)[0]}
 				{/if}
-				<div class="pl-1">
+				<div class="pl-3">
 					<div class="d-flex flex-gap-2">
 						<div class="font-weight-bold f-16">
 							{format(weather[currentPage].date, 'HH:mm')}
