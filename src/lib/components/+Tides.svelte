@@ -7,7 +7,10 @@
 </script>
 
 <div class="card">
-	<div class="card-title">Tides</div>
+	<div class="mb-2">
+		<h4 class="card-title">Tides</h4>
+		<span class="text-muted" style="font-size: 12px">(*Tide heights and times are approximate estimates)</span>
+	</div>
 	{#if tide && tide.length > 0}
 		<div class="row row-cols-1 row-cols-sm-2 g-1">
 			{#each tide as item}
