@@ -227,7 +227,7 @@
 				<div>
 					<div style="width: 60px" class="text-center">
 						<Icon name={weatherSummary.modeWeatherCodeAndIcon[1]} size="3rem"></Icon>
-						<span>{weatherSummary.modeWeatherCodeAndIcon[0]}</span>
+						<span class="font-14">{weatherSummary.modeWeatherCodeAndIcon[0]}</span>
 					</div>
 				</div>
 
@@ -258,7 +258,7 @@
 					<div>
 						<div style="width: 60px" class="text-center">
 							<Icon name={getWeatherCode(weather[currentPage].weather_code)[1]} size="3rem"></Icon>
-							<span>{getWeatherCode(weather[currentPage].weather_code)[0]}</span>
+							<span class="font-14">{getWeatherCode(weather[currentPage].weather_code)[0]}</span>
 						</div>
 					</div>
 				{:else}
@@ -300,8 +300,7 @@
 				data-toggle="tooltip"
 				data-placement="top"
 				title={'Summary Mode'}
-				aria-label="1 Hour Forward"
-				class:disabled={currentPage == 23}><Icon name="list" size="14px"></Icon></button
+				aria-label="1 Hour Forward"><Icon name="list" size="14px"></Icon></button
 			>
 			<button
 				class="btn btn-sm"
@@ -330,5 +329,9 @@
 		.card {
 			width: 500px;
 		}
+	}
+
+	.font-14 {
+		font-size: 14px;
 	}
 </style>

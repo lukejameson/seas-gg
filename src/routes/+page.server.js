@@ -31,28 +31,24 @@ export async function load({ fetch, url }) {
 	// Only fetch data if date is valid
 	try {
 		const date = format(parsedDate, DATE_FORMAT);
-		const [tideResponse, weatherResponse, weeklyTideResponse, seaTemperatureResponse] =
-			await Promise.all([
-				fetch(`/tides?date=${date}`),
-				fetch(`/weather?date=${date}`),
-				fetch(`/tides/weekly?date=${date}`),
-				fetch(`/sea_temp?date=${date}`)
-			]);
+		const [tideResponse, weatherResponse, seaTemperatureResponse] = await Promise.all([
+			fetch(`/tides?date=${date}`),
+			fetch(`/weather?date=${date}`),
+			fetch(`/sea_temp?date=${date}`)
+		]);
 
-		if (!tideResponse.ok || !weatherResponse.ok || !weeklyTideResponse.ok) {
+		if (!tideResponse.ok || !weatherResponse.ok || !seaTemperatureResponse.ok) {
 			throw new Error('One or more API requests failed');
 		}
 
-		const [tide, weeklyTides, weather, seaTemperature] = await Promise.all([
+		const [tide, weather, seaTemperature] = await Promise.all([
 			tideResponse.json(),
-			weeklyTideResponse.json(),
 			weatherResponse.json(),
 			seaTemperatureResponse.json()
 		]);
 
 		return {
 			tide,
-			weeklyTides,
 			weather,
 			seaTemperature,
 			date
@@ -62,7 +58,6 @@ export async function load({ fetch, url }) {
 		return {
 			tide: null,
 			weather: null,
-			weeklyTides: null,
 			seaTemperature: null,
 			date: format(today, DATE_FORMAT),
 			error: 'Failed to load data'

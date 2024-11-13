@@ -128,7 +128,6 @@
 <div class="card">
 	<div>
 		<h4 class="card-title">Pools</h4>
-		<span class="text-muted" style="font-size: 12px">(*Approx above water times)</span>
 	</div>
 	<div class="card-body p-2">
 		<div class="row row-cols-2 row-cols-sm-3">

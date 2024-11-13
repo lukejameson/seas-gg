@@ -95,6 +95,7 @@
 				title={isYesterdayDisabled() ? 'Cannot go back before today' : 'Previous Day'}
 			>
 				<button
+					data-sveltekit-preload-data="hover"
 					type="button"
 					class="btn"
 					aria-label="-1 Day"
@@ -107,6 +108,7 @@
 			</div>
 
 			<div
+				data-sveltekit-preload-data="hover"
 				data-toggle="tooltip"
 				data-placement="top"
 				title={format(currentDate, 'yyyy-MM-dd') == format(selectedDate, 'yyyy-MM-dd')
@@ -126,6 +128,7 @@
 			</div>
 
 			<div
+				data-sveltekit-preload-data="hover"
 				data-toggle="tooltip"
 				data-placement="top"
 				title={isTomorrowDisabled() ? 'Cannot go ahead more than 5 days' : 'Next Day'}
