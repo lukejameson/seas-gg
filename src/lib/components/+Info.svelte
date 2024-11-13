@@ -69,7 +69,6 @@
 	<div class="card">
 		<div class="mb-2">
 			<h4 class="card-title">Live Info</h4>
-			<span class="text-muted" style="font-size: 12px">(*Tide heights are approximate estimates)</span>
 		</div>
 		{#if seaTemperature && seaTemperature.sea_temp_c != 'Not available'}
 			<div class="row row-cols-2 row-cols-sm-3 g-1 px-2">
