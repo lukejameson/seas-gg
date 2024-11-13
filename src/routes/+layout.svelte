@@ -38,15 +38,6 @@
 	<div class="footer">
 		<div class="d-flex justify-content-center w-100 h-100">
 			<div class="d-flex align-items-center gap-3">
-				<a
-					href="https://github.com/lukejameson"
-					target="_blank"
-					data-bs-toggle="tooltip"
-					data-bs-placement="top"
-					aria-label="GitHub"
-				>
-					<Icon name="github" size="1.8rem"></Icon>
-				</a>
 				<a href="https://www.instagram.com/lukej_ameson/" target="_blank" aria-label="Instagram">
 					<Icon name="instagram" size="1.8rem"></Icon>
 				</a>
