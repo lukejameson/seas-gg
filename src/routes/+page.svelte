@@ -161,7 +161,7 @@
 		</div>
 
 		<div class="component">
-			<Tides tide={tide.basicTides}></Tides>
+			<Tides hourlyTides={tide.hourlyTides} tides={tide.basicTides}></Tides>
 		</div>
 	</div>
 </div>
