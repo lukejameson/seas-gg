@@ -1,5 +1,6 @@
 <!-- Tides.svelte -->
 <script>
+	import { common } from '$lib/common/+common';
 	import '../../app.css';
 	/** @type {SeaTemperature|null} */
 	export let seaTemperature = null;
@@ -8,28 +9,10 @@
 	 */
 	export let tides = null;
 
-	function closestTideRecordIndex() {
-		if (!tides) return;
-
-		const dates = tides.map((tide, index) => {
-			return { time: tide.time, height: tide.height, index };
-		});
-
-		const refDate = new Date();
-		const currentMinutes = refDate.getHours() * 60 + refDate.getMinutes();
-
-		return dates.reduce((closest, current) => {
-			const closestDiff = Math.abs(timeToMinutes(closest.time) - currentMinutes);
-			const currentDiff = Math.abs(timeToMinutes(current.time) - currentMinutes);
-
-			return currentDiff < closestDiff ? current : closest;
-		}).index;
-	}
-
 	function getCurrentTideState() {
 		if (!tides) return;
 
-		const currentTideIndex = closestTideRecordIndex();
+		const currentTideIndex = common.closestTideRecordIndex(tides);
 
 		if (!currentTideIndex) return;
 		if (currentTideIndex == 47) return;
@@ -37,7 +20,7 @@
 		const currentTideRecord = tides[currentTideIndex];
 		const nextTideRecord = tides[currentTideIndex + 1];
 
-		if (currentTideRecord.height > nextTideRecord.height) {
+		if (nextTideRecord.height > currentTideRecord.height) {
 			return 'Rising';
 		} else {
 			return 'Falling';
@@ -47,21 +30,11 @@
 	function getCurrentTideHeight() {
 		if (!tides) return;
 
-		const currentTideIndex = closestTideRecordIndex();
+		const currentTideIndex = common.closestTideRecordIndex(tides);
 
 		if (!currentTideIndex) return 'Unknown';
 
 		return tides[currentTideIndex].height;
-	}
-
-	/**
-	 * Converts time string to minutes since midnight
-	 * @param {string} time - Time in HH:mm format
-	 * @returns {number} Minutes since midnight
-	 */
-	function timeToMinutes(time) {
-		const [hours, minutes] = time.split(':').map(Number);
-		return hours * 60 + minutes;
 	}
 </script>
 
