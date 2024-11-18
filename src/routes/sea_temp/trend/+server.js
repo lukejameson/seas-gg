@@ -3,22 +3,10 @@
  * @param {import('@sveltejs/kit').RequestEvent} event
  */
 import { main } from '$lib/server/main.js';
-/**
- *
- * @param {*} url
- * @returns
- */
-export async function GET({ url }) {
-	const date = url.searchParams.get('date');
 
-	if (!date) {
-		return new Response(JSON.stringify({ error: 'No date provided' }), {
-			status: 403
-		});
-	}
-
+export async function GET() {
 	try {
-		const seaTemp = await main.getSeaTempForDate(date);
+		const seaTemp = await main.calculateSevenDaySeaTempTrend();
 
 		if (!seaTemp) {
 			return new Response(JSON.stringify({ error: 'Not found' }), {

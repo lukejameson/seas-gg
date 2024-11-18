@@ -2,12 +2,9 @@
 <script>
 	import { common } from '$lib/common/+common';
 	import '../../app.css';
-	/** @type {SeaTemperature|null} */
-	export let seaTemperature = null;
-	/**
-	 * @type {TideData[]|null}
-	 */
-	export let tides = null;
+	import Icon from './+Icon.svelte';
+
+	let { seaTemperature, tides, seaTempTrend } = $props();
 
 	function getCurrentTideState() {
 		if (!tides) return;
@@ -41,24 +38,36 @@
 {#if seaTemperature?.sea_temp_c != 'Not available'}
 	<div class="card">
 		<div class="mb-2">
-			<h4 class="card-title">Live Info</h4>
+			<h4 class="fw-bold">Live Info</h4>
 		</div>
-		{#if seaTemperature && seaTemperature.sea_temp_c != 'Not available'}
-			<div class="row row-cols-2 row-cols-sm-3 g-1 px-2">
-				<div>
-					<span class="font-weight-bold">Sea Temp:</span>
-					<span>{seaTemperature.sea_temp_c}</span>
-				</div>
-				<div>
-					<span class="font-weight-bold">Tide: </span>
-					{getCurrentTideState()}
-				</div>
-				<div>
-					<span class="font-weight-bold">Tide Height:</span>
-					{getCurrentTideHeight()}m
-				</div>
+
+		<div class="row row-cols-1 row-cols-sm-3 g-3">
+			<div>
+				<span class="fw-bold me-2">Sea Temp:</span>
+				<span>{seaTemperature.sea_temp_c}</span>
 			</div>
-		{/if}
+
+			<div class="d-flex align-items-center">
+				<span class="fw-bold me-2">Temp Trend:</span>
+				{#if seaTempTrend.trend === 'increasing'}
+					<Icon name="chevronUp" size="16px"></Icon>
+				{:else if seaTempTrend.trend === 'decreasing'}
+					<Icon name="chevronDown" size="16px"></Icon>
+				{:else}
+					<Icon name="balance" size="16px"></Icon>
+				{/if}
+			</div>
+
+			<div>
+				<span class="fw-bold me-2">Tide:</span>
+				<span>{getCurrentTideState()}</span>
+			</div>
+
+			<div>
+				<span class="fw-bold me-2">Height:</span>
+				<span>{getCurrentTideHeight()}m</span>
+			</div>
+		</div>
 	</div>
 {:else}
 	<div></div>
