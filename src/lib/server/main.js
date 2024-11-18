@@ -147,6 +147,30 @@ class Main {
 		return null;
 	}
 
+	async calculateSevenDaySeaTempTrend() {
+		const seaTempOverLastSevenDays = await supabaseWorker.getSeaTempLastSevenDays();
+
+		if (!seaTempOverLastSevenDays) return;
+
+		const seaTemps = seaTempOverLastSevenDays.map((x) => Number(x.sea_temp_c.replace('° C', '')));
+
+		const n = seaTemps.length;
+		const x = Array.from({ length: n }, (_, i) => i);
+
+		const sumX = x.reduce((a, b) => a + b, 0);
+		const sumY = seaTemps.reduce((a, b) => a + b, 0);
+		const sumXY = x.reduce((sum, xi, i) => sum + xi * seaTemps[i], 0);
+		const sumXX = x.reduce((sum, xi) => sum + xi * xi, 0);
+
+		// Calculate slope
+		const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+
+		// Determine trend direction
+		const trend = slope > 0 ? 'increasing' : slope < 0 ? 'decreasing' : 'stable';
+
+		return { slope: slope.toFixed(2), trend };
+	}
+
 	/**
 	 * @param {Date} date
 	 * @returns {boolean}

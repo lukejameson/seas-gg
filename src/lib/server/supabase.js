@@ -1,6 +1,6 @@
 import { env } from '$env/dynamic/private';
 import { createClient } from '@supabase/supabase-js';
-import { format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 
 if (!env.SUPABASE_URL || !env.SUPABASE_KEY) {
 	throw new Error('Supabase config not provided');
@@ -120,6 +120,28 @@ class SupabaseWorker {
 			.select('date, sea_temp_c')
 			.eq('date', date)
 			.single();
+
+		if (error) return null;
+
+		return data;
+	}
+
+	/**
+	 *
+	 * @returns {Promise<SeaTemperature[]|null>}
+	 */
+
+	async getSeaTempLastSevenDays() {
+		const date = format(new Date(), 'yyyy-MM-dd');
+		const sevenDaysAgoDate = format(addDays(date, -7), 'yyyy-MM-dd');
+
+		console.log(date, sevenDaysAgoDate);
+
+		const { data, error } = await supabase
+			.from('sea_temp')
+			.select('date, sea_temp_c')
+			.gte('date', sevenDaysAgoDate)
+			.lte('date', date);
 
 		if (error) return null;
 

@@ -16,6 +16,7 @@
 	$: weather = $page.data.weather;
 	$: date = $page.data.date;
 	$: seaTemperature = $page.data.seaTemperature;
+	$: seaTemperatureTrend = $page.data.seaTempTrend;
 
 	const currentDate = new Date();
 	let selectedDate = $page.data.date;
@@ -153,7 +154,7 @@
 		</div>
 
 		<div class="component">
-			<Info tides={tide.hourlyTides} {seaTemperature}></Info>
+			<Info tides={tide.hourlyTides}  {seaTemperature} seaTempTrend={seaTemperatureTrend}></Info>
 		</div>
 
 		<div class="component">

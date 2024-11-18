@@ -61,6 +61,26 @@
 			) ?? null;
 	});
 
+	/**
+	 *
+	 * @param {TideData} tide
+	 */
+	function risingOrFalling(tide) {
+		if (!tide) return;
+
+		const currentTideIndex = hourlyTides.findIndex((x) => x.time == tide.time);
+
+		const currentTide = hourlyTides[currentTideIndex];
+
+		const nextTide = hourlyTides[currentTideIndex + 1];
+
+		if (nextTide.height > currentTide.height) {
+			return true;
+		}
+
+		return false;
+	}
+
 	function moveBackOnTidalRange() {
 		if (currentShownRange.startIndex <= 0) return;
 		currentShownRange = {
@@ -80,7 +100,7 @@
 
 <div class="card">
 	<div class="d-flex flex-fill justify-content-between mb-2">
-		<h4 class="card-title">Tides</h4>
+		<h4 class="card-title">Tides {#if detailedMode}Timeline {/if} </h4>
 		<div class="d-flex align-items-center gap-2">
 			{#if detailedMode}
 				<div class="d-flex align-items-center gap-2">
@@ -109,9 +129,9 @@
 				onclick={() => (detailedMode = !detailedMode)}
 			>
 				{#if detailedMode}
-					<Icon name="toggleOn" size="1rem" />
+					<Icon name="shrink" size="1rem" />
 				{:else}
-					<Icon name="toggleOff" size="1rem" />
+					<Icon name="expand" size="1rem" />
 				{/if}
 			</button>
 		</div>
@@ -127,7 +147,18 @@
 					<div class="tide-item text-center">
 						<div class="time-label">{item.time}</div>
 						<div class="height-value">{item.height}m</div>
-						<div class="timeline-dot"></div>
+
+						<div class="timeline-dot">
+							{#if risingOrFalling(item)}
+								<div class="timeline-icon">
+									<Icon name="chevronUp" size="12px"></Icon>
+								</div>
+							{:else if !risingOrFalling(item)}
+								<div class="timeline-icon">
+									<Icon name="chevronDown" size="12px"></Icon>
+								</div>
+							{/if}
+						</div>
 					</div>
 				{/each}
 			{/if}
@@ -152,7 +183,7 @@
 <style>
 	.timeline-container {
 		position: relative;
-		border-bottom: 2px solid #dee2e6;
+		/* border-bottom: 2px solid #dee2e6; */
 		margin: 20px 0;
 	}
 
@@ -177,17 +208,22 @@
 		bottom: -6px;
 		left: 50%;
 		transform: translateX(-50%);
-		width: 12px;
-		height: 12px;
 		background-color: #0066cc;
 		border-radius: 50%;
+		width: 16px;
+		height: 16px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: white;
+		padding-bottom: 4px;  /* OR */
 	}
 
 	.tide-item:not(:last-child)::after {
 		content: '';
 		position: absolute;
-		bottom: -2px;
-		right: -42px;
+		bottom: 0px;
+		right: -43px;
 		width: 70px;
 		height: 2px;
 		background-color: #dee2e6;
