@@ -1,34 +1,30 @@
-FROM node:18-slim
+FROM node:18-slim AS builder
 WORKDIR /app
 
-ARG SUPABASE_URL
-ARG SUPABASE_KEY
-ARG TIDE_URL
-ARG SEA_TEMP_URL
-
-# Set as environment variables during build
 ENV SUPABASE_URL=${SUPABASE_URL}
 ENV SUPABASE_KEY=${SUPABASE_KEY}
 ENV TIDE_URL=${TIDE_URL}
 ENV SEA_TEMP_URL=${SEA_TEMP_URL}
 
-# Install build dependencies
 RUN apt-get update && \
     apt-get install -y python3 make g++ && \
     rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
 COPY package*.json ./
 RUN npm ci --quiet && \
     npm install @rollup/rollup-linux-x64-gnu
 
-# Copy source files
 COPY . .
-
-# Build the application
 RUN npm run build
 
-# Set environment and start command
+FROM node:18-slim
+WORKDIR /app
+
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/package*.json ./
+
+RUN npm ci --quiet --only=production
+
 ENV PORT=5000
 ENV HOST=0.0.0.0
 ENV NODE_ENV=production

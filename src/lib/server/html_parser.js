@@ -1,7 +1,7 @@
 import { JSDOM } from 'jsdom';
 
 /**
- * Used to parse the html from tides.digimap
+ * Parse HTML
  * @class HtmlParser
  */
 class HtmlParser {
@@ -47,17 +47,17 @@ class HtmlParser {
 		const parsedHtml = this.parseHtml(html).documentElement;
 
 		/**
-		 * @typeof {VerboseTideData[]}
+		 * @type {VerboseTideData[]}
 		 */
-		const tidesTable = [...parsedHtml.querySelectorAll('div.float-left:nth-child(3) > table tr')]
+		const tidesTable = Array.from(parsedHtml.querySelectorAll('div.float-left:nth-child(3) > table tr'))
 			.slice(1)
 			.map((tr) => {
-				const [name, time, height] = [...tr.querySelectorAll('td')];
+				const [name, time, height] = Array.from(tr.querySelectorAll('td'));
 
 				return {
 					typeof: name?.textContent?.trim() || '',
 					time: this.adjustTime(time?.textContent?.trim() || ''),
-					height: this.adjustHeight(height?.textContent?.trim() || '')
+					height: parseFloat(this.adjustHeight(height?.textContent?.trim() || '')) || 0
 				};
 			});
 
@@ -77,16 +77,16 @@ class HtmlParser {
 		const parsedHtml = this.parseHtml(html).documentElement;
 
 		/**
-		 * @typeof {TideData[]}
+		 * @type {TideData[]}
 		 */
-		const tidesTable = [...parsedHtml.querySelectorAll('div.float-left:nth-child(3) > table tr')]
+		const tidesTable = Array.from(parsedHtml.querySelectorAll('div.float-left:nth-child(3) > table tr'))
 			.slice(1)
 			.map((tr) => {
-				const [name, time, height] = [...tr.querySelectorAll('td')];
+				const [name, time, height] = Array.from(tr.querySelectorAll('td'));
 
 				return {
 					time: this.adjustTime(time?.textContent?.trim() || ''),
-					height: this.adjustHeight(height?.textContent?.trim() || '')
+					height: parseFloat(this.adjustHeight(height?.textContent?.trim() || '')) || 0
 				};
 			});
 
@@ -103,11 +103,7 @@ class HtmlParser {
 
 		const parsedHtml = this.parseHtml(html).documentElement;
 
-		/**
-		 * @typedef{TideData[]}
-		 */
-
-		const container = [...parsedHtml.querySelectorAll('div.parent:nth-child(7) > div > table')];
+		const container = Array.from(parsedHtml.querySelectorAll('div.parent:nth-child(7) > div > table'));
 
 		/** @typedef {TideData[]} Tables */
 
@@ -115,9 +111,9 @@ class HtmlParser {
 		const tables = [];
 
 		container.forEach((tr) => {
-			const rows = [...tr.querySelectorAll('tbody tr')].splice(1);
+			const rows = Array.from(tr.querySelectorAll('tbody tr')).splice(1);
 			rows.forEach((tr) => {
-				const [timeCell, heightCell] = [...tr.querySelectorAll('td')];
+				const [timeCell, heightCell] = Array.from(tr.querySelectorAll('td'));
 
 				const height = heightCell?.querySelector('div')?.textContent?.trim();
 
