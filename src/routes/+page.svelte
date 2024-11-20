@@ -17,6 +17,7 @@
 	$: date = $page.data.date;
 	$: seaTemperature = $page.data.seaTemperature;
 	$: seaTemperatureTrend = $page.data.seaTempTrend;
+	$: poolsBeingCleaned = $page.data.poolsBeingCleaned;
 
 	const currentDate = new Date();
 	let selectedDate = $page.data.date;
@@ -154,15 +155,15 @@
 		</div>
 
 		<div class="component">
-			<Info tides={tide.hourlyTides}  {seaTemperature} seaTempTrend={seaTemperatureTrend}></Info>
+			<Info tides={tide.hourlyTides} {seaTemperature} seaTempTrend={seaTemperatureTrend}></Info>
 		</div>
 
 		<div class="component">
-			<Pools tides={tide.hourlyTides}></Pools>
+			<Pools tides={tide.hourlyTides} poolCleaningDates={poolsBeingCleaned}></Pools>
 		</div>
 
 		<div class="component">
-			<Tides hourlyTides={tide.hourlyTides} tides={tide.basicTides}></Tides>
+			<Tides hourlyTides={tide.hourlyTides} tides={tide.basicTides} {selectedDate}></Tides>
 		</div>
 	</div>
 </div>

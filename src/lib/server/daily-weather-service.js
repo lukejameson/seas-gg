@@ -25,7 +25,9 @@ class DailyWeatherService {
 				'visibility',
 				'wind_speed_10m',
 				'wind_direction_10m',
-				'weather_code'
+				'weather_code',
+				'apparent_temperature',
+				'uv_index'
 			],
 			timezone: 'Europe/London',
 			start_date: date,
@@ -65,6 +67,8 @@ class DailyWeatherService {
 		 *     windSpeed10m: Float32Array | null,
 		 *     windDirection10m: Float32Array | null,
 		 *     weather_code: Float32Array | null
+		 * 	   apparent_temperature: Float32Array | null
+		 * 	   uv_index: Float32Array | null
 		 *   }
 		 * }}
 		 */
@@ -79,7 +83,9 @@ class DailyWeatherService {
 				visibility: hourly.variables(3)?.valuesArray() ?? null,
 				windSpeed10m: hourly.variables(4)?.valuesArray() ?? null,
 				windDirection10m: hourly.variables(5)?.valuesArray() ?? null,
-				weather_code: hourly.variables(6)?.valuesArray() ?? null
+				weather_code: hourly.variables(6)?.valuesArray() ?? null,
+				apparent_temperature: hourly.variables(7)?.valuesArray() ?? null,
+				uv_index: hourly.variables(8)?.valuesArray() ?? null
 			}
 		};
 
@@ -91,7 +97,9 @@ class DailyWeatherService {
 			weatherData.hourly.visibility,
 			weatherData.hourly.windSpeed10m,
 			weatherData.hourly.windDirection10m,
-			weatherData.hourly.weather_code
+			weatherData.hourly.weather_code,
+			weatherData.hourly.apparent_temperature,
+			weatherData.hourly.uv_index
 		];
 
 		if (requiredArrays.some((arr) => arr === null)) {
@@ -120,6 +128,12 @@ class DailyWeatherService {
 			/** @type {Float32Array} */
 			const weather_code = /** @type {Float32Array} */ (weatherData.hourly.weather_code);
 
+			const apparent_temperature = /** @type {Float32Array} */ (
+				weatherData.hourly.apparent_temperature
+			);
+
+			const uv_index = /** @type {Float32Array} */ (weatherData.hourly.uv_index);
+
 			mappedWeatherDataHourly.push({
 				date: weatherData.hourly.time[i],
 				temperature: temperature2m[i],
@@ -128,7 +142,9 @@ class DailyWeatherService {
 				visibility: visibility[i],
 				windSpeed10m: windSpeed10m[i],
 				windDirection10m: windDirection10m[i],
-				weather_code: weather_code[i]
+				weather_code: weather_code[i],
+				apparent_temperature: apparent_temperature[i],
+				uv_index: uv_index[i]
 			});
 		}
 

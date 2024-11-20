@@ -1,5 +1,6 @@
 <script>
 	import { common } from '$lib/common/+common';
+	import { format } from 'date-fns';
 	import '../../app.css';
 	import Icon from './+Icon.svelte';
 
@@ -7,6 +8,7 @@
 	 * @typedef {Object} Props
 	 * @property {Array<VerboseTideData>} tides - Array of high/low tide data
 	 * @property {Array<TideData>} hourlyTides - Array of hourly tide measurements
+	 * @property {Date} selectedDate
 	 */
 
 	/**
@@ -14,6 +16,7 @@
 	 * @property {string} time - Time of tide measurement
 	 * @property {number} height - Height of tide in meters
 	 * @property {'High'|'Low'} [typeof] - Type of tide (optional)
+	 * @property {boolean} current
 	 */
 
 	/**
@@ -30,7 +33,7 @@
 	 */
 
 	/** @type {Props} */
-	let { tides, hourlyTides } = $props();
+	let { tides, hourlyTides, selectedDate } = $props();
 	let detailedMode = $state(false);
 	/** @type {TideData[]|null} */
 	let filteredTides = $state(null);
@@ -38,6 +41,8 @@
 	let currentShownRange = $state({ startIndex: 0, endIndex: 0 });
 	/** @type {HTMLElement|null} */
 	let tideTimesElement = $state(null);
+
+	const currentTideIndex = common.closestTideRecordIndex(hourlyTides);
 
 	$effect(() => {
 		if (!tideTimesElement) return;
@@ -56,9 +61,16 @@
 
 	$effect(() => {
 		filteredTides =
-			hourlyTides?.filter(
-				(item, index) => index >= currentShownRange.startIndex && index < currentShownRange.endIndex
-			) ?? null;
+			hourlyTides?.filter((item, index) => {
+				if (
+					index == currentTideIndex &&
+					format(new Date(), 'yyyy-MM-dd') == format(selectedDate, 'yyyy-MM-dd')
+				) {
+					item.current = true;
+				}
+
+				return index >= currentShownRange.startIndex && index < currentShownRange.endIndex;
+			}) ?? null;
 	});
 
 	/**
@@ -100,7 +112,10 @@
 
 <div class="card">
 	<div class="d-flex flex-fill justify-content-between mb-2">
-		<h4 class="card-title">Tides {#if detailedMode}Timeline {/if} </h4>
+		<h4 class="card-title">
+			Tides {#if detailedMode}Timeline
+			{/if}
+		</h4>
 		<div class="d-flex align-items-center gap-2">
 			{#if detailedMode}
 				<div class="d-flex align-items-center gap-2">
@@ -145,10 +160,10 @@
 			{#if filteredTides != null}
 				{#each filteredTides as item}
 					<div class="tide-item text-center">
-						<div class="time-label">{item.time}</div>
-						<div class="height-value">{item.height}m</div>
+						<div class="time-label" class:current-tide={item.current}>{item.time}</div>
+						<div class="height-value" class:current-tide={item.current}>{item.height}m</div>
 
-						<div class="timeline-dot">
+						<div class="timeline-dot" class:current-tide={item.current}>
 							{#if risingOrFalling(item)}
 								<div class="timeline-icon">
 									<Icon name="chevronUp" size="12px"></Icon>
@@ -183,7 +198,6 @@
 <style>
 	.timeline-container {
 		position: relative;
-		/* border-bottom: 2px solid #dee2e6; */
 		margin: 20px 0;
 	}
 
@@ -193,6 +207,10 @@
 		padding-bottom: 25px;
 	}
 
+	.current-tide {
+		transition: all 0.3s;
+		scale: 1.15;
+	}
 	.time-label {
 		font-size: 0.875rem;
 		color: #6c757d;
@@ -216,7 +234,7 @@
 		align-items: center;
 		justify-content: center;
 		color: white;
-		padding-bottom: 4px;  /* OR */
+		padding-bottom: 4px; /* OR */
 	}
 
 	.tide-item:not(:last-child)::after {

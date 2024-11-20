@@ -22,7 +22,7 @@
 		{@render children?.()}
 		<hr />
 		<div class="d-flex flex-fill justify-content-end">
-			<button class="btn" autofocus onclick={() => dialog.close()}>Close</button>
+			<button class="btn" onclick={() => dialog.close()}>Close</button>
 		</div>
 	</div>
 </dialog>

@@ -21,6 +21,8 @@
 	 * @property {string} windDirectionAvg
 	 * @property {number} humidityAvg
 	 * @property {number} precipitationTotal
+	 * @property {number} apparentTemperatureAvg
+	 * @property {number} uvIndexAverage
 	 */
 
 	/**@type {WeatherSummary}*/
@@ -108,6 +110,15 @@
 			dayTimeWeather.map((x) => x.precipitation).reduce((a, b) => a + b)
 		);
 
+		const apparentTempAvg = Math.round(
+			dayTimeWeather.map((x) => x.apparent_temperature).reduce((a, b) => a + b) /
+				dayTimeWeather.length
+		);
+
+		const uvIndexAvg = Math.round(
+			dayTimeWeather.map((x) => x.uv_index).reduce((a, b) => a + b) / dayTimeWeather.length
+		);
+
 		weatherSummary = {
 			weatherCodeMode: modeWeatherCode,
 			modeWeatherCodeAndIcon: getWeatherCode(modeWeatherCode),
@@ -115,7 +126,9 @@
 			windSpeedAvg: windSpeedAvg,
 			windDirectionAvg: formattedWindDirectionAvg,
 			humidityAvg: humidityAvg,
-			precipitationTotal: precipitationTotal
+			precipitationTotal: precipitationTotal,
+			apparentTemperatureAvg: apparentTempAvg,
+			uvIndexAverage: uvIndexAvg
 		};
 	}
 
@@ -238,6 +251,10 @@
 						</div>
 						&nbsp;|&nbsp;
 						<div class="font-weight-bold f-16">
+							{weatherSummary.apparentTemperatureAvg}°C
+						</div>
+						&nbsp;|&nbsp;
+						<div class="font-weight-bold f-16">
 							{weatherSummary.windDirectionAvg}
 							{weatherSummary.windSpeedAvg}<span class="font-14">mph</span>
 						</div>
@@ -250,6 +267,10 @@
 						&nbsp; | &nbsp;
 						<div class="font-weight-bold f-16">
 							P: {weatherSummary.precipitationTotal}mm
+						</div>
+						&nbsp; | &nbsp;
+						<div class="font-weight-bold f-16">
+							UV: {weatherSummary.uvIndexAverage}
 						</div>
 					</div>
 				</div>
@@ -273,6 +294,11 @@
 						<div class="font-weight-bold f-16">
 							{Math.round(weather[currentPage].temperature)}°C
 						</div>
+
+						<div class="font-weight-bold f-14">
+							&nbsp;(≅{Math.round(weather[currentPage].apparent_temperature)}°C )
+						</div>
+
 						&nbsp;|&nbsp;
 						<div class="font-weight-bold f-16">
 							{formatWindDirection(weather[currentPage].windDirection10m)[0]}
@@ -287,6 +313,10 @@
 						&nbsp;|&nbsp;
 						<div class="font-weight-bold f-16">
 							P: {Math.round(weather[currentPage].precipitation)}mm
+						</div>
+						&nbsp;|&nbsp;
+						<div class="font-weight-bold f-16">
+							UV: {Math.round(weather[currentPage].uv_index)}
 						</div>
 					</div>
 				</div>
