@@ -2,9 +2,15 @@
 	import '../../app.css';
 	import Icon from './+Icon.svelte';
 	/**
-	 * @type {TideData[]}
+	 * @typedef {Object} Props
+	 * @property {Array<VerboseTideData>} tides - Array of high/low tide data
+	 * @property {PoolCleaningDates} poolCleaningDates - Array of hourly tide measurements
 	 */
-	export let tides;
+
+	/**
+	 * @type {Props}
+	 */
+	let { tides, poolCleaningDates } = $props();
 
 	/**
 	 * @typedef {Object} TideEntry
@@ -24,19 +30,27 @@
 	 */
 
 	/**@type {Period[]|null}*/
-	let ladiesPoolTimes;
+	let ladiesPoolTimes = $state(getTideTimeMinAndMaxForHeight(6.7, '06:00', '18:00'));
 	/**@type {Period[]|null}*/
-	let gentsPoolsTimes;
+	let gentsPoolsTimes = $state(getTideTimeMinAndMaxForHeight(5, '06:00', '18:00'));
 	/**@type {Period[]|null}*/
-	let kidsPoolsTimes;
+	let kidsPoolsTimes = $state(getTideTimeMinAndMaxForHeight(7.5, '06:00', '18:00'));
 
-	$: {
+	let isLadiesBeingCleaned = $state(poolBeingCleaned('ladies'));
+	let isGentsBeingCleaned = $state(poolBeingCleaned('gentlemens'));
+	let isKidsBeingCleaned = $state(poolBeingCleaned('childrens'));
+
+	$effect(() => {
 		if (tides) {
 			gentsPoolsTimes = getTideTimeMinAndMaxForHeight(5, '06:00', '18:00'); // First Pool;
 			ladiesPoolTimes = getTideTimeMinAndMaxForHeight(6.7, '06:00', '18:00'); // Main Big Pool;
 			kidsPoolsTimes = getTideTimeMinAndMaxForHeight(7.5, '06:00', '18:00'); // Side Pool next to big pool;
+
+			isLadiesBeingCleaned = poolBeingCleaned('ladies');
+			isGentsBeingCleaned = poolBeingCleaned('gentlemens');
+			isKidsBeingCleaned = poolBeingCleaned('childrens');
 		}
-	}
+	});
 
 	/**
 	 * Finds periods where tide height is below a specified threshold
@@ -68,7 +82,7 @@
 		/** @type {number|null}*/
 		let lastHeight = null;
 
-		filteredHourlyTides.forEach((entry, index) => {
+		filteredHourlyTides.forEach((entry) => {
 			const isUnderThreshold = entry.height < threshold;
 
 			if (isUnderThreshold && (!lastHeight || lastHeight >= threshold)) {
@@ -123,6 +137,15 @@
 		const [hours, minutes] = time.split(':').map(Number);
 		return hours * 60 + minutes;
 	}
+
+	/**
+	 * @param {string} pool
+	 */
+	function poolBeingCleaned(pool) {
+		if (!poolCleaningDates || !poolCleaningDates.pools) return null;
+
+		if (poolCleaningDates.pools.includes(pool)) return true;
+	}
 </script>
 
 <div class="card">
@@ -138,6 +161,8 @@
 						<Icon name="circleExclamation" size="0.75rem"></Icon>
 						No times available
 					</small>
+				{:else if isLadiesBeingCleaned}
+					<span class="text-red">Closed for cleaning</span>
 				{:else}
 					{#each ladiesPoolTimes as window}
 						<div class="d-flex align-items-center gap-2 mb-1">
@@ -153,6 +178,8 @@
 					<small class="text-muted">
 						<Icon name="circleExclamation" size="0.75rem"></Icon> No times available
 					</small>
+				{:else if isGentsBeingCleaned}
+					<span class="text-red">Closed for cleaning</span>
 				{:else}
 					{#each gentsPoolsTimes as window}
 						<div class="d-flex align-items-center gap-2 mb-1">
@@ -169,6 +196,8 @@
 					<small class="text-muted">
 						<Icon name="circleExclamation" size="0.75rem"></Icon> No times available
 					</small>
+				{:else if isKidsBeingCleaned}
+					<span class="text-red">Closed for cleaning</span>
 				{:else}
 					{#each kidsPoolsTimes as window}
 						<div class="d-flex align-items-center gap-2 mb-1">
@@ -181,3 +210,9 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.text-red {
+		color: rgb(255, 26, 26);
+	}
+</style>

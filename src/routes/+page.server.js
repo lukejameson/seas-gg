@@ -31,28 +31,36 @@ export async function load({ fetch, url }) {
 	// Only fetch data if date is valid
 	try {
 		const date = format(parsedDate, DATE_FORMAT);
-		const [tideResponse, weatherResponse, seaTemperatureResponse, seaTempTrendResponse] =
-			await Promise.all([
-				fetch(`/tides?date=${date}`),
-				fetch(`/weather?date=${date}`),
-				fetch(`/sea_temp?date=${date}`),
-				fetch(`/sea_temp/trend`)
-			]);
+		const [
+			tideResponse,
+			weatherResponse,
+			seaTemperatureResponse,
+			seaTempTrendResponse,
+			poolsBeingCleanedResponse
+		] = await Promise.all([
+			fetch(`/tides?date=${date}`),
+			fetch(`/weather?date=${date}`),
+			fetch(`/sea_temp?date=${date}`),
+			fetch(`/sea_temp/trend`),
+			fetch(`/pools/clean?date=${date}`)
+		]);
 
 		if (
 			!tideResponse.ok ||
 			!weatherResponse.ok ||
 			!seaTemperatureResponse.ok ||
-			!seaTempTrendResponse.ok
+			!seaTempTrendResponse.ok ||
+			!poolsBeingCleanedResponse.ok
 		) {
 			throw new Error('One or more API requests failed');
 		}
 
-		const [tide, weather, seaTemperature, seaTempTrend] = await Promise.all([
+		const [tide, weather, seaTemperature, seaTempTrend, poolsBeingCleaned] = await Promise.all([
 			tideResponse.json(),
 			weatherResponse.json(),
 			seaTemperatureResponse.json(),
-			seaTempTrendResponse.json()
+			seaTempTrendResponse.json(),
+			poolsBeingCleanedResponse.json()
 		]);
 
 		return {
@@ -60,7 +68,8 @@ export async function load({ fetch, url }) {
 			weather,
 			seaTemperature,
 			date,
-			seaTempTrend
+			seaTempTrend,
+			poolsBeingCleaned
 		};
 	} catch (error) {
 		console.error('Failed to fetch data:', error);
@@ -69,6 +78,7 @@ export async function load({ fetch, url }) {
 			weather: null,
 			seaTemperature: null,
 			seaTempTrend: null,
+			poolsBeingCleaned: null,
 			date: format(today, DATE_FORMAT),
 			error: 'Failed to load data'
 		};

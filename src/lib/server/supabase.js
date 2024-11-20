@@ -135,13 +135,28 @@ class SupabaseWorker {
 		const date = format(new Date(), 'yyyy-MM-dd');
 		const sevenDaysAgoDate = format(addDays(date, -7), 'yyyy-MM-dd');
 
-		console.log(date, sevenDaysAgoDate);
-
 		const { data, error } = await supabase
 			.from('sea_temp')
 			.select('date, sea_temp_c')
 			.gte('date', sevenDaysAgoDate)
 			.lte('date', date);
+
+		if (error) return null;
+
+		return data;
+	}
+
+	/**
+	 * @param {Date} date
+	 */
+	async getPoolCleaningScheduleForDate(date) {
+		const formattedDate = format(date, 'yyyy-MM-dd');
+
+		const { data, error } = await supabase
+			.from('pool_cleaning_dates')
+			.select('date, pools')
+			.eq('date', formattedDate)
+			.single();
 
 		if (error) return null;
 

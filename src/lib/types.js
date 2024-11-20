@@ -37,6 +37,8 @@
  * @property {number} windSpeed10m
  * @property {number} windDirection10m
  * @property {number} weather_code
+ * @property {number} apparent_temperature
+ * @property {number} uv_index
  */
 
 /**
@@ -65,4 +67,15 @@
  * @typedef {Object} SeaTemperature
  * @property {Date} date
  * @property {string} sea_temp_c
+ */
+
+/**
+ * @typedef {Object} Pools
+ * @property {string} poolName
+ */
+
+/**
+ * @typedef {Object} PoolCleaningDates
+ * @property {Date} date
+ * @property {Pools[]} pools
  */
