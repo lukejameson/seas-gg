@@ -82,7 +82,7 @@ class HtmlParser {
 		const tidesTable = [...parsedHtml.querySelectorAll('div.float-left:nth-child(3) > table tr')]
 			.slice(1)
 			.map((tr) => {
-				const [time, height] = [...tr.querySelectorAll('td')];
+				const [name, time, height] = [...tr.querySelectorAll('td')];
 
 				return {
 					time: this.adjustTime(time?.textContent?.trim() || ''),
