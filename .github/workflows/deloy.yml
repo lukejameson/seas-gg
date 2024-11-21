@@ -37,36 +37,52 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/seas-gg:latest
           build-args: |
-            SUPABASE_URL=${{ secrets.SUPABASE_URL }}
-            SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}
             TIDE_URL=${{ secrets.TIDE_URL }}
             SEA_TEMP_URL=${{secrets.SEA_TEMP_URL}}
+            POSTGRES_HOST=${{secrets.POSTGRES_HOST}}
+            POSTGRES_PORT=${{secrets.POSTGRES_PORT}}
+            POSTGRES_DATABASE=${{secrets.POSTGRES_DATABASE}}
+            POSTGRES_USER=${{secrets.POSTGRES_USER}}
+            POSTGRES_PASSWORD=${{secrets.POSTGRES_PASSWORD}}
+            POSTGRES_SSL=${{secrets.POSTGRES_SSL}}
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           TIDE_URL: ${{ secrets.TIDE_URL }}
           SEA_TEMP_URL: ${{ secrets.SEA_TEMP_URL }}
+          POSTGRES_HOST: ${{secrets.POSTGRES_HOST}}
+          POSTGRES_PORT: ${{secrets.POSTGRES_PORT}}
+          POSTGRES_DATABASE: ${{secrets.POSTGRES_DATABASE}}
+          POSTGRES_USER: ${{secrets.POSTGRES_USER}}
+          POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+          POSTGRES_SSL: ${{secrets.POSTGRES_SSL}}
         with:
           host: ${{ secrets.VPS }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
           port: ${{secrets.VPS_SSH_PORT}}
-          envs: SUPABASE_URL,SUPABASE_KEY,TIDE_URL,SEA_TEMP_URL
+          envs: POSTGRES_HOST,POSTGRES_PORT,POSTGRES_DATABASE,POSTGRES_USER,POSTGRES_PASSWORD,POSTGRES_SSL,TIDE_URL,SEA_TEMP_URL
           script: |
             cd ~/docker-apps/seas-gg
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
             docker pull ghcr.io/${{ github.repository_owner }}/seas-gg:latest
-            SUPABASE_URL=$SUPABASE_URL \
-            SUPABASE_KEY=$SUPABASE_KEY \
             TIDE_URL=$TIDE_URL \
             SEA_TEMP_URL=$SEA_TEMP_URL \
+            POSTGRES_HOST=$POSTGRES_HOST \
+            POSTGRES_PORT=$POSTGRES_PORT \
+            POSTGRES_DATABASE=$POSTGRES_DATABASE \
+            POSTGRES_USER=$POSTGRES_USER \
+            POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+            POSTGRES_SSL=$POSTGRES_SSL \
             docker compose down
-            SUPABASE_URL=$SUPABASE_URL \
-            SUPABASE_KEY=$SUPABASE_KEY \
             TIDE_URL=$TIDE_URL \
             SEA_TEMP_URL=$SEA_TEMP_URL \
+            POSTGRES_HOST=$POSTGRES_HOST \
+            POSTGRES_PORT=$POSTGRES_PORT \
+            POSTGRES_DATABASE=$POSTGRES_DATABASE \
+            POSTGRES_USER=$POSTGRES_USER \
+            POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+            POSTGRES_SSL=$POSTGRES_SSL \
             docker compose up -d
             docker logout ghcr.io

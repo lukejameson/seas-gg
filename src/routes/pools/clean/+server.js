@@ -2,7 +2,8 @@
  * GET Handler for tides
  * @param {import('@sveltejs/kit').RequestEvent} event
  */
-import { supabaseWorker } from '$lib/server/supabase';
+
+import { databaseWorker } from '$lib/server/database_worker';
 
 /**
  *
@@ -19,7 +20,7 @@ export async function GET({ url }) {
 	}
 
 	try {
-		const cleaningDate = await supabaseWorker.getPoolCleaningScheduleForDate(date);
+		const cleaningDate = await databaseWorker.getPoolCleaningScheduleForDate(date);
 
 		if (!cleaningDate) {
 			return new Response(JSON.stringify({ error: 'Not found' }), {

@@ -1,9 +1,9 @@
 import { format, isSameDay } from 'date-fns';
 import { htmlParser } from './html_parser.js';
-import { supabaseWorker } from './supabase.js';
 import { tideSequence } from './tide_sequence.js';
 import { tideScraper } from './tides-scraper.js';
 import { seaTemperatureScraper } from './sea-temperature-scraper.js';
+import { databaseWorker } from './database_worker.js';
 
 /**
  *
@@ -35,9 +35,9 @@ class Main {
 
 		if (!tideData) return null;
 
-		await supabaseWorker.storeTideRecord(tideData);
+		await databaseWorker.storeTideRecord(tideData);
 
-		return await supabaseWorker.getTideRecord(date);
+		return await databaseWorker.getTideRecord(date);
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Main {
 	 */
 	async getTideForDate(date) {
 		try {
-			let tideData = await supabaseWorker.getTideRecord(date);
+			let tideData = await databaseWorker.getTideRecord(date);
 
 			if (!tideData) {
 				tideData = await this.processTideData(date);
@@ -68,7 +68,7 @@ class Main {
 	async getTidesForWeek(date) {
 		const { start, end } = tideScraper.getDateRangeForWeek(date);
 
-		const records = await supabaseWorker.getWeeksTideRecords(start, end);
+		const records = await databaseWorker.getWeeksTideRecords(start, end);
 
 		if (!records) {
 			const tideData = await tideScraper.scrapeTidesForWeek(date);
@@ -94,12 +94,12 @@ class Main {
 					data: tideRecords
 				};
 
-				await supabaseWorker.storeWeeklyTides(wholeWeek);
+				await databaseWorker.storeWeeklyTides(wholeWeek);
 			} catch (error) {
 				console.error(error);
 			}
 
-			return await supabaseWorker.getWeeksTideRecords(tideRecords[0].date, tideRecords[6].date);
+			return await databaseWorker.getWeeksTideRecords(tideRecords[0].date, tideRecords[6].date);
 		}
 
 		return records;
@@ -112,7 +112,7 @@ class Main {
 	 */
 	async getSeaTempForDate(date) {
 		try {
-			const existingData = await supabaseWorker.getSeaTempForDate(date);
+			const existingData = await databaseWorker.getSeaTempForDate(date);
 
 			/**@type {Date} */
 			const today = new Date();
@@ -131,9 +131,9 @@ class Main {
 						}
 					}
 
-					await supabaseWorker.storeSeaTemperatures(date, parsedHTML);
+					await databaseWorker.storeSeaTemperatures(date, parsedHTML);
 
-					return await supabaseWorker.getSeaTempForDate(date);
+					return await databaseWorker.getSeaTempForDate(date);
 				} else {
 					return { date: date, sea_temp_c: 'Not available' };
 				}
@@ -148,7 +148,7 @@ class Main {
 	}
 
 	async calculateSevenDaySeaTempTrend() {
-		const seaTempOverLastSevenDays = await supabaseWorker.getSeaTempLastSevenDays();
+		const seaTempOverLastSevenDays = await databaseWorker.getSeaTempLastSevenDays();
 
 		if (!seaTempOverLastSevenDays) return;
 
