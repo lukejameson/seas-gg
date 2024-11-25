@@ -23,6 +23,7 @@ ENV POSTGRES_SSL=${POSTGRES_SSL}
 RUN apt-get update && \
     apt-get install -y python3 make g++ \
     wget \
+    chromium \
     libglib2.0-0 \
     libnss3 \
     libnspr4 \
@@ -48,6 +49,11 @@ RUN apt-get update && \
 # Create a temporary directory for building
 WORKDIR /temp_build
 
+# Set Playwright specific env vars
+ENV PLAYWRIGHT_BROWSERS_PATH=/usr/bin
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+ENV CHROMIUM_PATH=/usr/bin/chromium
+
 # Copy package files
 COPY package*.json ./
 
@@ -72,10 +78,11 @@ COPY --from=builder /temp_build/package*.json ./
 # Install production dependencies
 RUN npm ci --quiet --only=production
 
-# Install system dependencies for production
+# Install system dependencies and Chromium for production
 RUN apt-get update && \
     apt-get install -y \
     wget \
+    chromium \
     libglib2.0-0 \
     libnss3 \
     libnspr4 \
@@ -97,6 +104,11 @@ RUN apt-get update && \
     libcairo2 \
     libasound2 \
     && rm -rf /var/lib/apt/lists/*
+
+# Set Playwright specific env vars in production
+ENV PLAYWRIGHT_BROWSERS_PATH=/usr/bin
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+ENV CHROMIUM_PATH=/usr/bin/chromium
 
 ENV PORT=5000
 ENV HOST=0.0.0.0
