@@ -20,23 +20,6 @@ class HtmlParser {
 	/**
 	 *
 	 * @param {string} html
-	 * @returns {string|null|undefined}
-	 */
-	getSeaTempTable(html) {
-		if (!html) {
-			return null;
-		}
-
-		const parsedHtml = this.parseHtml(html);
-
-		const seaTemp = parsedHtml.querySelector(`.temperature`)?.textContent;
-
-		return seaTemp;
-	}
-
-	/**
-	 *
-	 * @param {string} html
 	 * @returns {VerboseTideData[]|null}
 	 */
 	getVerboseBasicTidesTable(html) {
@@ -49,7 +32,9 @@ class HtmlParser {
 		/**
 		 * @type {VerboseTideData[]}
 		 */
-		const tidesTable = Array.from(parsedHtml.querySelectorAll('div.float-left:nth-child(3) > table tr'))
+		const tidesTable = Array.from(
+			parsedHtml.querySelectorAll('div.float-left:nth-child(3) > table tr')
+		)
 			.slice(1)
 			.map((tr) => {
 				const [name, time, height] = Array.from(tr.querySelectorAll('td'));
@@ -79,7 +64,9 @@ class HtmlParser {
 		/**
 		 * @type {TideData[]}
 		 */
-		const tidesTable = Array.from(parsedHtml.querySelectorAll('div.float-left:nth-child(3) > table tr'))
+		const tidesTable = Array.from(
+			parsedHtml.querySelectorAll('div.float-left:nth-child(3) > table tr')
+		)
 			.slice(1)
 			.map((tr) => {
 				const [name, time, height] = Array.from(tr.querySelectorAll('td'));
@@ -103,7 +90,9 @@ class HtmlParser {
 
 		const parsedHtml = this.parseHtml(html).documentElement;
 
-		const container = Array.from(parsedHtml.querySelectorAll('div.parent:nth-child(7) > div > table'));
+		const container = Array.from(
+			parsedHtml.querySelectorAll('div.parent:nth-child(7) > div > table')
+		);
 
 		/** @typedef {TideData[]} Tables */
 

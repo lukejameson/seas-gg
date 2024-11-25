@@ -122,16 +122,15 @@ class Main {
 
 			if (!existingData) {
 				if (isSameDay(today, parsedDate)) {
-					const seaTempHtml = await seaTemperatureScraper.scrapeSeaTempForToday();
-					let parsedHTML = htmlParser.getSeaTempTable(seaTempHtml);
+					var seaTempHtml = await seaTemperatureScraper.scrapeSeaTempForToday();
 
-					if (!parsedHTML) {
+					if (!seaTempHtml) {
 						{
-							parsedHTML = 'No Data';
+							seaTempHtml = 'No Data';
 						}
 					}
 
-					await databaseWorker.storeSeaTemperatures(date, parsedHTML);
+					await databaseWorker.storeSeaTemperatures(date, seaTempHtml);
 
 					return await databaseWorker.getSeaTempForDate(date);
 				} else {
