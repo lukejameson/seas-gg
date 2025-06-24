@@ -86,7 +86,7 @@
 	<div class="container-header">
 		{#if date}
 			<div class="pl-2">
-				<h3 class="font-weight-bold">{date}</h3>
+				<h3 class="font-weight-bold f-20">{date}</h3>
 			</div>
 		{/if}
 

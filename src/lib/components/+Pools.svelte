@@ -152,7 +152,7 @@
 	<div>
 		<h4 class="card-title">Pools</h4>
 	</div>
-	<div class="card-body p-2">
+	<div class="card-body p-0 pt-1 ">
 		<div class="row row-cols-2 row-cols-sm-3">
 			<div>
 				<h6 class="mb-2 font-weight-bold">Ladies Pool</h6>

@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import { format, isSameDay } from 'date-fns';
 	import Icon from './+Icon.svelte';
+	import { isMobile } from '../stores/device.js';
 
 	/**@type {HourlyWeather[]}*/
 	export let weather;
@@ -31,6 +32,7 @@
 	let pages = weather.length;
 	let currentPage = 0;
 	let isSummaryMode = false;
+	let iconSize = isMobile ? '2rem' : '3rem';
 
 	$: if (weather) {
 		setCurrentTime();
@@ -275,49 +277,53 @@
 					</div>
 				</div>
 			{:else}
-				{#if getWeatherCode(weather[currentPage].weather_code)[1]}
-					<div>
-						<div style="width: 60px" class="text-center">
-							<Icon name={getWeatherCode(weather[currentPage].weather_code)[1]} size="3rem"></Icon>
-							<span class="font-14">{getWeatherCode(weather[currentPage].weather_code)[0]}</span>
+				<div class="d-flex align-self-center">
+					{#if getWeatherCode(weather[currentPage].weather_code)[1]}
+						<div>
+							<div style="width: 60px" class="text-center">
+								<Icon name={getWeatherCode(weather[currentPage].weather_code)[1]} size={iconSize}
+								></Icon>
+								<span class="font-14">{getWeatherCode(weather[currentPage].weather_code)[0]}</span>
+							</div>
 						</div>
-					</div>
-				{:else}
-					{getWeatherCode(weather[currentPage].weather_code)[0]}
-				{/if}
-				<div class="pl-3">
-					<div class="d-flex flex-gap-2">
-						<div class="font-weight-bold f-16">
-							{format(weather[currentPage].date, 'HH:mm')}
-						</div>
-						&nbsp;|&nbsp;
-						<div class="font-weight-bold f-16">
-							{Math.round(weather[currentPage].temperature)}°C
-						</div>
+					{:else}
+						{getWeatherCode(weather[currentPage].weather_code)[0]}
+					{/if}
+					<div class="pl-3 align-self-center" class:f-16={!isMobile} class:f-14={isMobile}>
+						<div class="d-flex flex-gap-2">
+							<div class="font-weight-bold" class:f-16={!isMobile} class:f-14={isMobile}>
+								{format(weather[currentPage].date, 'HH:mm')}
+							</div>
+							&nbsp;|&nbsp;
+							<div class="font-weight-bold" class:f-16={!isMobile} class:f-14={isMobile}>
+								{Math.round(weather[currentPage].temperature)}°C
+							</div>
 
-						<div class="font-weight-bold f-14">
-							&nbsp;(≅{Math.round(weather[currentPage].apparent_temperature)}°C )
-						</div>
+							<div class="font-weight-bold" class:f-14={!isMobile} class:f-12={isMobile}>
+								&nbsp;(≅{Math.round(weather[currentPage].apparent_temperature)}°C )
+							</div>
 
-						&nbsp;|&nbsp;
-						<div class="font-weight-bold f-16">
-							{formatWindDirection(weather[currentPage].windDirection10m)[0]}
-							{Math.round(weather[currentPage].windSpeed10m)}<span class="font-14">mph</span>
+							&nbsp;|&nbsp;
+							<div class="font-weight-bold f" class:f-16={!isMobile} class:f-14={isMobile}>
+								{formatWindDirection(weather[currentPage].windDirection10m)[0]}
+								{Math.round(weather[currentPage].windSpeed10m)}<span class="font-14">mph</span>
+							</div>
 						</div>
-					</div>
-
-					<div class="d-flex flex-gap-2">
-						<div class="font-weight-bold f-16">
-							H: {weather[currentPage].relativeHumidity}%
-						</div>
-						&nbsp;|&nbsp;
-						<div class="font-weight-bold f-16">
-							P: {Math.round(weather[currentPage].precipitation)}mm
-						</div>
-						&nbsp;|&nbsp;
-						<div class="font-weight-bold f-16">
-							UV: {Math.round(weather[currentPage].uv_index)}
-						</div>
+						<!-- {#if !isMobile} -->
+							<div class="d-flex flex-gap-2" class:f-14={!isMobile} class:f-12={isMobile}>
+								<div class="font-weight-bold" class:f-14={!isMobile} class:f-12={isMobile}>
+									H: {weather[currentPage].relativeHumidity}%
+								</div>
+								&nbsp;|&nbsp;
+								<div class="font-weight-bold" class:f-14={!isMobile} class:f-12={isMobile}>
+									P: {Math.round(weather[currentPage].precipitation)}mm
+								</div>
+								&nbsp;|&nbsp;
+								<div class="font-weight-bold" class:f-14={!isMobile} class:f-12={isMobile}>
+									UV: {Math.round(weather[currentPage].uv_index)}
+								</div>
+							</div>
+						<!-- {/if} -->
 					</div>
 				</div>
 			{/if}
@@ -364,4 +370,5 @@
 	.font-14 {
 		font-size: 14px;
 	}
+
 </style>

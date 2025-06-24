@@ -47,17 +47,6 @@
 				<span>{seaTemperature.sea_temp_c}</span>
 			</div>
 
-			<div class="d-flex align-items-center">
-				<span class="fw-bold me-2">Temp Trend:</span>
-				{#if seaTempTrend.trend === 'increasing'}
-					<Icon name="chevronUp" size="16px"></Icon>
-				{:else if seaTempTrend.trend === 'decreasing'}
-					<Icon name="chevronDown" size="16px"></Icon>
-				{:else}
-					<Icon name="balance" size="16px"></Icon>
-				{/if}
-			</div>
-
 			<div>
 				<span class="fw-bold me-2">Tide:</span>
 				<span>{getCurrentTideState()}</span>
