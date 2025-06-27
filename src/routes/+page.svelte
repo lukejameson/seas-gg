@@ -152,11 +152,11 @@
 		</div>
 
 		<div class="component">
-			<Pools tides={tide.hourlyTides} poolCleaningDates={poolsBeingCleaned}></Pools>
+			<Tides tides={tide.basicTides}></Tides>
 		</div>
 
 		<div class="component">
-			<Tides tides={tide.basicTides}></Tides>
+			<Pools tides={tide.hourlyTides} poolCleaningDates={poolsBeingCleaned}></Pools>
 		</div>
 	</div>
 </div>
