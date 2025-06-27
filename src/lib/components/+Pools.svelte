@@ -149,63 +149,70 @@
 </script>
 
 <div class="card">
-	<div>
-		<h4 class="card-title">Pools</h4>
-	</div>
-	<div class="card-body p-0 pt-1 ">
-		<div class="row row-cols-2 row-cols-sm-3">
-			<div>
-				<h6 class="mb-2 font-weight-bold">Ladies Pool</h6>
-				{#if !ladiesPoolTimes}
-					<small class="text-muted">
-						<Icon name="circleExclamation" size="0.75rem"></Icon>
-						No times available
-					</small>
-				{:else if isLadiesBeingCleaned}
-					<span class="text-red">Closed for cleaning</span>
-				{:else}
-					{#each ladiesPoolTimes as window}
-						<div class="d-flex align-items-center gap-2 mb-1">
-							<Icon name="clock" size="0.75rem"></Icon>
-							<span>{window.start} - {window.end}</span>
-						</div>
-					{/each}
-				{/if}
-			</div>
-			<div>
-				<h6 class="mb-2 font-weight-bold">Gents Pool</h6>
-				{#if !gentsPoolsTimes}
-					<small class="text-muted">
-						<Icon name="circleExclamation" size="0.75rem"></Icon> No times available
-					</small>
-				{:else if isGentsBeingCleaned}
-					<span class="text-red">Closed for cleaning</span>
-				{:else}
-					{#each gentsPoolsTimes as window}
-						<div class="d-flex align-items-center gap-2 mb-1">
-							<Icon name="clock" size="0.75rem"></Icon>
-							<span>{window.start} - {window.end}</span>
-						</div>
-					{/each}
-				{/if}
+	<div class="pools-wrapper">
+		<div class="pools-header">
+			<h4 class="section-title">Pools</h4>
+		</div>
+		<div class="pools-container">
+			<div class="pool-card">
+				<h6 class="pool-title">Ladies Pool</h6>
+				<div class="pool-times">
+					{#if !ladiesPoolTimes}
+						<small class="text-muted">
+							<Icon name="circleExclamation" size="0.75rem"></Icon>
+							No times available
+						</small>
+					{:else if isLadiesBeingCleaned}
+						<span class="text-red">Closed for cleaning</span>
+					{:else}
+						{#each ladiesPoolTimes as window}
+							<div class="time-slot">
+								<Icon name="clock" size="0.75rem"></Icon>
+								<span>{window.start} - {window.end}</span>
+							</div>
+						{/each}
+					{/if}
+				</div>
 			</div>
 
-			<div>
-				<h6 class="mb-2 font-weight-bold">Kids Pool</h6>
-				{#if !kidsPoolsTimes}
-					<small class="text-muted">
-						<Icon name="circleExclamation" size="0.75rem"></Icon> No times available
-					</small>
-				{:else if isKidsBeingCleaned}
-					<span class="text-red">Closed for cleaning</span>
-				{:else}
-					{#each kidsPoolsTimes as window}
-						<div class="d-flex align-items-center gap-2 mb-1">
-							<Icon name="clock" size="0.75rem"></Icon>
-							<span>{window.start} - {window.end}</span>
-						</div>
-					{/each}
-				{/if}
+			<div class="pool-card">
+				<h6 class="pool-title">Gents Pool</h6>
+				<div class="pool-times">
+					{#if !gentsPoolsTimes}
+						<small class="text-muted">
+							<Icon name="circleExclamation" size="0.75rem"></Icon> No times available
+						</small>
+					{:else if isGentsBeingCleaned}
+						<span class="text-red">Closed for cleaning</span>
+					{:else}
+						{#each gentsPoolsTimes as window}
+							<div class="time-slot">
+								<Icon name="clock" size="0.75rem"></Icon>
+								<span>{window.start} - {window.end}</span>
+							</div>
+						{/each}
+					{/if}
+				</div>
+			</div>
+
+			<div class="pool-card">
+				<h6 class="pool-title">Kids Pool</h6>
+				<div class="pool-times">
+					{#if !kidsPoolsTimes}
+						<small class="text-muted">
+							<Icon name="circleExclamation" size="0.75rem"></Icon> No times available
+						</small>
+					{:else if isKidsBeingCleaned}
+						<span class="text-red">Closed for cleaning</span>
+					{:else}
+						{#each kidsPoolsTimes as window}
+							<div class="time-slot">
+								<Icon name="clock" size="0.75rem"></Icon>
+								<span>{window.start} - {window.end}</span>
+							</div>
+						{/each}
+					{/if}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -214,5 +221,99 @@
 <style>
 	.text-red {
 		color: rgb(255, 26, 26);
+	}
+
+	.pools-wrapper {
+		margin-bottom: 0.25rem;
+	}
+
+	.pools-header {
+		margin-bottom: 0.5rem;
+	}
+
+	.section-title {
+		font-size: 1.1rem;
+		font-weight: bold;
+		color: var(--text-primary);
+		margin: 0;
+	}
+
+	.pools-container {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.5rem;
+	}
+
+	.pool-card {
+		background-color: var(--bg-card-subtle);
+		border-radius: 0.5rem;
+		padding: 0.75rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		min-height: 100px;
+		transition: background-color 0.3s ease;
+	}
+
+	.pool-title {
+		font-size: 0.9rem;
+		margin-bottom: 0.5rem;
+		font-weight: bold;
+		color: var(--text-primary);
+	}
+
+	.pool-times {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		width: 100%;
+		align-items: center;
+	}
+
+	.time-slot {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		font-size: 0.8rem;
+		justify-content: center;
+		color: var(--text-primary);
+	}
+
+	@media only screen and (max-width: 600px) {
+		.pools-container {
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+		}
+
+		.pool-card {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			text-align: left;
+			min-height: unset;
+			padding: 0.75rem;
+		}
+
+		.pool-title {
+			font-size: 0.9rem;
+			margin-bottom: 0;
+			min-width: 80px;
+			flex-shrink: 0;
+			margin-right: 1rem;
+		}
+
+		.pool-times {
+			flex: 1;
+			gap: 0.15rem;
+			align-items: flex-start;
+		}
+
+		.time-slot {
+			font-size: 0.85rem;
+			gap: 0.2rem;
+			justify-content: flex-start;
+		}
 	}
 </style>

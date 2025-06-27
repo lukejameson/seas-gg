@@ -1,10 +1,12 @@
 <script>
-	/** @typedef {'circleExclamation' | 'clock' | 'chevronDown' | 'chevronUp' | 'chevronLeft' | 
-   'chevronRight' | 'water' | 'github' | 'instagram' | 'browser' | 'envelope' | 'calendar' | 
+	import { theme } from '$lib/stores/theme.js';
+
+	/** @typedef {'circleExclamation' | 'clock' | 'chevronDown' | 'chevronUp' | 'chevronLeft' |
+   'chevronRight' | 'water' | 'github' | 'instagram' | 'browser' | 'envelope' | 'calendar' |
    'questionMark' | 'sun' | 'sunCloud' | 'cloudSun' | 'cloud' | 'cloudDrizzle'|
-   'cloudDrizzleHeavy' |'cloudRain' | 'cloudShowers' | 'cloudSleet' |'cloudSnow' 
-   | 'cloudBolt' | 'cloudBoltSun' | 'fog' | 'smog' | 'snowflake' | 'snowflakes' 
-   | 'sun' | 'moon' | 'list'| 'toggleOn' | 'toggleOff' | 'balance' | 'expand' 
+   'cloudDrizzleHeavy' |'cloudRain' | 'cloudShowers' | 'cloudSleet' |'cloudSnow'
+   | 'cloudBolt' | 'cloudBoltSun' | 'fog' | 'smog' | 'snowflake' | 'snowflakes'
+   | 'sun' | 'moon' | 'list'| 'toggleOn' | 'toggleOff' | 'balance' | 'expand'
    | 'shrink' | 'doNotEnter'} IconName */
 
 	/** @type {Record<IconName, string>} */
@@ -82,7 +84,37 @@
 	export let size = '24px';
 	export let color = 'currentColor';
 
-	$: style = `width: ${size}; height: ${size}; color: ${color}; display: inline-block; vertical-align: middle;`;
+	// For weather icons, adjust color based on theme
+	$: iconColor = (() => {
+		if (
+			[
+				'sun',
+				'sunCloud',
+				'cloudSun',
+				'cloud',
+				'cloudDrizzle',
+				'cloudDrizzleHeavy',
+				'cloudRain',
+				'cloudShowers',
+				'cloudSleet',
+				'cloudSnow',
+				'cloudBolt',
+				'cloudBoltSun',
+				'fog',
+				'smog',
+				'snowflake',
+				'snowflakes',
+				'moon',
+				'chevronDown',
+				'chevronUp'
+			].includes(name)
+		) {
+			return $theme === 'dark' ? '#ffffff' : color;
+		}
+		return color;
+	})();
+
+	$: style = `width: ${size}; height: ${size}; color: ${iconColor}; display: inline-block; vertical-align: middle;`;
 </script>
 
 {#if icons[name]}

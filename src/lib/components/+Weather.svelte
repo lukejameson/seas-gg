@@ -1,9 +1,9 @@
 <script>
-	import '../../app.css';
 	import { page } from '$app/stores';
 	import { format, isSameDay } from 'date-fns';
-	import Icon from './+Icon.svelte';
+	import '../../app.css';
 	import { isMobile } from '../stores/device.js';
+	import Icon from './+Icon.svelte';
 
 	/**@type {HourlyWeather[]}*/
 	export let weather;
@@ -236,99 +236,113 @@
 </script>
 
 <div class="card h-100 w-100">
-	<div class="d-flex flex-fill flex-wrap justify-content-between">
-		<div class="d-flex align-items-center flex-wrap gap-2">
+	<div class="weather-container">
+		<div class="weather-content">
 			{#if isSummaryMode}
-				<div>
-					<div style="width: 60px" class="text-center">
-						<Icon name={weatherSummary.modeWeatherCodeAndIcon[1]} size="3rem"></Icon>
-						<span class="font-14">{weatherSummary.modeWeatherCodeAndIcon[0]}</span>
-					</div>
-				</div>
-
-				<div class="pl-3">
-					<div class="d-flex flex-gap-2">
-						<div class="font-weight-bold f-16">
-							{weatherSummary.tempAvg}°C
-						</div>
-						&nbsp;|&nbsp;
-						<div class="font-weight-bold f-16">
-							{weatherSummary.apparentTemperatureAvg}°C
-						</div>
-						&nbsp;|&nbsp;
-						<div class="font-weight-bold f-16">
-							{weatherSummary.windDirectionAvg}
-							{weatherSummary.windSpeedAvg}<span class="font-14">mph</span>
+				<div class="weather-summary">
+					<div class="weather-icon-section">
+						<div class="weather-icon-container">
+							<Icon name={weatherSummary.modeWeatherCodeAndIcon[1]} size="3rem"></Icon>
+							<span class="weather-condition">{weatherSummary.modeWeatherCodeAndIcon[0]}</span>
 						</div>
 					</div>
 
-					<div class="d-flex flex-gap-2">
-						<div class="font-weight-bold f-16">
-							H: {weatherSummary.humidityAvg}%
+					<div class="weather-details">
+						<div class="weather-row primary-row">
+							<div class="weather-item">
+								<span class="weather-value">{weatherSummary.tempAvg}°C</span>
+							</div>
+							<div class="weather-separator">|</div>
+							<div class="weather-item">
+								<span class="weather-value">{weatherSummary.apparentTemperatureAvg}°C</span>
+							</div>
+							<div class="weather-separator">|</div>
+							<div class="weather-item">
+								<span class="weather-value"
+									>{weatherSummary.windDirectionAvg} {weatherSummary.windSpeedAvg}mph</span
+								>
+							</div>
 						</div>
-						&nbsp; | &nbsp;
-						<div class="font-weight-bold f-16">
-							P: {weatherSummary.precipitationTotal}mm
-						</div>
-						&nbsp; | &nbsp;
-						<div class="font-weight-bold f-16">
-							UV: {weatherSummary.uvIndexAverage}
+
+						<div class="weather-row secondary-row">
+							<div class="weather-item">
+								<span class="weather-label">H:</span>
+								<span class="weather-value">{weatherSummary.humidityAvg}%</span>
+							</div>
+							<div class="weather-separator">|</div>
+							<div class="weather-item">
+								<span class="weather-label">P:</span>
+								<span class="weather-value">{weatherSummary.precipitationTotal}mm</span>
+							</div>
+							<div class="weather-separator">|</div>
+							<div class="weather-item">
+								<span class="weather-label">UV:</span>
+								<span class="weather-value">{weatherSummary.uvIndexAverage}</span>
+							</div>
 						</div>
 					</div>
 				</div>
 			{:else}
-				<div class="d-flex align-self-center">
-					{#if getWeatherCode(weather[currentPage].weather_code)[1]}
-						<div>
-							<div style="width: 60px" class="text-center">
+				<div class="weather-hourly">
+					<div class="weather-icon-section">
+						{#if getWeatherCode(weather[currentPage].weather_code)[1]}
+							<div class="weather-icon-container">
 								<Icon name={getWeatherCode(weather[currentPage].weather_code)[1]} size={iconSize}
 								></Icon>
-								<span class="font-14">{getWeatherCode(weather[currentPage].weather_code)[0]}</span>
+								<span class="weather-condition"
+									>{getWeatherCode(weather[currentPage].weather_code)[0]}</span
+								>
+							</div>
+						{:else}
+							<span class="weather-condition"
+								>{getWeatherCode(weather[currentPage].weather_code)[0]}</span
+							>
+						{/if}
+					</div>
+
+					<div class="weather-details">
+						<div class="weather-row primary-row">
+							<div class="weather-item">
+								<span class="weather-value">{format(weather[currentPage].date, 'HH:mm')}</span>
+							</div>
+							<div class="weather-separator">|</div>
+							<div class="weather-item">
+								<span class="weather-value">{Math.round(weather[currentPage].temperature)}°C</span>
+								<span class="weather-feels-like"
+									>(≅{Math.round(weather[currentPage].apparent_temperature)}°C)</span
+								>
+							</div>
+							<div class="weather-separator">|</div>
+							<div class="weather-item">
+								<span class="weather-value"
+									>{formatWindDirection(weather[currentPage].windDirection10m)[0]}
+									{Math.round(weather[currentPage].windSpeed10m)}mph</span
+								>
 							</div>
 						</div>
-					{:else}
-						{getWeatherCode(weather[currentPage].weather_code)[0]}
-					{/if}
-					<div class="pl-3 align-self-center" class:f-16={!isMobile} class:f-14={isMobile}>
-						<div class="d-flex flex-gap-2">
-							<div class="font-weight-bold" class:f-16={!isMobile} class:f-14={isMobile}>
-								{format(weather[currentPage].date, 'HH:mm')}
-							</div>
-							&nbsp;|&nbsp;
-							<div class="font-weight-bold" class:f-16={!isMobile} class:f-14={isMobile}>
-								{Math.round(weather[currentPage].temperature)}°C
-							</div>
 
-							<div class="font-weight-bold" class:f-14={!isMobile} class:f-12={isMobile}>
-								&nbsp;(≅{Math.round(weather[currentPage].apparent_temperature)}°C )
+						<div class="weather-row secondary-row">
+							<div class="weather-item">
+								<span class="weather-label">H:</span>
+								<span class="weather-value">{weather[currentPage].relativeHumidity}%</span>
 							</div>
-
-							&nbsp;|&nbsp;
-							<div class="font-weight-bold f" class:f-16={!isMobile} class:f-14={isMobile}>
-								{formatWindDirection(weather[currentPage].windDirection10m)[0]}
-								{Math.round(weather[currentPage].windSpeed10m)}<span class="font-14">mph</span>
+							<div class="weather-separator">|</div>
+							<div class="weather-item">
+								<span class="weather-label">P:</span>
+								<span class="weather-value">{Math.round(weather[currentPage].precipitation)}mm</span
+								>
+							</div>
+							<div class="weather-separator">|</div>
+							<div class="weather-item">
+								<span class="weather-label">UV:</span>
+								<span class="weather-value">{Math.round(weather[currentPage].uv_index)}</span>
 							</div>
 						</div>
-						<!-- {#if !isMobile} -->
-							<div class="d-flex flex-gap-2" class:f-14={!isMobile} class:f-12={isMobile}>
-								<div class="font-weight-bold" class:f-14={!isMobile} class:f-12={isMobile}>
-									H: {weather[currentPage].relativeHumidity}%
-								</div>
-								&nbsp;|&nbsp;
-								<div class="font-weight-bold" class:f-14={!isMobile} class:f-12={isMobile}>
-									P: {Math.round(weather[currentPage].precipitation)}mm
-								</div>
-								&nbsp;|&nbsp;
-								<div class="font-weight-bold" class:f-14={!isMobile} class:f-12={isMobile}>
-									UV: {Math.round(weather[currentPage].uv_index)}
-								</div>
-							</div>
-						<!-- {/if} -->
 					</div>
 				</div>
 			{/if}
 		</div>
-		<div class="d-flex align-items-center gap-1 ms-auto me-auto ms-sm-0 me-sm-0 pt-2 pt-sm-0">
+		<div class="weather-controls">
 			<button
 				class="btn btn-sm"
 				on:click={() => onSummaryClick()}
@@ -367,8 +381,160 @@
 		}
 	}
 
-	.font-14 {
-		font-size: 14px;
+	.weather-container {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 	}
 
+	.weather-content {
+		flex: 1;
+	}
+
+	.weather-summary,
+	.weather-hourly {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		gap: 1rem;
+	}
+
+	.weather-icon-section {
+		flex-shrink: 0;
+	}
+
+	.weather-icon-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 60px;
+		text-align: center;
+	}
+
+	.weather-condition {
+		font-size: 0.875rem;
+		margin-top: 0.25rem;
+		color: var(--text-primary);
+	}
+
+	.weather-details {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.weather-row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.weather-item {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+	}
+
+	.weather-value {
+		font-weight: bold;
+		font-size: 1rem;
+		color: var(--text-primary);
+	}
+
+	.weather-label {
+		font-weight: bold;
+		font-size: 1rem;
+		color: var(--text-primary);
+	}
+
+	.weather-feels-like {
+		font-size: 0.875rem;
+		opacity: 0.8;
+	}
+
+	.weather-separator {
+		color: var(--text-muted);
+		font-weight: normal;
+	}
+
+	.weather-controls {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.25rem;
+		margin-top: 0.5rem;
+	}
+
+	@media only screen and (max-width: 600px) {
+		.weather-summary,
+		.weather-hourly {
+			flex-direction: row;
+			align-items: flex-start;
+			text-align: left;
+			gap: 0.75rem;
+		}
+
+		.weather-icon-container {
+			width: 50px;
+		}
+
+		.weather-details {
+			width: 100%;
+		}
+
+		.weather-row {
+			justify-content: flex-start;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+		}
+
+		.primary-row .weather-item {
+			flex-direction: row;
+			align-items: center;
+			text-align: left;
+		}
+
+		.secondary-row {
+			margin-top: 0.25rem;
+		}
+
+		.weather-value {
+			font-size: 1rem;
+		}
+
+		.weather-label {
+			font-size: 0.9rem;
+		}
+
+		.weather-feels-like {
+			font-size: 0.9rem;
+			margin-top: 0;
+			margin-left: 0.25rem;
+		}
+
+		.weather-separator {
+			color: var(--text-muted);
+			font-weight: normal;
+		}
+
+		.weather-controls {
+			margin-top: 0.5rem;
+			gap: 0.25rem;
+		}
+	}
+
+	@media only screen and (min-width: 600px) {
+		.weather-controls {
+			align-self: flex-end;
+			margin-top: 0;
+		}
+
+		.weather-container {
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: flex-start;
+		}
+	}
 </style>

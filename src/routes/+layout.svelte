@@ -2,12 +2,13 @@
 	/** @type {import('./$types').LayoutData} */
 	import { browser } from '$app/environment';
 	import { initBootstrap } from '$lib/bootstrap.js';
-	import { onMount } from 'svelte';
 	import Modal from '$lib/components/+Modal.svelte';
+	import { theme } from '$lib/stores/theme.js';
+	import { onMount } from 'svelte';
 
+	import Icon from '$lib/components/+Icon.svelte';
 	import 'bootstrap/dist/css/bootstrap.min.css';
 	import '../app.css';
-	import Icon from '$lib/components/+Icon.svelte';
 
 	let showModal = $state(false);
 
@@ -16,6 +17,15 @@
 	onMount(() => {
 		if (browser) {
 			initBootstrap();
+			// Initialize theme on page load
+			document.documentElement.setAttribute('data-theme', $theme);
+		}
+	});
+
+	// Reactively update theme when it changes
+	$effect(() => {
+		if (browser) {
+			document.documentElement.setAttribute('data-theme', $theme);
 		}
 	});
 </script>
@@ -32,7 +42,9 @@
 
 	<div class="wave-background">
 		<svg viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-			<path d="M0,100 C150,200 350,0 500,100 L500,00 L0,0 Z" style="stroke: none; fill:#e8f4f8;"
+			<path
+				d="M0,100 C150,200 350,0 500,100 L500,00 L0,0 Z"
+				style="stroke: none; fill:{$theme === 'dark' ? '#252525' : '#e8f4f8'};"
 			></path>
 		</svg>
 	</div>
@@ -115,8 +127,9 @@
 		bottom: 0;
 		width: 100%;
 		height: 64px;
-		background-color: #e8f4f8;
-		box-shadow: 0 2px 10px -1px #e8f4f8;
+		background-color: var(--bg-primary);
+		box-shadow: 0 2px 10px -1px var(--bg-primary);
+		transition: background-color 0.3s ease;
 	}
 
 	@media only screen and (max-height: 864px) {
@@ -127,8 +140,10 @@
 
 	a {
 		padding: 4px;
-		color: black;
-		transition: transform 0.3s ease;
+		color: var(--text-primary);
+		transition:
+			transform 0.3s ease,
+			color 0.3s ease;
 	}
 
 	a:hover {
@@ -148,6 +163,11 @@
 	.no-style {
 		background-color: transparent !important;
 		border: none !important;
+	}
+
+	.no-style {
+		color: var(--text-primary) !important;
+		transition: color 0.3s ease;
 	}
 
 	.no-style:hover {

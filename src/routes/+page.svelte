@@ -6,43 +6,34 @@
 	import Weather from '$lib/components/+Weather.svelte';
 
 	import Icon from '$lib/components/+Icon.svelte';
+	import Info from '$lib/components/+Info.svelte';
+	import { theme } from '$lib/stores/theme.js';
 	import { format } from 'date-fns';
 	import { addDays } from 'date-fns/addDays';
-	import { subDays } from 'date-fns/subDays';
+	import { onMount } from 'svelte';
 	import '../app.css';
-	import Info from '$lib/components/+Info.svelte';
 
 	$: tide = $page.data.tide;
 	$: weather = $page.data.weather;
 	$: date = $page.data.date;
 	$: seaTemperature = $page.data.seaTemperature;
-	$: seaTemperatureTrend = $page.data.seaTempTrend;
 	$: poolsBeingCleaned = $page.data.poolsBeingCleaned;
 
-	const currentDate = new Date();
-	let selectedDate = $page.data.date;
+	// Keep selectedDate in sync with page data
+	$: selectedDate = $page.data.date;
+
+	// No theme initialization needed here - handled by layout
+	onMount(() => {
+		// Any page-specific initialization can go here
+	});
 
 	/**
 	 * Takes in a number then applies that to the date
 	 * @param {number} operator
 	 */
 	function onDateNavigationClicked(operator) {
-		if (operator == 0) {
-			selectedDate = new Date();
-		}
-
 		selectedDate = addDays(selectedDate, operator);
-
 		loadData(selectedDate);
-	}
-
-	/** @param {Date} date */
-	function isButtonSelected(date) {
-		if (!tide) return false;
-
-		if (!date) return false;
-
-		if (format(selectedDate, 'yyyy-MM-dd') == format(date, 'yyyy-MM-dd')) return true;
 	}
 
 	/**
@@ -50,9 +41,12 @@
 	 * @returns {boolean}
 	 */
 	function isYesterdayDisabled() {
-		if (format(selectedDate, 'yyyy-MM-dd') == format(new Date(), 'yyyy-MM-dd')) return true;
+		const today = new Date();
+		const todayString = format(today, 'yyyy-MM-dd');
+		const selectedString = format(selectedDate, 'yyyy-MM-dd');
 
-		return false;
+		// Disable if selected date is today or before today
+		return selectedString <= todayString;
 	}
 
 	/**
@@ -90,7 +84,7 @@
 			</div>
 		{/if}
 
-		<div class="d-flex gap-1">
+		<div class="d-flex gap-1 align-items-center">
 			<div
 				data-toggle="tooltip"
 				data-placement="top"
@@ -100,32 +94,11 @@
 					data-sveltekit-preload-data="hover"
 					type="button"
 					class="btn"
-					aria-label="-1 Day"
+					aria-label="Previous Day"
 					on:click={() => onDateNavigationClicked(-1)}
-					class:btn-selected={isButtonSelected(subDays(currentDate, 1))}
 					disabled={isYesterdayDisabled()}
 				>
 					<Icon name="chevronLeft" size="18px"></Icon>
-				</button>
-			</div>
-
-			<div
-				data-sveltekit-preload-data="hover"
-				data-toggle="tooltip"
-				data-placement="top"
-				title={format(currentDate, 'yyyy-MM-dd') == format(selectedDate, 'yyyy-MM-dd')
-					? 'Today already selected'
-					: 'Today'}
-			>
-				<button
-					type="button"
-					class="btn"
-					aria-label="Today"
-					on:click={() => onDateNavigationClicked(0)}
-					class:btn-selected={isButtonSelected(currentDate)}
-					disabled={format(currentDate, 'yyyy-MM-dd') == format(selectedDate, 'yyyy-MM-dd')}
-				>
-					<Icon name="calendar" size="18px"></Icon>
 				</button>
 			</div>
 
@@ -138,12 +111,32 @@
 				<button
 					type="button"
 					class="btn"
-					aria-label="Tomorrow"
+					aria-label="Next Day"
 					on:click={() => onDateNavigationClicked(1)}
 					disabled={isTomorrowDisabled()}
-					class:btn-selected={isButtonSelected(addDays(currentDate, 1))}
 				>
 					<Icon name="chevronRight" size="18px"></Icon>
+				</button>
+			</div>
+
+			<div class="theme-divider"></div>
+
+			<div
+				data-toggle="tooltip"
+				data-placement="top"
+				title={$theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+			>
+				<button
+					type="button"
+					class="btn btn-theme"
+					aria-label="Toggle theme"
+					on:click={() => theme.toggle()}
+				>
+					{#if $theme === 'dark'}
+						<Icon name="sun" size="18px"></Icon>
+					{:else}
+						<Icon name="moon" size="18px"></Icon>
+					{/if}
 				</button>
 			</div>
 		</div>
@@ -155,7 +148,7 @@
 		</div>
 
 		<div class="component">
-			<Info tides={tide.hourlyTides} {seaTemperature} seaTempTrend={seaTemperatureTrend}></Info>
+			<Info tides={tide.hourlyTides} {seaTemperature}></Info>
 		</div>
 
 		<div class="component">
@@ -163,7 +156,7 @@
 		</div>
 
 		<div class="component">
-			<Tides hourlyTides={tide.hourlyTides} tides={tide.basicTides} {selectedDate}></Tides>
+			<Tides tides={tide.basicTides}></Tides>
 		</div>
 	</div>
 </div>

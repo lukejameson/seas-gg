@@ -17,7 +17,7 @@ class SeaTemperatureScraper {
 		try {
 			const browser = await chromium.launch({
 				headless: true,
-				executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium',
+				// executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium',
 				args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
 			});
 
@@ -37,7 +37,10 @@ class SeaTemperatureScraper {
 
 			return temperature.trim();
 		} catch (error) {
-			console.error('Sea temperature scraping failed:', error instanceof Error ? error.message : String(error));
+			console.error(
+				'Sea temperature scraping failed:',
+				error instanceof Error ? error.message : String(error)
+			);
 			throw error;
 		}
 	}
