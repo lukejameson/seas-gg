@@ -11,9 +11,23 @@
 		const currentTideIndex = common.closestTideRecordIndex(tides);
 
 		if (typeof currentTideIndex !== 'number') return;
-		if (currentTideIndex >= tides.length - 1) return;
 
 		const currentTideRecord = tides[currentTideIndex];
+
+		// If we're at the last record, use the previous record for comparison
+		if (currentTideIndex >= tides.length - 1) {
+			if (currentTideIndex === 0) return 'Unknown'; // Only one record available
+
+			const previousTideRecord = tides[currentTideIndex - 1];
+
+			if (currentTideRecord.height > previousTideRecord.height) {
+				return 'Rising';
+			} else {
+				return 'Falling';
+			}
+		}
+
+		// Normal case: compare with next record
 		const nextTideRecord = tides[currentTideIndex + 1];
 
 		if (nextTideRecord.height > currentTideRecord.height) {

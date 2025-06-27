@@ -44,7 +44,7 @@
 		<svg viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
 			<path
 				d="M0,100 C150,200 350,0 500,100 L500,00 L0,0 Z"
-				style="stroke: none; fill:{$theme === 'dark' ? '#252525' : '#e8f4f8'};"
+				style="stroke: none; fill:{$theme === 'dark' ? '#1a1a1a' : '#e8f4f8'};"
 			></path>
 		</svg>
 	</div>

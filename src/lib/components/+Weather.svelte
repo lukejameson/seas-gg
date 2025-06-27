@@ -259,7 +259,8 @@
 							<div class="weather-separator">|</div>
 							<div class="weather-item">
 								<span class="weather-value"
-									>{weatherSummary.windDirectionAvg} {weatherSummary.windSpeedAvg}mph</span
+									>{weatherSummary.windDirectionAvg}
+									{weatherSummary.windSpeedAvg}<span class="font-12">mph</span></span
 								>
 							</div>
 						</div>
@@ -303,20 +304,21 @@
 					<div class="weather-details">
 						<div class="weather-row primary-row">
 							<div class="weather-item">
-								<span class="weather-value">{format(weather[currentPage].date, 'HH:mm')}</span>
+								<span class="weather-value">{format(weather[currentPage].date, 'ha')}</span>
 							</div>
 							<div class="weather-separator">|</div>
 							<div class="weather-item">
 								<span class="weather-value">{Math.round(weather[currentPage].temperature)}°C</span>
 								<span class="weather-feels-like"
-									>(≅{Math.round(weather[currentPage].apparent_temperature)}°C)</span
+									>({Math.round(weather[currentPage].apparent_temperature)}°C)</span
 								>
 							</div>
 							<div class="weather-separator">|</div>
 							<div class="weather-item">
 								<span class="weather-value"
 									>{formatWindDirection(weather[currentPage].windDirection10m)[0]}
-									{Math.round(weather[currentPage].windSpeed10m)}mph</span
+									{Math.round(weather[currentPage].windSpeed10m)}<span class="font-12">mph</span
+									></span
 								>
 							</div>
 						</div>
@@ -435,6 +437,7 @@
 		display: flex;
 		align-items: center;
 		gap: 0.25rem;
+		color: var(--text-primary);
 	}
 
 	.weather-value {
@@ -450,7 +453,7 @@
 	}
 
 	.weather-feels-like {
-		font-size: 0.875rem;
+		font-size: 0.7rem;
 		opacity: 0.8;
 	}
 
