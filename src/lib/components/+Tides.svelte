@@ -27,8 +27,8 @@
 						<span class="tide-type-text">{item.typeof}</span>
 					</div>
 					<div class="tide-details">
+						<span class="tide-time">{item.time}</span>
 						<span class="tide-height">{item.height}m</span>
-						<span class="tide-time">@ {item.time}</span>
 					</div>
 				</div>
 			{/each}
@@ -76,14 +76,14 @@
 	}
 
 	.tide-height {
-		font-weight: bold;
-		font-size: 0.9rem;
-		color: var(--text-primary);
+		font-size: 0.75rem;
+		color: var(--text-secondary);
 	}
 
 	.tide-time {
-		font-size: 0.75rem;
-		color: var(--text-secondary);
+		font-weight: bold;
+		font-size: 0.9rem;
+		color: var(--text-primary);
 	}
 
 	@media only screen and (max-width: 600px) {

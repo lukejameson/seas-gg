@@ -12,10 +12,6 @@ function createThemeStore() {
 		const stored = localStorage.getItem('seas-gg-theme');
 		if (stored) {
 			initialTheme = stored;
-		} else {
-			// Fall back to system preference
-			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-			initialTheme = prefersDark ? 'dark' : 'light';
 		}
 	}
 

@@ -242,7 +242,7 @@
 				<div class="weather-summary">
 					<div class="weather-icon-section">
 						<div class="weather-icon-container">
-							<Icon name={weatherSummary.modeWeatherCodeAndIcon[1]} size="3rem"></Icon>
+							<Icon name={weatherSummary.modeWeatherCodeAndIcon[1]} size={iconSize}></Icon>
 							<span class="weather-condition">{weatherSummary.modeWeatherCodeAndIcon[0]}</span>
 						</div>
 					</div>

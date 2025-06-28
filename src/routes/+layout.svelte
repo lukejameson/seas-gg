@@ -31,13 +31,35 @@
 </script>
 
 <div class="body">
-	<div class="header p-3 d-flex align-items-center justify-content-start">
-		<div class="logo">
-			<Icon name="water" size="42px"></Icon>
-			<span class="icon-text">seas.gg</span>
+	<div class="header p-3 d-flex align-items-center justify-content-between">
+		<div>
+			<div class="logo">
+				<Icon name="water" size="42px"></Icon>
+				<span class="icon-text">seas.gg</span>
+			</div>
+
+			<div class="pl-4" style="display:none">Guernsey Tides</div>
 		</div>
 
-		<div class="pl-4" style="display:none">Guernsey Tides</div>
+		<div
+			class="align-items-center"
+			data-toggle="tooltip"
+			data-placement="top"
+			title={$theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+		>
+			<button
+				type="button"
+				class="no-style"
+				aria-label="Toggle theme"
+				onclick={() => theme.toggle()}
+			>
+				{#if $theme === 'dark'}
+					<Icon name="sun" size="18px"></Icon>
+				{:else}
+					<Icon name="moon" size="18px"></Icon>
+				{/if}
+			</button>
+		</div>
 	</div>
 
 	<div class="wave-background">

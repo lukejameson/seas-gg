@@ -7,7 +7,6 @@
 
 	import Icon from '$lib/components/+Icon.svelte';
 	import Info from '$lib/components/+Info.svelte';
-	import { theme } from '$lib/stores/theme.js';
 	import { format } from 'date-fns';
 	import { addDays } from 'date-fns/addDays';
 	import { onMount } from 'svelte';
@@ -119,26 +118,7 @@
 				</button>
 			</div>
 
-			<div class="theme-divider"></div>
-
-			<div
-				data-toggle="tooltip"
-				data-placement="top"
-				title={$theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-			>
-				<button
-					type="button"
-					class="btn btn-theme"
-					aria-label="Toggle theme"
-					on:click={() => theme.toggle()}
-				>
-					{#if $theme === 'dark'}
-						<Icon name="sun" size="18px"></Icon>
-					{:else}
-						<Icon name="moon" size="18px"></Icon>
-					{/if}
-				</button>
-			</div>
+			<!-- <div class="theme-divider"></div> -->
 		</div>
 	</div>
 
