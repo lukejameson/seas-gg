@@ -35,13 +35,11 @@ export async function load({ fetch, url }) {
 			tideResponse,
 			weatherResponse,
 			seaTemperatureResponse,
-			seaTempTrendResponse,
 			poolsBeingCleanedResponse
 		] = await Promise.all([
 			fetch(`/tides?date=${date}`),
 			fetch(`/weather?date=${date}`),
 			fetch(`/sea_temp?date=${date}`),
-			fetch(`/sea_temp/trend`),
 			fetch(`/pools/clean?date=${date}`)
 		]);
 
@@ -49,17 +47,15 @@ export async function load({ fetch, url }) {
 			!tideResponse.ok ||
 			!weatherResponse.ok ||
 			!seaTemperatureResponse.ok ||
-			!seaTempTrendResponse.ok ||
 			!poolsBeingCleanedResponse.ok
 		) {
 			throw new Error('One or more API requests failed');
 		}
 
-		const [tide, weather, seaTemperature, seaTempTrend, poolsBeingCleaned] = await Promise.all([
+		const [tide, weather, seaTemperature, poolsBeingCleaned] = await Promise.all([
 			tideResponse.json(),
 			weatherResponse.json(),
 			seaTemperatureResponse.json(),
-			seaTempTrendResponse.json(),
 			poolsBeingCleanedResponse.json()
 		]);
 
@@ -68,7 +64,6 @@ export async function load({ fetch, url }) {
 			weather,
 			seaTemperature,
 			date,
-			seaTempTrend,
 			poolsBeingCleaned
 		};
 	} catch (error) {

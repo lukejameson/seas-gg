@@ -47,7 +47,6 @@
  * @property {string} date
  * @property {VerboseTideData[]|null} basicTides
  * @property {TideData[]|null} hourlyTides
- * @property {DailyExtremes[]|null} dailyExtremes
  */
 
 /**

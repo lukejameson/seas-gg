@@ -1,6 +1,5 @@
 import { format, isSameDay } from 'date-fns';
 import { htmlParser } from './html_parser.js';
-import { tideSequence } from './tide_sequence.js';
 import { tideScraper } from './tides-scraper.js';
 import { seaTemperatureScraper } from './sea-temperature-scraper.js';
 import { databaseWorker } from './database_worker.js';
@@ -21,16 +20,14 @@ class Main {
 	async processTideData(date) {
 		const rawTideHtml = await tideScraper.scrapeTidesForDate(date);
 		const basicTides = htmlParser.getVerboseBasicTidesTable(rawTideHtml);
-		const hourlyTides = htmlParser.getHourlyTides(rawTideHtml);
-		const dailyExtremes = tideSequence.processTideData(hourlyTides);
+		const hourlyTides = htmlParser.getHourlyTides(rawTideHtml);;
 
 		/** @type {Tide} */
 		const tideData = {
 			id: crypto.randomUUID(),
 			date: format(new Date(date), 'yyyy-MM-dd'),
 			basicTides: basicTides,
-			hourlyTides: hourlyTides,
-			dailyExtremes: dailyExtremes
+			hourlyTides: hourlyTides
 		};
 
 		if (!tideData) return null;
@@ -59,50 +56,6 @@ class Main {
 		}
 
 		return null;
-	}
-
-	/**
-	 *
-	 * @param {Date} date - Any date of the week
-	 */
-	async getTidesForWeek(date) {
-		const { start, end } = tideScraper.getDateRangeForWeek(date);
-
-		const records = await databaseWorker.getWeeksTideRecords(start, end);
-
-		if (!records) {
-			const tideData = await tideScraper.scrapeTidesForWeek(date);
-
-			/**@type {TideRecord[]} */
-			let tideRecords = [];
-
-			tideData.forEach((tideData) => {
-				tideRecords.push({
-					date: tideData.date,
-					tideData: htmlParser.getBasicTidesTable(tideData.tide)
-				});
-			});
-
-			try {
-				/**
-				 * @type {WeeklyTides}
-				 */
-				const wholeWeek = {
-					id: crypto.randomUUID(),
-					startofweekdate: tideRecords[0].date,
-					endofweekdate: tideRecords[6].date,
-					data: tideRecords
-				};
-
-				await databaseWorker.storeWeeklyTides(wholeWeek);
-			} catch (error) {
-				console.error(error);
-			}
-
-			return await databaseWorker.getWeeksTideRecords(tideRecords[0].date, tideRecords[6].date);
-		}
-
-		return records;
 	}
 
 	/**
@@ -144,30 +97,6 @@ class Main {
 		}
 
 		return null;
-	}
-
-	async calculateSevenDaySeaTempTrend() {
-		const seaTempOverLastSevenDays = await databaseWorker.getSeaTempLastSevenDays();
-
-		if (!seaTempOverLastSevenDays) return;
-
-		const seaTemps = seaTempOverLastSevenDays.map((x) => Number(x.sea_temp_c.replace('° C', '')));
-
-		const n = seaTemps.length;
-		const x = Array.from({ length: n }, (_, i) => i);
-
-		const sumX = x.reduce((a, b) => a + b, 0);
-		const sumY = seaTemps.reduce((a, b) => a + b, 0);
-		const sumXY = x.reduce((sum, xi, i) => sum + xi * seaTemps[i], 0);
-		const sumXX = x.reduce((sum, xi) => sum + xi * xi, 0);
-
-		// Calculate slope
-		const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-
-		// Determine trend direction
-		const trend = slope > 0 ? 'increasing' : slope < 0 ? 'decreasing' : 'stable';
-
-		return { slope: slope.toFixed(2), trend };
 	}
 
 	/**
