@@ -31,6 +31,10 @@ export async function load({ fetch, url }) {
 	// Only fetch data if date is valid
 	try {
 		const date = format(parsedDate, DATE_FORMAT);
+
+		const canGoBack = isBefore(today, parsedDate);
+		const canGoForward = !isBefore(maxDate, addDays(parsedDate, 1));
+
 		const [
 			tideResponse,
 			weatherResponse,
@@ -64,7 +68,13 @@ export async function load({ fetch, url }) {
 			weather,
 			seaTemperature,
 			date,
-			poolsBeingCleaned
+			poolsBeingCleaned,
+			navigation: {
+				canGoBack,
+				canGoForward,
+				serverToday: format(today, DATE_FORMAT),
+				maxDate: format(maxDate, DATE_FORMAT)
+			}
 		};
 	} catch (error) {
 		console.error('Failed to fetch data:', error);
@@ -75,7 +85,13 @@ export async function load({ fetch, url }) {
 			seaTempTrend: null,
 			poolsBeingCleaned: null,
 			date: format(today, DATE_FORMAT),
-			error: 'Failed to load data'
+			error: 'Failed to load data',
+			navigation: {
+				canGoBack: false,
+				canGoForward: true,
+				serverToday: format(today, DATE_FORMAT),
+				maxDate: format(maxDate, DATE_FORMAT)
+			}
 		};
 	}
 }
