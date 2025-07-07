@@ -113,6 +113,10 @@ ENV CHROMIUM_PATH=/usr/bin/chromium
 ENV PORT=5000
 ENV HOST=0.0.0.0
 ENV NODE_ENV=production
+ENV TZ=Europe/London
+
+# Set timezone for consistent date handling
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 EXPOSE 5000
 CMD ["node", "build"]

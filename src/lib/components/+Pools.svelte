@@ -150,8 +150,9 @@
 
 <div class="card">
 	<div class="pools-wrapper">
-		<div class="pools-header">
+		<div class="pools-header d-flex flex-wrap justify-content-between align-items-center">
 			<h4 class="section-title">Pools</h4>
+			<a href="https://thebathingpools.com/" target="_blank">Livestream</a>
 		</div>
 		<div class="pools-container">
 			<div class="pool-card">
@@ -219,6 +220,10 @@
 </div>
 
 <style>
+
+	a {
+		font-size: 0.9rem;
+	}
 	.text-red {
 		color: rgb(255, 26, 26);
 		font-size: 0.8rem;

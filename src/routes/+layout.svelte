@@ -42,23 +42,21 @@
 		</div>
 
 		<div
-			class="align-items-center"
+			class="pb-2 d-flex align-items-center justify-content-center gap-3"
 			data-toggle="tooltip"
 			data-placement="top"
 			title={$theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
 		>
-			<button
-				type="button"
-				class="no-style"
-				aria-label="Toggle theme"
-				onclick={() => theme.toggle()}
-			>
-				{#if $theme === 'dark'}
-					<Icon name="sun" size="18px"></Icon>
-				{:else}
-					<Icon name="moon" size="18px"></Icon>
-				{/if}
-			</button>
+			<div>
+				<button class="no-style" aria-label="Toggle theme" onclick={() => theme.toggle()}>
+					{#if $theme === 'dark'}
+						<Icon name="sun" size="24px"></Icon>
+					{:else}
+						<Icon name="moon" size="24px"></Icon>
+					{/if}
+
+				</button>
+			</div>
 		</div>
 	</div>
 
@@ -177,21 +175,27 @@
 	.icon-text {
 		font-family: 'Chango', sans-serif;
 		font-weight: 400;
-		/* font-size: 24px; */
 		font-style: normal;
 		color: #0066cc;
 	}
 
-	.no-style {
-		background-color: transparent !important;
-		border: none !important;
+	button {
+		background: none;
+		color: inherit;
+		border: none;
+		padding: 0;
+		font: inherit;
+		cursor: pointer;
+		outline: inherit;
 	}
 
 	.no-style {
 		color: var(--text-primary) !important;
 		transition: color 0.3s ease;
+		background-color: transparent !important;
+		border: none !important;
+		padding: 0 !important;
 	}
-
 	.no-style:hover {
 		color: #0066cc !important;
 	}

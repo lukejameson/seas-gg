@@ -26,6 +26,7 @@
   $: weather = $page.data.weather;
   $: seaTemperature = $page.data.seaTemperature;
   $: poolsBeingCleaned = $page.data.poolsBeingCleaned;
+  $: navigation = $page.data.navigation;
 
   onMount(() => {
     // page-specific initialization (none needed currently)
@@ -42,26 +43,43 @@
 
   /**
    * Determine if the "Previous Day" button should be disabled.
-   * @returns {boolean} True if selectedDate is today or earlier.
+   * Uses server-provided navigation state for consistency across environments.
+   * @returns {boolean} True if navigation back is not allowed.
    */
   function isYesterdayDisabled() {
-    const today = new Date();
+    // Fallback to client-side logic if navigation data is not available
+    if (!navigation) {
+      const today = new Date();
+      console.log(`Fallback: Current Client date: `, today);
+      console.log(`Fallback: Current SelectedDate: `, selectedDate);
+      console.log(`Fallback: Back button disabled: `, !isBefore(today, selectedDate));
+      return !isBefore(today, selectedDate);
+    }
 
-    console.log(`Current Client date: `, today)
-    console.log(`Current SelectedDate: `, selectedDate)
-    console.log(`Back button disabled: `, !isBefore(today, selectedDate))
+    console.log(`Server navigation state - canGoBack: `, navigation.canGoBack);
+    console.log(`Server today: `, navigation.serverToday);
+    console.log(`Current selected date: `, rawDate);
 
-    return !isBefore(today, selectedDate);
+    return !navigation.canGoBack;
   }
 
   /**
    * Determine if the "Next Day" button should be disabled.
-   * @returns {boolean} True if the next day exceeds 12 days from today.
+   * Uses server-provided navigation state for consistency across environments.
+   * @returns {boolean} True if navigation forward is not allowed.
    */
   function isTomorrowDisabled() {
-    const maxDate = addDays(new Date(), 12);
-    const tomorrow = addDays(selectedDate, 1);
-    return tomorrow > maxDate;
+    // Fallback to client-side logic if navigation data is not available
+    if (!navigation) {
+      const maxDate = addDays(new Date(), 12);
+      const tomorrow = addDays(selectedDate, 1);
+      return tomorrow > maxDate;
+    }
+
+    console.log(`Server navigation state - canGoForward: `, navigation.canGoForward);
+    console.log(`Server maxDate: `, navigation.maxDate);
+
+    return !navigation.canGoForward;
   }
 
   /**
