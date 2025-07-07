@@ -2,7 +2,7 @@ import { redirect } from '@sveltejs/kit';
 import { addDays, format, isBefore, isValid, startOfDay } from 'date-fns';
 
 const DATE_FORMAT = 'yyyy-MM-dd';
-const MAX_DAYS_AHEAD = 5;
+const MAX_DAYS_AHEAD = 30;
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ fetch, url }) {

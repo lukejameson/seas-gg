@@ -221,6 +221,7 @@
 <style>
 	.text-red {
 		color: rgb(255, 26, 26);
+		font-size: 0.8rem;
 	}
 
 	.pools-wrapper {

@@ -98,33 +98,5 @@ class Main {
 
 		return null;
 	}
-
-	/**
-	 * @param {Date} date
-	 * @returns {boolean}
-	 */
-	isWithinTenDays(date) {
-		const inputDate = new Date(date);
-		const today = new Date();
-		const yesterday = new Date();
-		const tomorrow = new Date();
-		yesterday.setDate(yesterday.getDate() - 10);
-		tomorrow.setDate(tomorrow.getDate() + 10);
-
-		inputDate.setHours(0, 0, 0, 0);
-		today.setHours(0, 0, 0, 0);
-		yesterday.setHours(0, 0, 0, 0);
-		tomorrow.setHours(0, 0, 0, 0);
-
-		if (inputDate.getTime() === today.getTime()) {
-			return true;
-		} else if (inputDate.getTime() === yesterday.getTime()) {
-			return true;
-		} else if (inputDate.getTime() === tomorrow.getTime()) {
-			return true;
-		}
-
-		return false;
-	}
 }
 export const main = new Main();

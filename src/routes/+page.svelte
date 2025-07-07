@@ -46,6 +46,11 @@
    */
   function isYesterdayDisabled() {
     const today = new Date();
+
+    console.log(`Current Client date: `, today)
+    console.log(`Current SelectedDate: `, selectedDate)
+    console.log(`Back button disabled: `, !isBefore(today, selectedDate))
+
     return !isBefore(today, selectedDate);
   }
 
@@ -116,7 +121,7 @@
 
   <div>
     <div class="component">
-      <Weather {rawDate} {weather} />
+      <Weather date={rawDate} {weather} />
     </div>
 
     <div class="component">

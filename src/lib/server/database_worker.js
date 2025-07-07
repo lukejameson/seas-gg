@@ -54,51 +54,6 @@ class DatabaseWorker {
 	}
 
 	/**
-	 * @param {WeeklyTides} data
-	 */
-	async storeWeeklyTides(data) {
-		const query = `
-            INSERT INTO weekly_tides (id, startofweekdate, endofweekdate, data)
-            VALUES ($1, $2, $3, $4)
-            ON CONFLICT (startofweekdate) DO UPDATE
-            SET data = $4,
-                endofweekdate = $3
-            WHERE weekly_tides.startofweekdate = $2
-        `;
-
-		try {
-			await pool.query(query, [data.id, data.startofweekdate, data.endofweekdate, data.data]);
-		} catch (error) {
-			throw new Error(`Failed to store weekly tides: ${error.message}`);
-		}
-	}
-
-	/**
-	 * @param {Date} startOfWeekDate
-	 * @param {Date} endOfWeekDate
-	 * @returns {Promise<Tide|null>}
-	 */
-	async getWeeksTideRecords(startOfWeekDate, endOfWeekDate) {
-		const formattedStart = format(startOfWeekDate, 'yyyy-MM-dd');
-		const formattedEnd = format(endOfWeekDate, 'yyyy-MM-dd');
-
-		const query = `
-            SELECT *
-            FROM weekly_tides
-            WHERE startofweekdate = $1
-            AND endofweekdate = $2
-        `;
-
-		try {
-			const result = await pool.query(query, [formattedStart, formattedEnd]);
-			return result.rows[0] || null;
-		} catch (error) {
-			console.error('Failed to get weeks tide records:', error);
-			return null;
-		}
-	}
-
-	/**
 	 * @param {Date} date
 	 * @param {string} temp
 	 */
