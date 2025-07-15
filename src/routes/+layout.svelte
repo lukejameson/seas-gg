@@ -2,12 +2,10 @@
 	/** @type {import('./$types').LayoutData} */
 	import { browser } from '$app/environment';
 	import Modal from '$lib/components/+Modal.svelte';
+	import Icon from '$lib/components/+Icon.svelte';
 	import { theme } from '$lib/stores/theme.js';
 	import { onMount } from 'svelte';
-
-	import Icon from '$lib/components/+Icon.svelte';
-	import '$lib/bootstrap-subset.css';
-	import '../app.css';
+	import '$lib/styles/styles.css';
 
 	let showModal = $state(false);
 
@@ -41,7 +39,7 @@
 			title={$theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
 		>
 			<div>
-				<button  aria-label="Toggle theme" onclick={() => theme.toggle()}>
+				<button aria-label="Toggle theme" onclick={() => theme.toggle()}>
 					{#if $theme === 'dark'}
 						<Icon name="sun" size="24px"></Icon>
 					{:else}

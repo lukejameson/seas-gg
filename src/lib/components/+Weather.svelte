@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import { format, isSameDay } from 'date-fns';
-	import '../../app.css';
+	import '$lib/styles/styles.css';
 	import { isMobile } from '../stores/device.js';
 	import Icon from './+Icon.svelte';
 

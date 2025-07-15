@@ -1,5 +1,9 @@
 import { redirect } from '@sveltejs/kit';
-import { addDays, format, isBefore, isValid, startOfDay } from 'date-fns';
+import addDays from 'date-fns/addDays';
+import format from 'date-fns/format';
+import isBefore from 'date-fns/isBefore';
+import isValid from 'date-fns/isValid';
+import startOfDay from 'date-fns/startOfDay';
 
 const DATE_FORMAT = 'yyyy-MM-dd';
 const MAX_DAYS_AHEAD = 30;

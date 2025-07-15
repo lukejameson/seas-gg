@@ -8,7 +8,7 @@
 	import Info from '$lib/components/+Info.svelte';
 	import { format, parseISO, addDays } from 'date-fns';
 	import { onMount } from 'svelte';
-	import '../app.css';
+	import '$lib/styles/styles.css';
 
 	// raw date (could be ISO string) from load()
 	$: rawDate = $page.data.date;

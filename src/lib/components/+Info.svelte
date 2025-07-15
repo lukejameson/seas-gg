@@ -1,7 +1,7 @@
 <!-- Tides.svelte -->
 <script>
 	import { common } from '$lib/common/+common';
-	import '../../app.css';
+	import '$lib/styles/styles.css';
 
 	let { seaTemperature, tides } = $props();
 

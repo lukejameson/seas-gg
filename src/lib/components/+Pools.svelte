@@ -1,5 +1,5 @@
 <script>
-	import '../../app.css';
+	import '$lib/styles/styles.css';
 	import Icon from './+Icon.svelte';
 	/**
 	 * @typedef {Object} Props
@@ -220,7 +220,6 @@
 </div>
 
 <style>
-
 	a {
 		font-size: 0.9rem;
 	}

@@ -1,5 +1,5 @@
 <script>
-	import '../../app.css';
+	import '$lib/styles/styles.css';
 	import Icon from './+Icon.svelte';
 
 	/**

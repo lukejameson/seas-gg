@@ -11,7 +11,7 @@ export default defineConfig({
 		devSourcemap: false
 	},
 	build: {
-		assetsInlineLimit: 0, // Prevents inlining of small assets
+		assetsInlineLimit: 4096,
 		sourcemap: false
 	}
 });
