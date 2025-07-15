@@ -258,7 +258,6 @@
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		min-height: 100px;
 		transition: background-color 0.3s ease;
 	}
 
@@ -267,6 +266,8 @@
 		margin-bottom: 0.5rem;
 		font-weight: bold;
 		color: var(--text-primary);
+		margin: 0;
+		margin-bottom: 4px;
 	}
 
 	.pool-times {
@@ -298,7 +299,6 @@
 			flex-direction: row;
 			align-items: center;
 			text-align: left;
-			min-height: unset;
 			padding: 0.75rem;
 		}
 

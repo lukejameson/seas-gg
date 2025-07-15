@@ -1,13 +1,12 @@
 <script>
 	/** @type {import('./$types').LayoutData} */
 	import { browser } from '$app/environment';
-	import { initBootstrap } from '$lib/bootstrap.js';
 	import Modal from '$lib/components/+Modal.svelte';
 	import { theme } from '$lib/stores/theme.js';
 	import { onMount } from 'svelte';
 
 	import Icon from '$lib/components/+Icon.svelte';
-	import 'bootstrap/dist/css/bootstrap.min.css';
+	import '$lib/bootstrap-subset.css';
 	import '../app.css';
 
 	let showModal = $state(false);
@@ -16,8 +15,6 @@
 
 	onMount(() => {
 		if (browser) {
-			initBootstrap();
-			// Initialize theme on page load
 			document.documentElement.setAttribute('data-theme', $theme);
 		}
 	});
@@ -31,30 +28,25 @@
 </script>
 
 <div class="body">
-	<div class="header p-3 d-flex align-items-center justify-content-between">
-		<div>
-			<div class="logo">
-				<Icon name="water" size="42px"></Icon>
-				<span class="icon-text">seas.gg</span>
-			</div>
-
-			<div class="pl-4" style="display:none">Guernsey Tides</div>
+	<div class="header">
+		<div class="logo pl-3">
+			<Icon name="water" size="42px"></Icon>
+			<span class="icon-text">seas.gg</span>
 		</div>
 
 		<div
-			class="pb-2 d-flex align-items-center justify-content-center gap-3"
+			class="pb-2 pr-3"
 			data-toggle="tooltip"
 			data-placement="top"
 			title={$theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
 		>
 			<div>
-				<button class="no-style" aria-label="Toggle theme" onclick={() => theme.toggle()}>
+				<button  aria-label="Toggle theme" onclick={() => theme.toggle()}>
 					{#if $theme === 'dark'}
 						<Icon name="sun" size="24px"></Icon>
 					{:else}
 						<Icon name="moon" size="24px"></Icon>
 					{/if}
-
 				</button>
 			</div>
 		</div>
@@ -157,7 +149,6 @@
 			position: sticky;
 		}
 	}
-
 	a {
 		padding: 4px;
 		color: var(--text-primary);
@@ -178,7 +169,6 @@
 		font-style: normal;
 		color: #0066cc;
 	}
-
 	button {
 		background: none;
 		color: inherit;

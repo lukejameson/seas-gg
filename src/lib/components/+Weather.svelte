@@ -235,7 +235,7 @@
 	}
 </script>
 
-<div class="card h-100 w-100">
+<div class="card">
 	<div class="weather-container">
 		<div class="weather-content">
 			{#if isSummaryMode}
@@ -377,12 +377,6 @@
 </div>
 
 <style>
-	@media only screen and (min-width: 600px) {
-		.card {
-			width: 500px;
-		}
-	}
-
 	.weather-container {
 		display: flex;
 		flex-direction: column;

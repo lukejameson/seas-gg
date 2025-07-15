@@ -30,7 +30,6 @@
 	},
 	"dependencies": {
 		"@playwright/test": "^1.49.0",
-		"bootstrap": "^5.3.3",
 		"cheerio": "^1.0.0",
 		"date-fns": "^4.1.0",
 		"jsdom": "^25.0.1",
