@@ -3,12 +3,6 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [sveltekit()],
-	ssr: {
-		noExternal: ['bootstrap']
-	},
-	optimizeDeps: {
-		include: ['bootstrap']
-	},
 	server: {
 		host: '0.0.0.0',
 		port: 5000
