@@ -46,7 +46,7 @@ jobs:
             POSTGRES_PASSWORD=${{secrets.POSTGRES_PASSWORD}}
             POSTGRES_SSL=${{secrets.POSTGRES_SSL}}
       - name: Deploy to VPS
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.2.0
         env:
           TIDE_URL: ${{ secrets.TIDE_URL }}
           SEA_TEMP_URL: ${{ secrets.SEA_TEMP_URL }}
