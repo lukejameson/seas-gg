@@ -17,7 +17,7 @@ class SeaTemperatureScraper {
 		try {
 			const browser = await chromium.launch({
 				headless: true,
-				// executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium',
+				executablePath: process.env.CHROMIUM_PATH || undefined,
 				args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
 			});
 

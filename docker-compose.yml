@@ -1,17 +1,8 @@
 services:
   sveltekit-app:
+    image: ghcr.io/lukejameson/seas-gg:latest
     build:
       context: .
-      args:
-        - SEA_TEMP_URL=${SEA_TEMP_URL}
-        - TIDE_URL=${TIDE_URL}
-        - POSTGRES_HOST=${POSTGRES_HOST}
-        - POSTGRES_PORT=${POSTGRES_PORT}
-        - POSTGRES_PORT=${POSTGRES_PORT}
-        - POSTGRES_DATABASE=${POSTGRES_DATABASE}
-        - POSTGRES_USER=${POSTGRES_USER}
-        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-        - POSTGRES_SSL=${POSTGRES_SSL}
     container_name: seas-gg
     environment:
       - SEA_TEMP_URL=${SEA_TEMP_URL}
