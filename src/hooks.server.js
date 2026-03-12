@@ -2,22 +2,22 @@
 import { minify } from 'html-minifier-terser';
 
 const minifyOpts = {
-  collapseBooleanAttributes: true,
-  collapseWhitespace: true,
-  conservativeCollapse: true,
-  decodeEntities: true,
-  html5: true,
-  ignoreCustomComments: [/^#/],
-  minifyCSS: true,
-  minifyJS: false,
-  removeAttributeQuotes: true,
-  removeComments: false,
-  removeOptionalTags: true,
-  removeRedundantAttributes: true,
-  removeScriptTypeAttributes: true,
-  removeStyleLinkTypeAttributes: true,
-  sortAttributes: true,
-  sortClassName: true,
+	collapseBooleanAttributes: true,
+	collapseWhitespace: true,
+	conservativeCollapse: true,
+	decodeEntities: true,
+	html5: true,
+	ignoreCustomComments: [/^#/],
+	minifyCSS: true,
+	minifyJS: false,
+	removeAttributeQuotes: true,
+	removeComments: false,
+	removeOptionalTags: true,
+	removeRedundantAttributes: true,
+	removeScriptTypeAttributes: true,
+	removeStyleLinkTypeAttributes: true,
+	sortAttributes: true,
+	sortClassName: true
 };
 
 /** @type {import('@sveltejs/kit').Handle} */

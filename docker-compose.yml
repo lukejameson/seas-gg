@@ -27,9 +27,6 @@ services:
       - 'traefik.http.routers.seas-gg.middlewares=security-headers@docker'
     networks:
       - web
-      - postgres
 networks:
   web:
-    external: true
-  postgres:
     external: true

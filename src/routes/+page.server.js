@@ -39,17 +39,13 @@ export async function load({ fetch, url }) {
 		const canGoBack = isBefore(today, parsedDate);
 		const canGoForward = !isBefore(maxDate, addDays(parsedDate, 1));
 
-		const [
-			tideResponse,
-			weatherResponse,
-			seaTemperatureResponse,
-			poolsBeingCleanedResponse
-		] = await Promise.all([
-			fetch(`/tides?date=${date}`),
-			fetch(`/weather?date=${date}`),
-			fetch(`/sea_temp?date=${date}`),
-			fetch(`/pools/clean?date=${date}`)
-		]);
+		const [tideResponse, weatherResponse, seaTemperatureResponse, poolsBeingCleanedResponse] =
+			await Promise.all([
+				fetch(`/tides?date=${date}`),
+				fetch(`/weather?date=${date}`),
+				fetch(`/sea_temp?date=${date}`),
+				fetch(`/pools/clean?date=${date}`)
+			]);
 
 		if (
 			!tideResponse.ok ||

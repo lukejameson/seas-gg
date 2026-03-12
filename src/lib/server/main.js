@@ -20,7 +20,7 @@ class Main {
 	async processTideData(date) {
 		const rawTideHtml = await tideScraper.scrapeTidesForDate(date);
 		const basicTides = htmlParser.getVerboseBasicTidesTable(rawTideHtml);
-		const hourlyTides = htmlParser.getHourlyTides(rawTideHtml);;
+		const hourlyTides = htmlParser.getHourlyTides(rawTideHtml);
 
 		/** @type {Tide} */
 		const tideData = {
