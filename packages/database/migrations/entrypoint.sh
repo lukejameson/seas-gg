@@ -20,8 +20,10 @@ done
 
 echo "PostgreSQL is ready!"
 
-# Run the init SQL file if tables don't exist
-# This is idempotent - safe to run multiple times
-psql "$DATABASE_URL" -f /migrations/0000_init.sql
+# Run all migration files in order - each is idempotent
+for f in /migrations/*.sql; do
+  echo "Running $f..."
+  psql "$DATABASE_URL" -f "$f"
+done
 
 echo "Migrations complete!"
