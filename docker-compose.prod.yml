@@ -1,9 +1,3 @@
-version: '3.8'
-
-# Production Docker Compose - connects to external PostgreSQL
-# Required environment variables in .env:
-#   DATABASE_URL, TIDE_URL, SEA_TEMP_URL, GITHUB_REPOSITORY_OWNER
-
 services:
   db-migrate:
     image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/seas-gg-database:latest
