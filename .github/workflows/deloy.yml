@@ -10,86 +10,7 @@ env:
   BASE_IMAGE_NAME: ${{ github.repository_owner }}/seas-gg
 
 jobs:
-  # Detect which services have changes
-  detect-changes:
-    runs-on: ubuntu-latest
-    outputs:
-      web: ${{ steps.changes.outputs.web }}
-      tide-scraper: ${{ steps.changes.outputs.tide-scraper }}
-      sea-temp-scraper: ${{ steps.changes.outputs.sea-temp-scraper }}
-      weather-service: ${{ steps.changes.outputs.weather-service }}
-      database: ${{ steps.changes.outputs.database }}
-      any-service: ${{ steps.changes.outputs.any-service }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Detect changed services
-        id: changes
-        run: |
-          # Get changed files between HEAD and previous commit
-          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD || echo "")
-
-          echo "Changed files:"
-          echo "$CHANGED_FILES"
-
-          # Check web changes
-          if echo "$CHANGED_FILES" | grep -qE "^(apps/web/|packages/database/)"; then
-            echo "web=true" >> $GITHUB_OUTPUT
-            echo "Web: changed"
-          else
-            echo "web=false" >> $GITHUB_OUTPUT
-            echo "Web: no changes"
-          fi
-
-          # Check tide-scraper changes
-          if echo "$CHANGED_FILES" | grep -qE "^(apps/tide-scraper/|packages/database/)"; then
-            echo "tide-scraper=true" >> $GITHUB_OUTPUT
-            echo "Tide Scraper: changed"
-          else
-            echo "tide-scraper=false" >> $GITHUB_OUTPUT
-            echo "Tide Scraper: no changes"
-          fi
-
-          # Check sea-temp-scraper changes
-          if echo "$CHANGED_FILES" | grep -qE "^(apps/sea-temp-scraper/|packages/database/)"; then
-            echo "sea-temp-scraper=true" >> $GITHUB_OUTPUT
-            echo "Sea Temp Scraper: changed"
-          else
-            echo "sea-temp-scraper=false" >> $GITHUB_OUTPUT
-            echo "Sea Temp Scraper: no changes"
-          fi
-
-          # Check weather-service changes
-          if echo "$CHANGED_FILES" | grep -qE "^(apps/weather-service/|packages/database/)"; then
-            echo "weather-service=true" >> $GITHUB_OUTPUT
-            echo "Weather Service: changed"
-          else
-            echo "weather-service=false" >> $GITHUB_OUTPUT
-            echo "Weather Service: no changes"
-          fi
-
-          # Check database changes
-          if echo "$CHANGED_FILES" | grep -qE "^packages/database/"; then
-            echo "database=true" >> $GITHUB_OUTPUT
-            echo "Database: changed"
-          else
-            echo "database=false" >> $GITHUB_OUTPUT
-            echo "Database: no changes"
-          fi
-
-          # Check if any service changed
-          if echo "$CHANGED_FILES" | grep -qE "^(apps/|packages/)"; then
-            echo "any-service=true" >> $GITHUB_OUTPUT
-          else
-            echo "any-service=false" >> $GITHUB_OUTPUT
-          fi
-
-  # Build and push database image
   build-database:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.database == 'true' || needs.detect-changes.outputs.web == 'true' || needs.detect-changes.outputs.tide-scraper == 'true' || needs.detect-changes.outputs.sea-temp-scraper == 'true' || needs.detect-changes.outputs.weather-service == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -116,7 +37,7 @@ jobs:
             type=sha,prefix=,suffix=,format=short
             type=raw,value=latest
 
-      - name: Build and push database image
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -127,10 +48,8 @@ jobs:
           cache-from: type=gha,scope=database
           cache-to: type=gha,scope=database,mode=max
 
-  # Build and push web image
   build-web:
-    needs: [detect-changes, build-database]
-    if: needs.detect-changes.outputs.web == 'true'
+    needs: build-database
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -157,7 +76,7 @@ jobs:
             type=sha,prefix=,suffix=,format=short
             type=raw,value=latest
 
-      - name: Build and push web image
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -168,10 +87,8 @@ jobs:
           cache-from: type=gha,scope=web
           cache-to: type=gha,scope=web,mode=max
 
-  # Build and push tide-scraper image
   build-tide-scraper:
-    needs: [detect-changes, build-database]
-    if: needs.detect-changes.outputs.tide-scraper == 'true'
+    needs: build-database
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -198,7 +115,7 @@ jobs:
             type=sha,prefix=,suffix=,format=short
             type=raw,value=latest
 
-      - name: Build and push tide-scraper image
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -209,10 +126,8 @@ jobs:
           cache-from: type=gha,scope=tide-scraper
           cache-to: type=gha,scope=tide-scraper,mode=max
 
-  # Build and push sea-temp-scraper image
   build-sea-temp-scraper:
-    needs: [detect-changes, build-database]
-    if: needs.detect-changes.outputs.sea-temp-scraper == 'true'
+    needs: build-database
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -239,7 +154,7 @@ jobs:
             type=sha,prefix=,suffix=,format=short
             type=raw,value=latest
 
-      - name: Build and push sea-temp-scraper image
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -250,10 +165,8 @@ jobs:
           cache-from: type=gha,scope=sea-temp-scraper
           cache-to: type=gha,scope=sea-temp-scraper,mode=max
 
-  # Build and push weather-service image
   build-weather-service:
-    needs: [detect-changes, build-database]
-    if: needs.detect-changes.outputs.weather-service == 'true'
+    needs: build-database
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -280,7 +193,7 @@ jobs:
             type=sha,prefix=,suffix=,format=short
             type=raw,value=latest
 
-      - name: Build and push weather-service image
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -291,16 +204,8 @@ jobs:
           cache-from: type=gha,scope=weather-service
           cache-to: type=gha,scope=weather-service,mode=max
 
-  # Deploy to VPS - only if any service was built
   deploy:
-    needs:
-      - detect-changes
-      - build-database
-      - build-web
-      - build-tide-scraper
-      - build-sea-temp-scraper
-      - build-weather-service
-    if: always() && needs.detect-changes.outputs.any-service == 'true'
+    needs: [build-web, build-tide-scraper, build-sea-temp-scraper, build-weather-service]
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to VPS
@@ -313,22 +218,10 @@ jobs:
           script: |
             cd /opt/seas.gg
 
-            # Login to GitHub Container Registry
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
 
-            # Create .env file if it doesn't exist
-            if [ ! -f .env ]; then
-              echo "WARNING: .env file not found, creating from example"
-              cp .env.example .env 2>/dev/null || echo "No .env.example found"
-            fi
-
-            # Pull latest images for all services
             docker compose -f docker-compose.prod.yml pull
-
-            # Restart only services that have new images
             docker compose -f docker-compose.prod.yml up -d --remove-orphans
-
-            # Cleanup old images
             docker image prune -f
 
             docker logout ghcr.io
