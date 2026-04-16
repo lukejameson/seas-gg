@@ -1,0 +1,23 @@
+{
+	"name": "@seas/tide-scraper",
+	"version": "1.0.0",
+	"type": "module",
+	"scripts": {
+		"start": "node dist/index.js",
+		"dev": "tsx watch src/index.ts",
+		"build": "tsc"
+	},
+	"dependencies": {
+		"@seas/database": "*",
+		"cheerio": "^1.0.0",
+		"date-fns": "^4.1.0",
+		"jsdom": "^25.0.1",
+		"pg": "^8.13.1"
+	},
+	"devDependencies": {
+		"@types/jsdom": "^21.1.7",
+		"@types/node": "^22.0.0",
+		"tsx": "^4.19.0",
+		"typescript": "^5.0.0"
+	}
+}

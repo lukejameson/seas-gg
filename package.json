@@ -1,40 +1,29 @@
 {
-	"name": "seas-gg",
-	"version": "0.0.1",
+	"name": "@seas/root",
+	"version": "1.0.0",
+	"private": true,
 	"type": "module",
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
 	"scripts": {
-		"dev": "vite dev --port 5173",
-		"build": "vite build",
-		"preview": "vite preview",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
-		"fmt": "prettier --write .",
-		"lint": "prettier --check . && eslint ."
+		"dev": "concurrently --names 'TIDE,SEA,WEATHER,WEB' --prefix-colors 'green,blue,yellow,cyan' 'npm run tide:dev' 'npm run sea-dev:dev' 'npm run weather:dev' 'npm run web:dev'",
+		"dev:docker": "docker compose -f docker-compose.yml up -d",
+		"dev:down": "docker compose -f docker-compose.yml down",
+		"db:migrate": "npm run build -w @seas/database && dotenv -e .env -- npm run db:push -w @seas/database",
+		"db:push": "npm run build -w @seas/database && dotenv -e .env -- npm run db:push -w @seas/database",
+		"db:studio": "dotenv -e .env -- npm run db:studio -w @seas/database",
+		"web:dev": "dotenv -e .env -- npm run dev -w @seas/web",
+		"tide:dev": "dotenv -e .env -- npm run dev -w @seas/tide-scraper",
+		"sea-dev:dev": "dotenv -e .env -- npm run dev -w @seas/sea-temp-scraper",
+		"weather:dev": "dotenv -e .env -- npm run dev -w @seas/weather-service",
+		"build": "npm run build -w @seas/database && npm run build -w @seas/tide-scraper && npm run build -w @seas/sea-temp-scraper && npm run build -w @seas/weather-service && npm run build -w @seas/web",
+		"lint": "npm run lint --workspaces",
+		"fmt": "npm run fmt --workspaces"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.3.1",
-		"@sveltejs/adapter-node": "^5.2.9",
-		"@sveltejs/kit": "^2.7.4",
-		"@sveltejs/vite-plugin-svelte": "^4.0.0",
-		"@types/eslint": "^9.6.0",
-		"eslint": "^9.7.0",
-		"eslint-config-prettier": "^9.1.0",
-		"eslint-plugin-svelte": "^2.36.0",
-		"globals": "^15.0.0",
-		"prettier": "^3.3.2",
-		"prettier-plugin-svelte": "^3.2.6",
-		"svelte": "^5.0.0",
-		"svelte-check": "^4.0.0",
-		"typescript": "^5.0.0",
-		"vite": "^5.0.3"
-	},
-	"dependencies": {
-		"@playwright/test": "^1.49.0",
-		"cheerio": "^1.0.0",
-		"date-fns": "^4.1.0",
-		"html-minifier-terser": "^7.2.0",
-		"jsdom": "^25.0.1",
-		"openmeteo": "^1.1.4",
-		"pg": "^8.13.1"
+		"concurrently": "^9.0.0",
+		"dotenv-cli": "^11.0.0"
 	}
 }

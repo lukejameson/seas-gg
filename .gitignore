@@ -5,11 +5,14 @@ data
 # Output
 .output
 .vercel
-/.svelte-kit
+.svelte-kit
 /build
 # OS
 .DS_Store
 Thumbs.db
+
+.claude-flow
+.claude
 
 # Env
 .env

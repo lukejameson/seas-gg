@@ -5,4 +5,10 @@ npm-debug.log
 .env.*
 !.env.example
 .git
-.gitignore 
+.gitignore
+
+# Build artifacts - exclude from build context
+.svelte-kit
+apps/*/dist
+apps/*/build
+packages/*/dist

@@ -1,0 +1,25 @@
+FROM node:20-alpine
+
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY packages/database/package*.json ./packages/database/
+COPY apps/web/package*.json ./apps/web/
+
+# Install dependencies
+RUN npm install
+
+# Copy source
+COPY . .
+
+# Build database package
+RUN npm run build -w @seas/database
+
+EXPOSE 5173
+
+ENV HOST=0.0.0.0
+ENV PORT=5173
+
+CMD ["npm", "run", "dev", "-w", "@seas/web"]
