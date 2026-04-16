@@ -22,8 +22,13 @@ services:
       db-migrate:
         condition: service_completed_successfully
     restart: unless-stopped
-    ports:
-      - "3000:3000"
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.seas-gg.rule=Host(`${DOMAIN}`)'
+      - 'traefik.http.routers.seas-gg.entrypoints=websecure'
+      - 'traefik.http.routers.seas-gg.tls=true'
+      - 'traefik.http.routers.seas-gg.tls.certresolver=letsencrypt'
+      - 'traefik.http.services.seas-gg.loadbalancer.server.port=3000'
     networks:
       - web
 
