@@ -1,15 +1,7 @@
 {
-	"name": "@seas/sea-temp-scraper",
+	"name": "@seas/worker",
 	"version": "1.0.0",
 	"type": "module",
-	"main": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"default": "./dist/index.js"
-		}
-	},
 	"scripts": {
 		"start": "node dist/index.js",
 		"dev": "tsx watch src/index.ts",
@@ -17,9 +9,9 @@
 	},
 	"dependencies": {
 		"@seas/database": "*",
-		"cheerio": "^1.0.0",
-		"date-fns": "^4.1.0",
-		"pg": "^8.13.1"
+		"@seas/tide-scraper": "*",
+		"@seas/sea-temp-scraper": "*",
+		"@seas/weather-service": "*"
 	},
 	"devDependencies": {
 		"@types/node": "^22.0.0",

@@ -12,7 +12,7 @@ export { eq, and, or, inArray, sql };
 // Max 5 connections per service (low for scrapers, higher for web)
 const pool = new Pool({
 	connectionString: process.env.DATABASE_URL,
-	max: 5,
+	max: 2,
 	idleTimeoutMillis: 30000,
 	connectionTimeoutMillis: 5000
 });

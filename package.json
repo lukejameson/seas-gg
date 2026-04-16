@@ -18,7 +18,7 @@
 		"tide:dev": "dotenv -e .env -- npm run dev -w @seas/tide-scraper",
 		"sea-dev:dev": "dotenv -e .env -- npm run dev -w @seas/sea-temp-scraper",
 		"weather:dev": "dotenv -e .env -- npm run dev -w @seas/weather-service",
-		"build": "npm run build -w @seas/database && npm run build -w @seas/tide-scraper && npm run build -w @seas/sea-temp-scraper && npm run build -w @seas/weather-service && npm run build -w @seas/web",
+		"build": "npm run build -w @seas/database && npm run build -w @seas/tide-scraper && npm run build -w @seas/sea-temp-scraper && npm run build -w @seas/weather-service && npm run build -w @seas/worker && npm run build -w @seas/web",
 		"lint": "npm run lint --workspaces",
 		"fmt": "npm run fmt --workspaces"
 	},

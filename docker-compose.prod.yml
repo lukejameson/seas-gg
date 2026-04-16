@@ -1,21 +1,12 @@
 version: '3.8'
 
 # Production Docker Compose - connects to external PostgreSQL
-# Required environment variables:
-#   DATABASE_URL - Full PostgreSQL connection string (e.g., postgresql://user:pass@host:5432/dbname)
-#   GITHUB_REPOSITORY_OWNER - GitHub username/org that owns the GHCR images (e.g., crazeddog)
-#   TIDE_URL - URL to scrape tide data from
-#   SEA_TEMP_URL - URL to scrape sea temperature from
-#   IMAGE_TAG - Image tag to use (default: latest)
+# Required environment variables in .env:
+#   DATABASE_URL, TIDE_URL, SEA_TEMP_URL, GITHUB_REPOSITORY_OWNER
 
 services:
-  # Run database migrations
   db-migrate:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER:-local}/seas-gg-database:${IMAGE_TAG:-latest}
-    # Fallback to building if image not available (for first deploy)
-    build:
-      context: .
-      dockerfile: packages/database/Dockerfile
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/seas-gg-database:latest
     environment:
       - DATABASE_URL=${DATABASE_URL}
     restart: "no"
@@ -23,10 +14,7 @@ services:
       - web
 
   web:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER:-local}/seas-gg-web:${IMAGE_TAG:-latest}
-    build:
-      context: .
-      dockerfile: apps/web/Dockerfile
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/seas-gg-web:latest
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - NODE_ENV=production
@@ -39,46 +27,15 @@ services:
     networks:
       - web
 
-  tide-scraper:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER:-local}/seas-gg-tide-scraper:${IMAGE_TAG:-latest}
-    build:
-      context: .
-      dockerfile: apps/tide-scraper/Dockerfile
+  worker:
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/seas-gg-worker:latest
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - TIDE_URL=${TIDE_URL}
+      - SEA_TEMP_URL=${SEA_TEMP_URL}
       - TIDE_SCRAPER_INTERVAL_MINUTES=60
       - TIDE_SCRAPER_DAYS_AHEAD=30
-    depends_on:
-      db-migrate:
-        condition: service_completed_successfully
-    restart: unless-stopped
-    networks:
-      - web
-
-  sea-temp-scraper:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER:-local}/seas-gg-sea-temp-scraper:${IMAGE_TAG:-latest}
-    build:
-      context: .
-      dockerfile: apps/sea-temp-scraper/Dockerfile
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - SEA_TEMP_URL=${SEA_TEMP_URL}
       - SEA_TEMP_SCRAPER_INTERVAL_MINUTES=30
-    depends_on:
-      db-migrate:
-        condition: service_completed_successfully
-    restart: unless-stopped
-    networks:
-      - web
-
-  weather-service:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER:-local}/seas-gg-weather-service:${IMAGE_TAG:-latest}
-    build:
-      context: .
-      dockerfile: apps/weather-service/Dockerfile
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
       - WEATHER_SERVICE_INTERVAL_MINUTES=15
       - WEATHER_SERVICE_DAYS_AHEAD=7
     depends_on:

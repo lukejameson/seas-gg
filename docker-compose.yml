@@ -17,7 +17,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # Run database migrations
   db-migrate:
     build:
       context: .
@@ -53,43 +52,17 @@ services:
       - /app/node_modules
     command: npm run dev -w @seas/web
 
-  tide-scraper:
+  worker:
     build:
       context: .
-      dockerfile: apps/tide-scraper/Dockerfile
+      dockerfile: apps/worker/Dockerfile
     environment:
       - DATABASE_URL=postgresql://dev:devpass@postgres:5432/tides
       - TIDE_URL=${TIDE_URL}
+      - SEA_TEMP_URL=${SEA_TEMP_URL}
       - TIDE_SCRAPER_INTERVAL_MINUTES=60
       - TIDE_SCRAPER_DAYS_AHEAD=30
-    depends_on:
-      postgres:
-        condition: service_healthy
-      db-migrate:
-        condition: service_completed_successfully
-    restart: unless-stopped
-
-  sea-temp-scraper:
-    build:
-      context: .
-      dockerfile: apps/sea-temp-scraper/Dockerfile
-    environment:
-      - DATABASE_URL=postgresql://dev:devpass@postgres:5432/tides
-      - SEA_TEMP_URL=${SEA_TEMP_URL}
       - SEA_TEMP_SCRAPER_INTERVAL_MINUTES=30
-    depends_on:
-      postgres:
-        condition: service_healthy
-      db-migrate:
-        condition: service_completed_successfully
-    restart: unless-stopped
-
-  weather-service:
-    build:
-      context: .
-      dockerfile: apps/weather-service/Dockerfile
-    environment:
-      - DATABASE_URL=postgresql://dev:devpass@postgres:5432/tides
       - WEATHER_SERVICE_INTERVAL_MINUTES=15
       - WEATHER_SERVICE_DAYS_AHEAD=7
     depends_on:

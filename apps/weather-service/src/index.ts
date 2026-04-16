@@ -86,21 +86,6 @@ async function main(): Promise<void> {
 	}, intervalMs);
 }
 
-// Handle graceful shutdown
-process.on('SIGTERM', async () => {
-	console.log('[WeatherService] SIGTERM received, shutting down...');
-	await closePool();
-	process.exit(0);
-});
-
-process.on('SIGINT', async () => {
-	console.log('[WeatherService] SIGINT received, shutting down...');
-	await closePool();
-	process.exit(0);
-});
-
-// Start the service
-main().catch((error) => {
-	console.error('[WeatherService] Fatal error:', error);
-	process.exit(1);
-});
+export async function start() {
+	return main();
+}

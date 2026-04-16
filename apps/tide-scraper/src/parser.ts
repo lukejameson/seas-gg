@@ -1,4 +1,4 @@
-import { JSDOM } from 'jsdom';
+import { load, type CheerioAPI } from 'cheerio';
 import type { TideData, VerboseTideData } from './types.js';
 
 /**
@@ -6,62 +6,45 @@ import type { TideData, VerboseTideData } from './types.js';
  */
 export class HtmlParser {
 	/**
-	 * Parse HTML string to DOM document
+	 * Parse HTML string — returns a cheerio instance to be reused across calls
 	 */
-	parseHtml(html: string): Document {
-		const dom = new JSDOM(html);
-		return dom.window.document;
+	parseHtml(html: string): CheerioAPI {
+		return load(html);
 	}
 
 	/**
 	 * Extract verbose basic tides table (high/low tides)
 	 */
-	getVerboseBasicTidesTable(html: string): VerboseTideData[] | null {
-		if (!html) return null;
+	getVerboseBasicTidesTable($: CheerioAPI): VerboseTideData[] | null {
+		const rows = $('div.float-left:nth-child(3) > table tr').toArray().slice(1);
 
-		const parsedHtml = this.parseHtml(html).documentElement;
+		if (rows.length === 0) return null;
 
-		const tidesTable = Array.from(
-			parsedHtml.querySelectorAll('div.float-left:nth-child(3) > table tr')
-		)
-			.slice(1)
-			.map((tr) => {
-				const [name, time, height] = Array.from(tr.querySelectorAll('td'));
-
-				return {
-					typeof: name?.textContent?.trim() || '',
-					time: this.adjustTime(time?.textContent?.trim() || ''),
-					height: parseFloat(this.adjustHeight(height?.textContent?.trim() || '')) || 0
-				};
-			});
-
-		return tidesTable;
+		return rows.map((tr) => {
+			const tds = $(tr).find('td').toArray();
+			const [name, time, height] = tds;
+			return {
+				typeof: $(name).text().trim(),
+				time: this.adjustTime($(time).text().trim()),
+				height: parseFloat(this.adjustHeight($(height).text().trim())) || 0
+			};
+		});
 	}
 
 	/**
 	 * Extract hourly tide data
 	 */
-	getHourlyTides(html: string): TideData[] | null {
-		if (!html) return null;
-
-		const parsedHtml = this.parseHtml(html).documentElement;
-
-		const container = Array.from(
-			parsedHtml.querySelectorAll('div.parent:nth-child(7) > div > table')
-		);
-
+	getHourlyTides($: CheerioAPI): TideData[] | null {
 		const tables: TideData[] = [];
 
-		container.forEach((tr) => {
-			const rows = Array.from(tr.querySelectorAll('tbody tr')).splice(1);
-			rows.forEach((tr) => {
-				const [timeCell, heightCell] = Array.from(tr.querySelectorAll('td'));
-
-				const height = heightCell?.querySelector('div')?.textContent?.trim();
-
+		$('div.parent:nth-child(7) > div > table').each((_, table) => {
+			$(table).find('tbody tr').toArray().slice(1).forEach((tr) => {
+				const tds = $(tr).find('td').toArray();
+				const [timeCell, heightCell] = tds;
+				const height = $(heightCell).find('div').text().trim();
 				tables.push({
-					time: timeCell?.textContent?.trim() || '',
-					height: parseFloat(height ? height : '0') || 0
+					time: $(timeCell).text().trim(),
+					height: parseFloat(height || '0') || 0
 				});
 			});
 		});

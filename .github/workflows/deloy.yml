@@ -87,7 +87,7 @@ jobs:
           cache-from: type=gha,scope=web
           cache-to: type=gha,scope=web,mode=max
 
-  build-tide-scraper:
+  build-worker:
     needs: build-database
     runs-on: ubuntu-latest
     permissions:
@@ -110,7 +110,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-tide-scraper
+          images: ${{ env.REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-worker
           tags: |
             type=sha,prefix=,suffix=,format=short
             type=raw,value=latest
@@ -119,93 +119,15 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: apps/tide-scraper/Dockerfile
+          file: apps/worker/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=tide-scraper
-          cache-to: type=gha,scope=tide-scraper,mode=max
-
-  build-sea-temp-scraper:
-    needs: build-database
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-sea-temp-scraper
-          tags: |
-            type=sha,prefix=,suffix=,format=short
-            type=raw,value=latest
-
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: apps/sea-temp-scraper/Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=sea-temp-scraper
-          cache-to: type=gha,scope=sea-temp-scraper,mode=max
-
-  build-weather-service:
-    needs: build-database
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-weather-service
-          tags: |
-            type=sha,prefix=,suffix=,format=short
-            type=raw,value=latest
-
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: apps/weather-service/Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=weather-service
-          cache-to: type=gha,scope=weather-service,mode=max
+          cache-from: type=gha,scope=worker
+          cache-to: type=gha,scope=worker,mode=max
 
   deploy:
-    needs: [build-web, build-tide-scraper, build-sea-temp-scraper, build-weather-service]
+    needs: [build-web, build-worker]
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to VPS

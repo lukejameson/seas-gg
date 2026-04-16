@@ -1,4 +1,4 @@
-import { JSDOM } from 'jsdom';
+import { load } from 'cheerio';
 
 /**
  * Scrapes sea temperature data using a plain HTTP fetch
@@ -29,24 +29,24 @@ export class SeaTemperatureScraper {
 		}
 
 		const html = await response.text();
-		const {
-			window: { document }
-		} = new JSDOM(html);
+		const $ = load(html);
 
-		const spans = document.querySelectorAll('span.boldCast');
-		for (const span of spans) {
-			if (span.textContent?.includes('Sea temperature:')) {
-				const parentText = span.parentElement?.textContent ?? '';
-				const value = parentText.replace('Sea temperature:', '').trim();
+		let result: string | null = null;
+		$('span.boldCast').each((_, el) => {
+			if (result) return false;
+			if ($(el).text().includes('Sea temperature:')) {
+				const value = $(el).parent().text().replace('Sea temperature:', '').trim();
 				if (value) {
 					console.log(`[SeaTempScraper] Found temperature: ${value}`);
-					return value;
+					result = value;
 				}
 			}
-		}
+		});
 
-		console.warn('[SeaTempScraper] Sea temperature element not found');
-		return null;
+		if (!result) {
+			console.warn('[SeaTempScraper] Sea temperature element not found');
+		}
+		return result;
 	}
 }
 

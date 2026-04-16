@@ -29,9 +29,10 @@ async function scrapeAndStoreTide(date: Date): Promise<void> {
 		// Scrape raw HTML
 		const rawTideHtml = await tideScraper.scrapeTidesForDate(date);
 
-		// Parse the HTML
-		const basicTides = htmlParser.getVerboseBasicTidesTable(rawTideHtml);
-		const hourlyTides = htmlParser.getHourlyTides(rawTideHtml);
+		// Parse HTML once, reuse for both extractions
+		const $ = htmlParser.parseHtml(rawTideHtml);
+		const basicTides = htmlParser.getVerboseBasicTidesTable($);
+		const hourlyTides = htmlParser.getHourlyTides($);
 
 		if (!basicTides || basicTides.length === 0) {
 			console.warn(`[TideScraper] No basic tides found for ${dateStr}`);
@@ -100,21 +101,6 @@ async function main(): Promise<void> {
 	}, intervalMs);
 }
 
-// Handle graceful shutdown
-process.on('SIGTERM', async () => {
-	console.log('[TideScraper] SIGTERM received, shutting down...');
-	await closePool();
-	process.exit(0);
-});
-
-process.on('SIGINT', async () => {
-	console.log('[TideScraper] SIGINT received, shutting down...');
-	await closePool();
-	process.exit(0);
-});
-
-// Start the service
-main().catch((error) => {
-	console.error('[TideScraper] Fatal error:', error);
-	process.exit(1);
-});
+export async function start() {
+	return main();
+}

@@ -34,7 +34,6 @@
 	},
 	"dependencies": {
 		"@seas/database": "*",
-		"date-fns": "^4.1.0",
-		"html-minifier-terser": "^7.2.0"
+		"date-fns": "^4.1.0"
 	}
 }
