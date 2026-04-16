@@ -45,7 +45,7 @@ async function scrapeAndStoreSeaTemp(): Promise<void> {
 			seaTempC: temperature
 		}).onConflictDoUpdate({
 			target: seaTemp.date,
-			set: { seaTempC: temperature, updatedAt: new Date() }
+			set: { seaTempC: temperature }
 		});
 
 		console.log(`[SeaTempScraper] Successfully stored sea temperature: ${temperature}`);
